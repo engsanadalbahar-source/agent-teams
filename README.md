@@ -60,21 +60,35 @@ Most multi-agent systems suffer from two major problems:
 
 ```mermaid
 flowchart TD
-    User["User Request"] --> Captain["Captain Agent (Orchestrator)"]
-    Captain --> DAG["Task DAG Generation<br/>(Dependencies, inScope Globs, Acceptance Criteria)"]
-    
-    subgraph Execution ["Parallel / Sequential Execution"]
-        DAG --> T1["Task 1: QA Engineer<br/>(Write Failing Pytest Suite)"]
-        T1 --> G1{"Quality Gate 1<br/>Tests Fail as Expected?"}
-        G1 -->|Yes| T2["Task 2: Implementer<br/>(Implement Code in Scope)"]
-        T2 --> G2{"Quality Gate 2<br/>pytest exit code == 0?"}
-        G2 -->|Yes| T3["Task 3: Code Reviewer<br/>(Independent Audit & Verdict)"]
+    User["User Request"] --> Captain
+
+    subgraph Team ["AgentTeams Autonomous Protocol"]
+        Captain["Captain Agent (Orchestrator)"]
+        DAG["1. Task DAG Generation<br/>(Dependencies, inScope Globs, Acceptance Criteria)"]
+        
+        T1["2. QA Engineer<br/>(Write Failing Pytest Suite)"]
+        G1{"Quality Gate 1<br/>Tests Fail as Expected?"}
+        
+        T2["3. Implementer<br/>(Implement Code in Scope)"]
+        G2{"Quality Gate 2<br/>pytest exit code == 0?"}
+        
+        T3["4. Code Reviewer<br/>(Independent Audit & Verification)"]
+        ReviewVerdict{"Review Verdict?"}
+        Repair["Acyclic Repair Task"]
+        Merge["Integrate & Close Task"]
+
+        Captain --> DAG
+        DAG --> T1
+        T1 --> G1
+        G1 -->|Yes| T2
+        T2 --> G2
+        G2 -->|Yes| T3
+        T3 --> ReviewVerdict
+        ReviewVerdict -->|pass| Merge
+        ReviewVerdict -->|needs_revision| Repair
+        Repair --> T2
     end
 
-    T3 --> ReviewVerdict{"Verdict?"}
-    ReviewVerdict -->|pass| Merge["Integrate & Close Task"]
-    ReviewVerdict -->|needs_revision| Repair["Acyclic Repair Task"]
-    Repair --> T2
     Merge --> UserSuccess["Verified Solution Delivered"]
 ```
 
