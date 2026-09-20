@@ -71,7 +71,7 @@ Rates: **\$0.075 / 1M input tokens**, **\$0.30 / 1M output/thinking tokens**.
 3. **Deterministic Repair vs. Conversational Debugging**: Standard teamwork enters ad-hoc back-and-forth chat when tests fail. AgentTeams dispatches a single targeted repair task consuming only structured findings JSON.
 
 <p align="center">
-  <img src="assets/gemini_flash_financial_chart.png" alt="Gemini 3.8 Flash Financial Cost" width="800"/>
+  <img src="assets/chart_gemini_flash_financial.png" alt="Gemini 3.8 Flash Financial Cost" width="800"/>
 </p>
 
 ---
@@ -79,7 +79,7 @@ Rates: **\$0.075 / 1M input tokens**, **\$0.30 / 1M output/thinking tokens**.
 ## 4. The Crossover Point: When Does Multi-Agent Make Sense?
 
 <p align="center">
-  <img src="assets/token_scaling_chart.png" alt="Token Scaling Curve: Monolithic vs AgentTeams" width="800"/>
+  <img src="assets/chart_token_scaling.png" alt="Token Scaling Curve: Monolithic vs Standard Teamwork vs AgentTeams" width="800"/>
 </p>
 
 The mathematical condition for AgentTeams to achieve net token savings over a monolithic agent is:

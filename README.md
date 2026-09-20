@@ -42,7 +42,7 @@ Empirical testing on **Gemini 3.8 Flash** ($0.075/1M input, $0.30/1M output):
 | **High** (3.8k tok/turn) | \$0.0863 | \$0.0777 | **\$0.0594** | **-23.6%** | **-31.2%** |
 
 <p align="center">
-  <img src="assets/gemini_flash_financial_chart.png" alt="Gemini 3.8 Flash Cost Comparison" width="750"/>
+  <img src="assets/chart_gemini_flash_financial.png" alt="Gemini 3.8 Flash Cost Comparison" width="750"/>
 </p>
 
 ### 2. Token Scaling Over Conversation Turns
@@ -56,7 +56,7 @@ Empirical testing on **Gemini 3.8 Flash** ($0.075/1M input, $0.30/1M output):
 | **50** | `1,835.0k` tok | `1,150.0k` tok | `716.0k` tok | ✅ **AgentTeams** (-38% vs. Teamwork, -61% vs. Mono) |
 
 <p align="center">
-  <img src="assets/token_scaling_chart.png" alt="Token Scaling Curve: Monolithic vs Standard Teamwork vs AgentTeams" width="750"/>
+  <img src="assets/chart_token_scaling.png" alt="Token Scaling Curve: Monolithic vs Standard Teamwork vs AgentTeams" width="750"/>
 </p>
 
 > **The Rule**: Monolithic is cheaper for short tasks (< 8 turns). As tasks grow, AgentTeams significantly outperforms both Monolithic agents (saving up to 61%) and Standard Teamwork (saving 25%–44%) by eliminating conversational chat and scoped re-reads.

@@ -70,7 +70,7 @@ def generate_token_scaling_chart():
     ax.grid(True)
     ax.legend(loc="upper left", frameon=True, facecolor="#ffffff", edgecolor="#d0d7de", fontsize=9)
 
-    chart_path = os.path.join(ASSETS_DIR, "token_scaling_chart.png")
+    chart_path = os.path.join(ASSETS_DIR, "chart_token_scaling.png")
     plt.tight_layout()
     plt.savefig(chart_path, dpi=300)
     plt.close()
@@ -127,7 +127,7 @@ def generate_gemini_flash_financial_chart():
     ax.grid(True, axis="y")
     ax.legend(loc="upper left", frameon=True, facecolor="#ffffff", edgecolor="#d0d7de", fontsize=9.5)
 
-    chart_path = os.path.join(ASSETS_DIR, "gemini_flash_financial_chart.png")
+    chart_path = os.path.join(ASSETS_DIR, "chart_gemini_flash_financial.png")
     plt.tight_layout()
     plt.savefig(chart_path, dpi=300)
     plt.close()
