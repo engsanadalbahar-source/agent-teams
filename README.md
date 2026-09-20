@@ -37,9 +37,9 @@ Empirical testing on **Gemini 3.8 Flash** ($0.075/1M input, $0.30/1M output):
 
 | Thinking Level | 1. Monolithic Agent | 2. Standard Teamwork | 3. AgentTeams | Savings vs. Standard | Savings vs. Monolithic |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Low** (350 tok/turn) | \$0.0149 | \$0.0123 | **\$0.0020** | **-84.2%** | **-87.0%** |
-| **Medium** (1.4k tok/turn) | \$0.0212 | \$0.0199 | **\$0.0057** | **-71.2%** | **-73.0%** |
-| **High** (3.8k tok/turn) | \$0.0356 | \$0.0372 | **\$0.0144** | **-61.4%** | **-59.7%** |
+| **Low** (350 tok/turn) | \$0.0202 | \$0.0245 | **\$0.0036** | **-85.2%** | **-82.0%** |
+| **Medium** (1.4k tok/turn) | \$0.0265 | \$0.0371 | **\$0.0061** | **-83.5%** | **-76.8%** |
+| **High** (3.8k tok/turn) | \$0.0409 | \$0.0659 | **\$0.0119** | **-81.9%** | **-70.9%** |
 
 <p align="center">
   <img src="assets/chart_gemini_flash_financial.png" alt="Gemini 3.8 Flash Cost Comparison" width="750"/>
@@ -49,11 +49,13 @@ Empirical testing on **Gemini 3.8 Flash** ($0.075/1M input, $0.30/1M output):
 
 | Turns | 1. Monolithic Agent | 2. Standard Teamwork | 3. AgentTeams | Winner |
 | :---: | :---: | :---: | :---: | :---: |
-| **3** | `28.8k` tok | `58.7k` tok | `15.2k` tok | ✅ **AgentTeams** (-47.3% vs. Mono) |
-| **5** | `44.2k` tok | `58.7k` tok | `15.2k` tok | ✅ **AgentTeams** (-65.6% vs. Mono) |
-| **10** | `81.1k` tok | `91.8k` tok | `24.0k` tok | ✅ **AgentTeams** (-70.4% vs. Mono) |
-| **20** | `160.8k` tok | `195.7k` tok | `52.1k` tok | ✅ **AgentTeams** (-67.6% vs. Mono) |
-| **50** | `416.4k` tok | `464.2k` tok | `128.7k` tok | ✅ **AgentTeams** (-69.1% vs. Mono) |
+| **3** | `12.7k` tok | `62.4k` tok | `28.5k` tok | 🏆 **Monolithic** (AgentTeams +124.7% overhead) |
+| **5** | `23.5k` tok | `65.9k` tok | `28.5k` tok | 🏆 **Monolithic** (AgentTeams +21.5% overhead) |
+| **10** | `66.7k` tok | `116.6k` tok | `51.4k` tok | ✅ **AgentTeams** (-22.8% vs. Mono) |
+| **15** | `129.5k` tok | `179.1k` tok | `74.7k` tok | ✅ **AgentTeams** (-42.3% vs. Mono) |
+| **20** | `186.1k` tok | `278.7k` tok | `120.6k` tok | ✅ **AgentTeams** (-35.2% vs. Mono) |
+| **30** | `323.9k` tok | `395.7k` tok | `169.0k` tok | ✅ **AgentTeams** (-47.8% vs. Mono) |
+| **50** | `687.7k` tok | `723.5k` tok | `293.1k` tok | ✅ **AgentTeams** (-57.4% vs. Mono) |
 
 <p align="center">
   <img src="assets/chart_token_scaling.png" alt="Token Scaling Curve: Monolithic vs Standard Teamwork vs AgentTeams" width="750"/>

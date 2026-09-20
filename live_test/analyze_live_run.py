@@ -24,9 +24,9 @@ BRAIN_DIR = "~/.gemini/antigravity/brain"
 
 
 def parse_transcript(subagent_id: str):
-    transcript_path = os.path.join(BRAIN_DIR, subagent_id, ".system_generated", "logs", "transcript.jsonl")
+    transcript_path = os.path.join(BRAIN_DIR, subagent_id, ".system_generated", "logs", "transcript_full.jsonl")
     if not os.path.exists(transcript_path):
-        transcript_path = os.path.join(BRAIN_DIR, subagent_id, ".system_generated", "logs", "transcript_full.jsonl")
+        transcript_path = os.path.join(BRAIN_DIR, subagent_id, ".system_generated", "logs", "transcript.jsonl")
 
     steps = []
     with open(transcript_path, "r", encoding="utf-8") as f:

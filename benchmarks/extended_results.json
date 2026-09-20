@@ -2,59 +2,59 @@
   "turn_sweep": [
     {
       "turns": 3,
-      "monolithic_tokens": 28842,
-      "standard_teamwork_tokens": 58716,
-      "agent_teams_tokens": 15212,
-      "savings_vs_standard_percent": 74.09,
-      "savings_vs_monolithic_percent": 47.26
+      "monolithic_tokens": 12690,
+      "standard_teamwork_tokens": 62400,
+      "agent_teams_tokens": 28511,
+      "savings_vs_standard_percent": 54.31,
+      "savings_vs_monolithic_percent": -124.67
     },
     {
       "turns": 5,
-      "monolithic_tokens": 44202,
-      "standard_teamwork_tokens": 58716,
-      "agent_teams_tokens": 15212,
-      "savings_vs_standard_percent": 74.09,
-      "savings_vs_monolithic_percent": 65.59
+      "monolithic_tokens": 23470,
+      "standard_teamwork_tokens": 65920,
+      "agent_teams_tokens": 28511,
+      "savings_vs_standard_percent": 56.75,
+      "savings_vs_monolithic_percent": -21.48
     },
     {
       "turns": 10,
-      "monolithic_tokens": 81073,
-      "standard_teamwork_tokens": 91838,
-      "agent_teams_tokens": 23969,
-      "savings_vs_standard_percent": 73.9,
-      "savings_vs_monolithic_percent": 70.44
+      "monolithic_tokens": 66658,
+      "standard_teamwork_tokens": 116610,
+      "agent_teams_tokens": 51438,
+      "savings_vs_standard_percent": 55.89,
+      "savings_vs_monolithic_percent": 22.83
     },
     {
       "turns": 15,
-      "monolithic_tokens": 122622,
-      "standard_teamwork_tokens": 125708,
-      "agent_teams_tokens": 33038,
-      "savings_vs_standard_percent": 73.72,
-      "savings_vs_monolithic_percent": 73.06
+      "monolithic_tokens": 129537,
+      "standard_teamwork_tokens": 179112,
+      "agent_teams_tokens": 74691,
+      "savings_vs_standard_percent": 58.3,
+      "savings_vs_monolithic_percent": 42.34
     },
     {
       "turns": 20,
-      "monolithic_tokens": 160843,
-      "standard_teamwork_tokens": 195692,
-      "agent_teams_tokens": 52112,
-      "savings_vs_standard_percent": 73.37,
-      "savings_vs_monolithic_percent": 67.6
+      "monolithic_tokens": 186063,
+      "standard_teamwork_tokens": 278664,
+      "agent_teams_tokens": 120639,
+      "savings_vs_standard_percent": 56.71,
+      "savings_vs_monolithic_percent": 35.16
     },
     {
       "turns": 30,
-      "monolithic_tokens": 243313,
-      "standard_teamwork_tokens": 268668,
-      "agent_teams_tokens": 72434,
-      "savings_vs_standard_percent": 73.04,
-      "savings_vs_monolithic_percent": 70.23
+      "monolithic_tokens": 323868,
+      "standard_teamwork_tokens": 395680,
+      "agent_teams_tokens": 168993,
+      "savings_vs_standard_percent": 57.29,
+      "savings_vs_monolithic_percent": 47.82
     },
     {
       "turns": 50,
-      "monolithic_tokens": 416353,
-      "standard_teamwork_tokens": 464198,
-      "agent_teams_tokens": 128699,
-      "savings_vs_standard_percent": 72.27,
-      "savings_vs_monolithic_percent": 69.09
+      "monolithic_tokens": 687678,
+      "standard_teamwork_tokens": 723450,
+      "agent_teams_tokens": 293148,
+      "savings_vs_standard_percent": 59.48,
+      "savings_vs_monolithic_percent": 57.37
     }
   ],
   "financial_comparison_20_turns": {
@@ -62,81 +62,81 @@
       "thinking_effort": "Low",
       "thinking_tokens_per_turn": 350,
       "monolithic": {
-        "input_tokens": 196523,
+        "input_tokens": 239843,
         "output_tokens": 7220,
-        "cost_usd": 0.01691
+        "cost_usd": 0.02015
       },
       "standard_teamwork": {
-        "input_tokens": 182951,
-        "output_tokens": 8704,
-        "cost_usd": 0.01633
+        "input_tokens": 269591,
+        "output_tokens": 14304,
+        "cost_usd": 0.02451
       },
       "agent_teams": {
-        "input_tokens": 19405,
-        "output_tokens": 4295,
-        "cost_usd": 0.00274
+        "input_tokens": 36733,
+        "output_tokens": 2895,
+        "cost_usd": 0.00362
       },
       "savings_vs_standard_teamwork": {
-        "dollar_saved": 0.01359,
-        "percent_saved": 83.2
+        "dollar_saved": 0.02089,
+        "percent_saved": 85.22
       },
       "savings_vs_monolithic": {
-        "dollar_saved": 0.01416,
-        "percent_saved": 83.77
+        "dollar_saved": 0.01653,
+        "percent_saved": 82.02
       }
     },
     "Gemini 3.8 Flash (Medium)": {
       "thinking_effort": "Medium",
       "thinking_tokens_per_turn": 1400,
       "monolithic": {
-        "input_tokens": 196523,
+        "input_tokens": 239843,
         "output_tokens": 28220,
-        "cost_usd": 0.02321
+        "cost_usd": 0.02645
       },
       "standard_teamwork": {
-        "input_tokens": 182951,
-        "output_tokens": 33904,
-        "cost_usd": 0.02389
+        "input_tokens": 269591,
+        "output_tokens": 56304,
+        "cost_usd": 0.03711
       },
       "agent_teams": {
-        "input_tokens": 19405,
-        "output_tokens": 16895,
-        "cost_usd": 0.00652
+        "input_tokens": 36733,
+        "output_tokens": 11295,
+        "cost_usd": 0.00614
       },
       "savings_vs_standard_teamwork": {
-        "dollar_saved": 0.01737,
-        "percent_saved": 72.69
+        "dollar_saved": 0.03097,
+        "percent_saved": 83.45
       },
       "savings_vs_monolithic": {
-        "dollar_saved": 0.01668,
-        "percent_saved": 71.89
+        "dollar_saved": 0.02031,
+        "percent_saved": 76.78
       }
     },
     "Gemini 3.8 Flash (High)": {
       "thinking_effort": "High",
       "thinking_tokens_per_turn": 3800,
       "monolithic": {
-        "input_tokens": 196523,
+        "input_tokens": 239843,
         "output_tokens": 76220,
-        "cost_usd": 0.03761
+        "cost_usd": 0.04085
       },
       "standard_teamwork": {
-        "input_tokens": 182951,
-        "output_tokens": 91504,
-        "cost_usd": 0.04117
+        "input_tokens": 269591,
+        "output_tokens": 152304,
+        "cost_usd": 0.06591
       },
       "agent_teams": {
-        "input_tokens": 19405,
-        "output_tokens": 45695,
-        "cost_usd": 0.01516
+        "input_tokens": 36733,
+        "output_tokens": 30495,
+        "cost_usd": 0.0119
       },
       "savings_vs_standard_teamwork": {
-        "dollar_saved": 0.02601,
-        "percent_saved": 63.17
+        "dollar_saved": 0.05401,
+        "percent_saved": 81.94
       },
       "savings_vs_monolithic": {
-        "dollar_saved": 0.02244,
-        "percent_saved": 59.68
+        "dollar_saved": 0.02895,
+        "percent_saved": 70.86
       }
     }
   }

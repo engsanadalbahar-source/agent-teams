@@ -61,9 +61,9 @@ Rates: **\$0.075 / 1M input tokens**, **\$0.30 / 1M output/thinking tokens**.
 
 | Model Configuration | Thinking Tokens / Turn | Monolithic Single Agent | Standard Antigravity Teamwork | AgentTeams Protocol (DAG + Contracts) | Savings vs Standard Teamwork | Savings vs Monolithic |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Gemini 3.8 Flash (Low)** | ~350 tok/turn | \$0.0169 | \$0.0163 | **\$0.0027** | **+83.20%** (-\$0.0136) | **+83.77%** (-\$0.0142) |
-| **Gemini 3.8 Flash (Medium)** | ~1,400 tok/turn | \$0.0232 | \$0.0239 | **\$0.0065** | **+72.69%** (-\$0.0174) | **+71.89%** (-\$0.0167) |
-| **Gemini 3.8 Flash (High)** | ~3,800 tok/turn | \$0.0376 | \$0.0412 | **\$0.0152** | **+63.17%** (-\$0.0260) | **+59.68%** (-\$0.0224) |
+| **Gemini 3.8 Flash (Low)** | ~350 tok/turn | \$0.0202 | \$0.0245 | **\$0.0036** | **+85.22%** (-\$0.0209) | **+82.02%** (-\$0.0165) |
+| **Gemini 3.8 Flash (Medium)** | ~1,400 tok/turn | \$0.0265 | \$0.0371 | **\$0.0061** | **+83.45%** (-\$0.0310) | **+76.78%** (-\$0.0203) |
+| **Gemini 3.8 Flash (High)** | ~3,800 tok/turn | \$0.0409 | \$0.0659 | **\$0.0119** | **+81.94%** (-\$0.0540) | **+70.86%** (-\$0.0290) |
 
 *Why AgentTeams is 23%–29% Cheaper Than Standard Teamwork:*
 1. **Compact Contracts vs. Conversational Handoffs**: Standard teamwork uses verbose conversational instructions (~1,200 tokens per message) between subagents, whereas AgentTeams passes compact ~300-token YAML contracts.
