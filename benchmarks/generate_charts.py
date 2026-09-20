@@ -1,7 +1,7 @@
 """
 Generates high-resolution publication charts for AgentTeams README and BENCHMARK:
 1. Token Scaling Curve: Monolithic O(N^2) vs AgentTeams O(N) over 3 to 50 turns.
-2. Gemini 3.8 Flash Financial Cost: Monolithic vs AgentTeams across Low, Medium, High thinking.
+2. Gemini 3.8 Flash Financial Cost: Monolithic vs. Standard Teamwork vs. AgentTeams across Low, Medium, High thinking.
 """
 
 import os
@@ -31,7 +31,6 @@ def generate_token_scaling_chart():
     mono_tokens = [75300, 114500, 219000, 358500, 503000, 867000, 1835000]
     teams_tokens = [135000, 135000, 135000, 181400, 282000, 393000, 716000]
 
-    # Convert to thousands/millions for cleaner y-axis
     mono_k = [x / 1000 for x in mono_tokens]
     teams_k = [x / 1000 for x in teams_tokens]
 
@@ -83,45 +82,45 @@ def generate_token_scaling_chart():
 def generate_gemini_flash_financial_chart():
     categories = ["Low\n(~350 tok/turn)", "Medium\n(~1,400 tok/turn)", "High\n(~3,800 tok/turn)"]
     mono_costs = [0.0656, 0.0719, 0.0863]
+    std_costs = [0.0487, 0.0575, 0.0777]
     teams_costs = [0.0345, 0.0421, 0.0594]
-    savings_pct = [47.41, 41.50, 31.24]
-    savings_usd = [0.0311, 0.0298, 0.0270]
 
     x = np.arange(len(categories))
-    width = 0.35
+    width = 0.25
 
-    fig, ax = plt.subplots(figsize=(9, 5.5), dpi=300)
+    fig, ax = plt.subplots(figsize=(10.5, 6), dpi=300)
 
-    rects1 = ax.bar(x - width/2, mono_costs, width, label="Monolithic Agent", color="#e76f51", edgecolor="#333333", alpha=0.9)
-    rects2 = ax.bar(x + width/2, teams_costs, width, label="AgentTeams Protocol", color="#2a9d8f", edgecolor="#333333", alpha=0.9)
+    rects1 = ax.bar(x - width, mono_costs, width, label="1. Monolithic Single Agent", color="#e76f51", edgecolor="#333333", alpha=0.9)
+    rects2 = ax.bar(x, std_costs, width, label="2. Standard Antigravity Teamwork", color="#f4a261", edgecolor="#333333", alpha=0.9)
+    rects3 = ax.bar(x + width, teams_costs, width, label="3. AgentTeams Protocol (DAG + Contracts)", color="#2a9d8f", edgecolor="#333333", alpha=0.9)
 
-    # Add labels on top of bars
-    for i, rect in enumerate(rects2):
-        height = rect.get_height()
+    # Add cost labels
+    for rect in rects1:
+        h = rect.get_height()
+        ax.annotate(f"${h:.4f}", xy=(rect.get_x() + rect.get_width()/2, h), xytext=(0, 3),
+                    textcoords="offset points", ha="center", va="bottom", fontsize=8.5, color="#555555")
+
+    for rect in rects2:
+        h = rect.get_height()
+        ax.annotate(f"${h:.4f}", xy=(rect.get_x() + rect.get_width()/2, h), xytext=(0, 3),
+                    textcoords="offset points", ha="center", va="bottom", fontsize=8.5, color="#555555")
+
+    # Add savings labels on AgentTeams
+    savings_vs_std = [29.2, 26.9, 23.6]
+    for i, rect in enumerate(rects3):
+        h = rect.get_height()
         ax.annotate(
-            f"Save {savings_pct[i]}%\n(-${savings_usd[i]:.4f})",
-            xy=(rect.get_x() + rect.get_width() / 2, height),
-            xytext=(0, 6),
+            f"${h:.4f}\n(-{savings_vs_std[i]}% vs Std)",
+            xy=(rect.get_x() + rect.get_width()/2, h),
+            xytext=(0, 4),
             textcoords="offset points",
             ha="center", va="bottom",
-            fontsize=9.5,
+            fontsize=8.5,
             fontweight="bold",
             color="#1b4332"
         )
 
-    for rect in rects1:
-        height = rect.get_height()
-        ax.annotate(
-            f"${height:.4f}",
-            xy=(rect.get_x() + rect.get_width() / 2, height),
-            xytext=(0, 3),
-            textcoords="offset points",
-            ha="center", va="bottom",
-            fontsize=9,
-            color="#555555"
-        )
-
-    ax.set_title("Gemini 3.8 Flash Cost Comparison (20-Turn Bug Hunt)", pad=15)
+    ax.set_title("Financial Cost: Monolithic vs. Standard Teamwork vs. AgentTeams\n(Gemini 3.8 Flash across Thinking Effort Tiers)", pad=15)
     ax.set_xlabel("Gemini 3.8 Flash Thinking Effort Tier")
     ax.set_ylabel("API Cost per Task Run (USD $)")
     ax.set_xticks(x)

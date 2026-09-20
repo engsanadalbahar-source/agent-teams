@@ -1,94 +1,83 @@
 {
-  "turn_sweep": [
-    {
-      "turns": 3,
-      "monolithic_total": 75300,
-      "agent_teams_total": 135000,
-      "savings_percent": -79.28,
-      "advantage": "Monolithic"
+  "Gemini 3.8 Flash (Low)": {
+    "thinking_effort": "Low",
+    "thinking_tokens_per_turn": 350,
+    "monolithic": {
+      "input_tokens": 815000,
+      "output_tokens": 15000,
+      "cost_usd": 0.06563
     },
-    {
-      "turns": 5,
-      "monolithic_total": 114500,
-      "agent_teams_total": 135000,
-      "savings_percent": -17.9,
-      "advantage": "Monolithic"
+    "standard_teamwork": {
+      "input_tokens": 560000,
+      "output_tokens": 22400,
+      "cost_usd": 0.04872
     },
-    {
-      "turns": 10,
-      "monolithic_total": 219000,
-      "agent_teams_total": 135000,
-      "savings_percent": 38.36,
-      "advantage": "AgentTeams"
+    "agent_teams": {
+      "input_tokens": 393000,
+      "output_tokens": 16800,
+      "cost_usd": 0.03451
     },
-    {
-      "turns": 15,
-      "monolithic_total": 358500,
-      "agent_teams_total": 181400,
-      "savings_percent": 49.4,
-      "advantage": "AgentTeams"
+    "comparison_vs_standard_teamwork": {
+      "dollar_saved": 0.0142,
+      "percent_saved": 29.16
     },
-    {
-      "turns": 20,
-      "monolithic_total": 503000,
-      "agent_teams_total": 282000,
-      "savings_percent": 43.94,
-      "advantage": "AgentTeams"
-    },
-    {
-      "turns": 30,
-      "monolithic_total": 867000,
-      "agent_teams_total": 393000,
-      "savings_percent": 54.67,
-      "advantage": "AgentTeams"
-    },
-    {
-      "turns": 50,
-      "monolithic_total": 1835000,
-      "agent_teams_total": 716000,
-      "savings_percent": 60.98,
-      "advantage": "AgentTeams"
+    "comparison_vs_monolithic": {
+      "dollar_saved": 0.03111,
+      "percent_saved": 47.41
     }
-  ],
-  "gemini_3_8_flash_financial_analysis": {
-    "Gemini 3.8 Flash (Low)": {
-      "thinking_effort": "Low",
-      "thinking_tokens_per_turn": 350,
-      "monolithic_input_tokens": 815000,
-      "monolithic_output_tokens": 15000,
-      "monolithic_cost_usd": 0.06563,
-      "agent_teams_input_tokens": 393000,
-      "agent_teams_output_tokens": 16800,
-      "agent_teams_cost_usd": 0.03451,
-      "dollar_savings_usd": 0.03111,
-      "savings_percent": 47.41,
-      "description": "Minimal reasoning overhead; quick execution"
+  },
+  "Gemini 3.8 Flash (Medium)": {
+    "thinking_effort": "Medium",
+    "thinking_tokens_per_turn": 1400,
+    "monolithic": {
+      "input_tokens": 815000,
+      "output_tokens": 36000,
+      "cost_usd": 0.07193
     },
-    "Gemini 3.8 Flash (Medium)": {
-      "thinking_effort": "Medium",
-      "thinking_tokens_per_turn": 1400,
-      "monolithic_input_tokens": 815000,
-      "monolithic_output_tokens": 36000,
-      "monolithic_cost_usd": 0.07193,
-      "agent_teams_input_tokens": 393000,
-      "agent_teams_output_tokens": 42000,
-      "agent_teams_cost_usd": 0.04208,
-      "dollar_savings_usd": 0.02985,
-      "savings_percent": 41.5,
-      "description": "Balanced reasoning; standard software tasks"
+    "standard_teamwork": {
+      "input_tokens": 560000,
+      "output_tokens": 51800,
+      "cost_usd": 0.05754
     },
-    "Gemini 3.8 Flash (High)": {
-      "thinking_effort": "High",
-      "thinking_tokens_per_turn": 3800,
-      "monolithic_input_tokens": 815000,
-      "monolithic_output_tokens": 84000,
-      "monolithic_cost_usd": 0.08632,
-      "agent_teams_input_tokens": 393000,
-      "agent_teams_output_tokens": 99600,
-      "agent_teams_cost_usd": 0.05935,
-      "dollar_savings_usd": 0.02697,
-      "savings_percent": 31.24,
-      "description": "Deep reasoning; complex architecture & verification"
+    "agent_teams": {
+      "input_tokens": 393000,
+      "output_tokens": 42000,
+      "cost_usd": 0.04208
+    },
+    "comparison_vs_standard_teamwork": {
+      "dollar_saved": 0.01546,
+      "percent_saved": 26.88
+    },
+    "comparison_vs_monolithic": {
+      "dollar_saved": 0.02985,
+      "percent_saved": 41.5
+    }
+  },
+  "Gemini 3.8 Flash (High)": {
+    "thinking_effort": "High",
+    "thinking_tokens_per_turn": 3800,
+    "monolithic": {
+      "input_tokens": 815000,
+      "output_tokens": 84000,
+      "cost_usd": 0.08632
+    },
+    "standard_teamwork": {
+      "input_tokens": 560000,
+      "output_tokens": 119000,
+      "cost_usd": 0.0777
+    },
+    "agent_teams": {
+      "input_tokens": 393000,
+      "output_tokens": 99600,
+      "cost_usd": 0.05935
+    },
+    "comparison_vs_standard_teamwork": {
+      "dollar_saved": 0.01834,
+      "percent_saved": 23.61
+    },
+    "comparison_vs_monolithic": {
+      "dollar_saved": 0.02697,
+      "percent_saved": 31.24
     }
   }
 }

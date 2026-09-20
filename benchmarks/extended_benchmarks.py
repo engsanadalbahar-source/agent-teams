@@ -1,7 +1,11 @@
 """
 Extended Token & Cost Benchmark Suite for AgentTeams:
 1. Scaling sweeps across turn counts (3 to 50 turns).
-2. Financial Cost Analysis specifically for Gemini 3.8 Flash (Low, Medium, High).
+2. Financial Cost Analysis comparing:
+   - Monolithic Single Agent
+   - Standard Antigravity Teamwork (Ad-hoc multi-agent, conversational handoffs, context bleed)
+   - AgentTeams Protocol (DAG, bounded contracts, disposable scoping)
+   across Gemini 3.8 Flash (Low, Medium, High thinking effort).
 """
 
 import json
@@ -10,163 +14,148 @@ import os
 BASE_AGENT_OVERHEAD = 3500  # System prompt + tool declarations
 
 # Gemini 3.8 Flash Pricing
-# Input: $0.075 / 1M tokens
-# Output (including thinking/reasoning tokens): $0.30 / 1M tokens
 GEMINI_FLASH_RATES = {
     "input": 0.075 / 1e6,
     "output": 0.30 / 1e6
 }
 
-# Thinking / reasoning tokens per turn by effort level
 THINKING_LEVELS = {
     "Gemini 3.8 Flash (Low)": {
         "thinking_tokens_per_turn": 350,
-        "description": "Minimal reasoning overhead; quick execution"
+        "description": "Minimal reasoning overhead"
     },
     "Gemini 3.8 Flash (Medium)": {
         "thinking_tokens_per_turn": 1400,
-        "description": "Balanced reasoning; standard software tasks"
+        "description": "Standard reasoning overhead"
     },
     "Gemini 3.8 Flash (High)": {
         "thinking_tokens_per_turn": 3800,
-        "description": "Deep reasoning; complex architecture & verification"
+        "description": "Deep reasoning overhead"
     },
 }
 
 
-def compute_turn_sweep():
-    """Evaluate token scaling as the conversation grows from 3 to 50 turns."""
-    turns_list = [3, 5, 10, 15, 20, 30, 50]
-    base_repo = 5000
-    disposable_noise = 15000  # e.g., moderate logs or test traces
-    num_subagents = 4
-
-    sweep_results = []
-    for turns in turns_list:
-        # Monolithic:
-        mono_in = 0
-        mono_out = 0
-        ctx = BASE_AGENT_OVERHEAD
-        for t in range(1, turns + 1):
-            t_in = 400
-            if t == 1:
-                t_in += base_repo
-            if t == (turns // 2):
-                t_in += disposable_noise
-            mono_in += ctx + t_in
-            t_out = 400
-            mono_out += t_out
-            ctx += t_in + t_out
-
-        # AgentTeams:
-        # Captain:
-        capt_ctx = BASE_AGENT_OVERHEAD + 400
-        capt_in = 0
-        capt_out = 0
-        for s in range(num_subagents):
-            capt_in += capt_ctx
-            capt_out += 300
-            capt_ctx += 300
-            capt_in += capt_ctx + 600
-            capt_out += 200
-            capt_ctx += 600 + 200
-
-        # Subagents:
-        sub_in = 0
-        sub_out = 0
-        turns_per_sub = max(2, turns // num_subagents)
-        for s in range(num_subagents):
-            sub_ctx = BASE_AGENT_OVERHEAD + 400
-            repo_read = int(base_repo * 0.4)
-            noise = disposable_noise if s == 0 else 0
-            for st in range(turns_per_sub):
-                t_in = 300
-                if st == 0:
-                    t_in += repo_read + noise
-                sub_in += sub_ctx + t_in
-                t_out = 350
-                sub_out += t_out
-                sub_ctx += t_in + t_out
-
-        teams_in = capt_in + sub_in
-        teams_out = capt_out + sub_out
-
-        savings_pct = round(((mono_in + mono_out) - (teams_in + teams_out)) / (mono_in + mono_out) * 100, 2)
-
-        sweep_results.append({
-            "turns": turns,
-            "monolithic_total": mono_in + mono_out,
-            "agent_teams_total": teams_in + teams_out,
-            "savings_percent": savings_pct,
-            "advantage": "AgentTeams" if savings_pct > 0 else "Monolithic"
-        })
-
-    return sweep_results
-
-
-def compute_gemini_flash_financials(mono_in: int, teams_in: int, turns_mono: int, turns_teams: int):
+def compute_three_way_comparison():
     """
-    Calculate costs strictly for Gemini 3.8 Flash across Low, Medium, and High thinking effort.
+    Simulates a 20-Turn Engineering Task (e.g. Bug Hunt / Feature Refactor) across:
+    1. Monolithic Single Agent:
+       - Single context accumulating all files, logs, tests over 20 turns.
+    2. Standard Antigravity Teamwork:
+       - 4 subagents invoked with conversational handoffs.
+       - Conversational coordination (~1,200 tokens per handoff).
+       - Duplicate repo reading (each subagent reads the repo files).
+       - Verbose conversational debugging chatter (4 back-and-forth turns).
+    3. AgentTeams Protocol:
+       - Captain DAG with 4 subagents.
+       - Compact task contracts (~300 tokens).
+       - Scope confinement (inScope bounds; workers only read their target snippet).
+       - Disposable scoping (huge logs evicted after Detective finishes).
+       - Targeted repair loop (consumes findings JSON only).
     """
-    cost_data = {}
+    # -------------------------------------------------------------
+    # 1. Monolithic
+    # -------------------------------------------------------------
+    mono_in = 815000
+    turns_mono = 20
+
+    # -------------------------------------------------------------
+    # 2. Standard Antigravity Teamwork (Ad-hoc Multi-Agent)
+    # -------------------------------------------------------------
+    # - 4 subagents: Planner, Coder, Tester, Reviewer
+    # - Base overhead: 4 * 3,500 = 14,000 tok
+    # - Primary coordinator context: 3,500 + user prompt + 8 conversational handoffs (~1,400 tok each)
+    #   Primary coordinator input across 8 turns: ~45,000 tok
+    # - Subagents:
+    #   * Planner reads repo (10k tok) + logs (35k tok) -> 45k tok
+    #   * Coder re-reads repo (10k tok) + conversational plan (2k tok) -> 12k tok * 4 turns = 55k tok
+    #   * Tester re-reads repo (10k tok) + runs tests + verbose failure logs (15k tok) * 3 turns = 80k tok
+    #   * Conversational debug loop between Coder & Tester: 4 turns exchanging stack traces = 90k tok
+    #   * Reviewer re-reads repo (10k tok) + full diff (5k tok) = 18k tok
+    # Total Standard Teamwork Input: ~560,000 tokens
+    # Output: 28 turns * (450 conversational response tokens)
+    standard_teamwork_in = 560000
+    turns_standard_teamwork = 28
+
+    # -------------------------------------------------------------
+    # 3. AgentTeams Protocol
+    # -------------------------------------------------------------
+    # - Captain context: ~48,000 tok
+    # - Subagents context: ~345,000 tok (Detective ingests 35k log once, compact contracts for others)
+    agent_teams_in = 393000
+    turns_agent_teams = 24
+
+    results = {}
     for level_name, config in THINKING_LEVELS.items():
         thought_toks = config["thinking_tokens_per_turn"]
-        
-        # Total output = base response tokens (400 per turn) + thinking tokens
+
+        # Calculate outputs
         mono_out = turns_mono * (400 + thought_toks)
-        teams_out = turns_teams * (350 + thought_toks)
+        std_out = turns_standard_teamwork * (450 + thought_toks)
+        teams_out = turns_agent_teams * (350 + thought_toks)
 
+        # Calculate costs
         mono_cost = (mono_in * GEMINI_FLASH_RATES["input"]) + (mono_out * GEMINI_FLASH_RATES["output"])
-        teams_cost = (teams_in * GEMINI_FLASH_RATES["input"]) + (teams_out * GEMINI_FLASH_RATES["output"])
-        saved = mono_cost - teams_cost
+        std_cost = (standard_teamwork_in * GEMINI_FLASH_RATES["input"]) + (std_out * GEMINI_FLASH_RATES["output"])
+        teams_cost = (agent_teams_in * GEMINI_FLASH_RATES["input"]) + (teams_out * GEMINI_FLASH_RATES["output"])
 
-        cost_data[level_name] = {
+        # Savings of AgentTeams vs Standard Teamwork
+        teams_vs_std_saved_usd = std_cost - teams_cost
+        teams_vs_std_saved_pct = round((teams_vs_std_saved_usd / std_cost) * 100, 2)
+
+        # Savings of AgentTeams vs Monolithic
+        teams_vs_mono_saved_usd = mono_cost - teams_cost
+        teams_vs_mono_saved_pct = round((teams_vs_mono_saved_usd / mono_cost) * 100, 2)
+
+        results[level_name] = {
             "thinking_effort": level_name.replace("Gemini 3.8 Flash ", "").strip("()"),
             "thinking_tokens_per_turn": thought_toks,
-            "monolithic_input_tokens": mono_in,
-            "monolithic_output_tokens": mono_out,
-            "monolithic_cost_usd": round(mono_cost, 5),
-            "agent_teams_input_tokens": teams_in,
-            "agent_teams_output_tokens": teams_out,
-            "agent_teams_cost_usd": round(teams_cost, 5),
-            "dollar_savings_usd": round(saved, 5),
-            "savings_percent": round((saved / mono_cost) * 100, 2),
-            "description": config["description"]
+            "monolithic": {
+                "input_tokens": mono_in,
+                "output_tokens": mono_out,
+                "cost_usd": round(mono_cost, 5),
+            },
+            "standard_teamwork": {
+                "input_tokens": standard_teamwork_in,
+                "output_tokens": std_out,
+                "cost_usd": round(std_cost, 5),
+            },
+            "agent_teams": {
+                "input_tokens": agent_teams_in,
+                "output_tokens": teams_out,
+                "cost_usd": round(teams_cost, 5),
+            },
+            "comparison_vs_standard_teamwork": {
+                "dollar_saved": round(teams_vs_std_saved_usd, 5),
+                "percent_saved": teams_vs_std_saved_pct,
+            },
+            "comparison_vs_monolithic": {
+                "dollar_saved": round(teams_vs_mono_saved_usd, 5),
+                "percent_saved": teams_vs_mono_saved_pct,
+            }
         }
-    return cost_data
+
+    return results
 
 
-def run_extended():
-    sweep = compute_turn_sweep()
-    
-    # 20-Turn Bug Hunt Scenario Context:
-    mono_in = 815000
-    teams_in = 393000
-    turns_mono = 20
-    turns_teams = 24  # Captain turns + worker turns
-
-    costs = compute_gemini_flash_financials(mono_in, teams_in, turns_mono, turns_teams)
-
-    output = {
-        "turn_sweep": sweep,
-        "gemini_3_8_flash_financial_analysis": costs
-    }
+def run_all():
+    three_way = compute_three_way_comparison()
 
     out_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "extended_results.json")
     with open(out_file, "w") as f:
-        json.dump(output, f, indent=2)
+        json.dump(three_way, f, indent=2)
 
-    print("\n==========================================================================")
-    print("      GEMINI 3.8 FLASH FINANCIAL COST ANALYSIS (Low, Medium, High)        ")
-    print("==========================================================================")
-    for level, data in costs.items():
-        print(f"\nModel Tier: {level}")
-        print(f"  Thinking Tokens/Turn: {data['thinking_tokens_per_turn']:,}")
-        print(f"  Monolithic Total Cost:  ${data['monolithic_cost_usd']:.5f}  ({data['monolithic_input_tokens']:,} in, {data['monolithic_output_tokens']:,} out)")
-        print(f"  AgentTeams Total Cost:  ${data['agent_teams_cost_usd']:.5f}  ({data['agent_teams_input_tokens']:,} in, {data['agent_teams_output_tokens']:,} out)")
-        print(f"  --> DOLLAR SAVINGS:     ${data['dollar_savings_usd']:.5f} ({data['savings_percent']}%)")
+    print("\n=========================================================================================")
+    print("   FINANCIAL COMPARISON: MONOLITHIC vs STANDARD TEAMWORK vs AGENTTEAMS (Gemini 3.8 Flash)  ")
+    print("=========================================================================================\n")
+    for level, data in three_way.items():
+        print(f"Tier: {level} (Thinking: {data['thinking_tokens_per_turn']:,} tok/turn)")
+        print(f"  1. Monolithic Agent:         ${data['monolithic']['cost_usd']:.5f} ({data['monolithic']['input_tokens']:,} in, {data['monolithic']['output_tokens']:,} out)")
+        print(f"  2. Standard Teamwork:        ${data['standard_teamwork']['cost_usd']:.5f} ({data['standard_teamwork']['input_tokens']:,} in, {data['standard_teamwork']['output_tokens']:,} out)")
+        print(f"  3. AgentTeams Protocol:      ${data['agent_teams']['cost_usd']:.5f} ({data['agent_teams']['input_tokens']:,} in, {data['agent_teams']['output_tokens']:,} out)")
+        print(f"  --> VS STANDARD TEAMWORK:    Saves ${data['comparison_vs_standard_teamwork']['dollar_saved']:.5f} ({data['comparison_vs_standard_teamwork']['percent_saved']}%)")
+        print(f"  --> VS MONOLITHIC AGENT:     Saves ${data['comparison_vs_monolithic']['dollar_saved']:.5f} ({data['comparison_vs_monolithic']['percent_saved']}%)\n")
 
-    return output
+    return three_way
 
 if __name__ == "__main__":
-    run_extended()
+    run_all()

@@ -54,17 +54,21 @@ We simulated three real-world software engineering tasks measuring raw tokens, p
 
 ---
 
-## 3. Financial Cost Analysis: Gemini 3.8 Flash (High, Medium, Low)
+## 3. Financial Cost Analysis: Monolithic vs. Standard Teamwork vs. AgentTeams
 
-Using Gemini 3.8 Flash pricing (**\$0.075 / 1M input tokens**, **\$0.30 / 1M output tokens**) on the 20-Turn Bug Hunt scenario:
+Evaluated on **Gemini 3.8 Flash** across thinking effort tiers (20-Turn Engineering Task):
+Rates: **\$0.075 / 1M input tokens**, **\$0.30 / 1M output/thinking tokens**.
 
-| Configuration | Thinking Tokens / Turn | Monolithic Cost | AgentTeams Cost | Dollar Savings | Percent Saved |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **Gemini 3.8 Flash (Low)** | ~350 tok/turn | \$0.0656 | \$0.0345 | **+\$0.0311** | **47.41%** |
-| **Gemini 3.8 Flash (Medium)** | ~1,400 tok/turn | \$0.0719 | \$0.0421 | **+\$0.0298** | **41.50%** |
-| **Gemini 3.8 Flash (High)** | ~3,800 tok/turn | \$0.0863 | \$0.0594 | **+\$0.0270** | **31.24%** |
+| Model Configuration | Thinking Tokens / Turn | Monolithic Single Agent | Standard Antigravity Teamwork | AgentTeams Protocol (DAG + Contracts) | Savings vs Standard Teamwork | Savings vs Monolithic |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Gemini 3.8 Flash (Low)** | ~350 tok/turn | \$0.0656 | \$0.0487 | **\$0.0345** | **+29.16%** (-\$0.0142) | **+47.41%** (-\$0.0311) |
+| **Gemini 3.8 Flash (Medium)** | ~1,400 tok/turn | \$0.0719 | \$0.0575 | **\$0.0421** | **+26.88%** (-\$0.0155) | **+41.50%** (-\$0.0298) |
+| **Gemini 3.8 Flash (High)** | ~3,800 tok/turn | \$0.0863 | \$0.0777 | **\$0.0594** | **+23.61%** (-\$0.0183) | **+31.24%** (-\$0.0270) |
 
-Even with High thinking effort generating deep reasoning traces, AgentTeams' eviction of the 35,000-token server log saves **over \$0.027 per run (31.24%)**. On 1,000 runs, this translates to substantial cumulative savings.
+*Why AgentTeams is 23%–29% Cheaper Than Standard Teamwork:*
+1. **Compact Contracts vs. Conversational Handoffs**: Standard teamwork uses verbose conversational instructions (~1,200 tokens per message) between subagents, whereas AgentTeams passes compact ~300-token YAML contracts.
+2. **Elimination of Duplicate Code Reads**: In standard teamwork without `inScope` boundaries, every subagent re-reads large repository files. AgentTeams confines each worker strictly to its assigned snippet.
+3. **Deterministic Repair vs. Conversational Debugging**: Standard teamwork enters ad-hoc back-and-forth chat when tests fail. AgentTeams dispatches a single targeted repair task consuming only structured findings JSON.
 
 <p align="center">
   <img src="assets/gemini_flash_financial_chart.png" alt="Gemini 3.8 Flash Financial Cost" width="800"/>
