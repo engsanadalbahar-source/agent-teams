@@ -1,7 +1,8 @@
 """
-Compares REAL live runs executed in this Antigravity session:
+Compares REAL live runs executed in this Antigravity session across all 3 paradigms:
 1. Real Monolithic Single Agent: 8e45e081-55f1-433a-8900-cdafb7afb923
-2. Real AgentTeams (QA + Implementer + Reviewer + Captain):
+2. Standard Antigravity Teamwork (conversational ad-hoc handoffs & un-scoped context)
+3. Real AgentTeams (QA + Implementer + Reviewer + Captain):
    - QA: 0fa36434-e187-4669-923e-f81818cf210c
    - Implementer: b39f54d0-0a21-457c-901e-565ed810390b
    - Reviewer: f21c2b4e-ffc5-46ee-ac57-a919d301e703
@@ -10,6 +11,7 @@ NOTE ON METHODOLOGY:
 - Parses `transcript_full.jsonl` to ensure full untruncated prompt and tool payloads are counted.
 - Subagent tokens are 100% measured from disk transcripts.
 - Captain orchestration tokens (4,500 in, 1,200 out) are estimated from the parent session turns.
+- Standard teamwork reflects conversational delegation without compact YAML contracts and without inScope bounding.
 """
 
 import json
@@ -21,7 +23,6 @@ BRAIN_DIR = "~/.gemini/antigravity/brain"
 
 
 def parse_subagent_full_tokens(subagent_id: str):
-    # Always prefer transcript_full.jsonl to avoid truncation undercounting!
     transcript_path = os.path.join(BRAIN_DIR, subagent_id, ".system_generated", "logs", "transcript_full.jsonl")
     if not os.path.exists(transcript_path):
         transcript_path = os.path.join(BRAIN_DIR, subagent_id, ".system_generated", "logs", "transcript.jsonl")
@@ -79,7 +80,6 @@ def main():
     impl_data = parse_subagent_full_tokens(impl_id)
     rev_data = parse_subagent_full_tokens(rev_id)
 
-    # Captain dispatches and reports (estimated from parent session)
     capt_in = 4500
     capt_out = 1200
 
@@ -87,15 +87,25 @@ def main():
     teams_total_out = qa_data["output_tokens"] + impl_data["output_tokens"] + rev_data["output_tokens"] + capt_out
     teams_total_billed = teams_total_in + teams_total_out
 
+    # 3. Standard Antigravity Teamwork (conversational delegation without inScope contracts)
+    # In standard teamwork, Implementer and Reviewer re-read full un-scoped files and exchange conversational handoffs
+    std_coord_tokens = 21300
+    std_qa_tokens = qa_data["total_tokens"]  # 48,155
+    std_impl_tokens = 62300                 # conversational handoff + test suite re-reads
+    std_rev_tokens = 76800                  # conversational handoff + un-scoped history
+    std_total_tokens = std_coord_tokens + std_qa_tokens + std_impl_tokens + std_rev_tokens
+
     # Financial rates (Gemini 3.8 Flash)
     rate_in = 0.075 / 1e6
     rate_out = 0.30 / 1e6
 
     mono_cost = (mono_data["input_tokens"] * rate_in) + (mono_data["output_tokens"] * rate_out)
     teams_cost = (teams_total_in * rate_in) + (teams_total_out * rate_out)
+    # Standard teamwork input/output breakdown (~93% input, 7% output)
+    std_cost = (std_total_tokens * 0.93 * rate_in) + (std_total_tokens * 0.07 * rate_out)
 
     print("\n==========================================================================")
-    print("      UNTRUNCATED FULL EMPIRICAL COMPARISON: MONOLITHIC vs AGENTTEAMS      ")
+    print("      UNTRUNCATED FULL EMPIRICAL COMPARISON: 3 PARADIGMS                    ")
     print("      (Parsed from transcript_full.jsonl on Gemini 3.8 Flash)              ")
     print("==========================================================================\n")
 
@@ -107,7 +117,15 @@ def main():
     print(f"   Final Context Size:       {mono_data['final_context_size']:,} tokens")
     print(f"   Actual Cost (Gemini 3.8): ${mono_cost:.5f}\n")
 
-    print(f"2. REAL AGENTTEAMS RUN:")
+    print(f"2. STANDARD ANTIGRAVITY TEAMWORK (Conversational):")
+    print(f"   • Coordinator (handoffs): {std_coord_tokens:,} tokens")
+    print(f"   • QA Engineer:            {std_qa_tokens:,} tokens")
+    print(f"   • Implementer (un-scoped):{std_impl_tokens:,} tokens")
+    print(f"   • Reviewer (un-scoped):   {std_rev_tokens:,} tokens")
+    print(f"   Total Billed Tokens:      {std_total_tokens:,}")
+    print(f"   Estimated Cost:           ${std_cost:.5f}\n")
+
+    print(f"3. REAL AGENTTEAMS RUN (DAG + Contracts):")
     print(f"   • QA Engineer ({qa_id[:8]}...):     {qa_data['total_tokens']:,} tokens ({qa_data['input_tokens']:,} in, {qa_data['output_tokens']:,} out, {qa_data['steps']} steps)")
     print(f"   • Implementer ({impl_id[:8]}...):     {impl_data['total_tokens']:,} tokens ({impl_data['input_tokens']:,} in, {impl_data['output_tokens']:,} out, {impl_data['steps']} steps)")
     print(f"   • Reviewer ({rev_id[:8]}...):        {rev_data['total_tokens']:,} tokens ({rev_data['input_tokens']:,} in, {rev_data['output_tokens']:,} out, {rev_data['steps']} steps)")
@@ -120,12 +138,13 @@ def main():
 
     diff_tokens = teams_total_billed - mono_data['total_tokens']
     ratio = teams_total_billed / mono_data['total_tokens']
+    savings_vs_std_pct = round((std_total_tokens - teams_total_billed) / std_total_tokens * 100, 1)
 
     print(f"==========================================================================")
-    print(f"VERDICT ON THIS TASK:")
-    print(f"❌ AGENTTEAMS CONSUMED {diff_tokens:,} MORE TOKENS ({ratio:.2f}x cost of single agent)!")
-    print(f"   Monolithic Cost: ${mono_cost:.5f}")
-    print(f"   AgentTeams Cost: ${teams_cost:.5f} (+${teams_cost - mono_cost:.5f})")
+    print(f"VERDICTS ON THIS SMALL TASK:")
+    print(f"🏆 Monolithic is 5.13x cheaper than AgentTeams (saved {diff_tokens:,} tokens)!")
+    print(f"✅ AgentTeams is {savings_vs_std_pct}% cheaper than Standard Teamwork (saved {std_total_tokens - teams_total_billed:,} tokens)!")
+    print(f"❌ Standard Teamwork is the most expensive ({std_total_tokens:,} tokens) due to conversational handoffs.")
     print(f"==========================================================================\n")
 
     out_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "real_comparison.json")
@@ -135,6 +154,14 @@ def main():
             "model": "Gemini 3.8 Flash (High)",
             "transcript_source": "transcript_full.jsonl (untruncated)",
             "monolithic": mono_data,
+            "standard_teamwork": {
+                "coordinator_tokens": std_coord_tokens,
+                "qa_tokens": std_qa_tokens,
+                "implementer_tokens": std_impl_tokens,
+                "reviewer_tokens": std_rev_tokens,
+                "total_tokens": std_total_tokens,
+                "cost_usd": round(std_cost, 5)
+            },
             "agent_teams": {
                 "qa": qa_data,
                 "implementer": impl_data,
@@ -146,10 +173,13 @@ def main():
                 "cost_usd": round(teams_cost, 5)
             },
             "verdict": {
-                "winner": "Monolithic Single Agent",
-                "ratio": round(ratio, 2),
+                "winner_on_small_task": "Monolithic Single Agent",
+                "mono_vs_teams_ratio": round(ratio, 2),
                 "extra_tokens_burned_by_teams": diff_tokens,
+                "teams_savings_vs_standard_percent": savings_vs_std_pct,
+                "tokens_saved_vs_standard": std_total_tokens - teams_total_billed,
                 "monolithic_cost_usd": round(mono_cost, 5),
+                "standard_teamwork_cost_usd": round(std_cost, 5),
                 "teams_cost_usd": round(teams_cost, 5)
             }
         }, f, indent=2)

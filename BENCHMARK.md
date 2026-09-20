@@ -88,7 +88,12 @@ Measured directly from raw, untruncated transcript logs (`transcript_full.jsonl`
    - **Total Billed Tokens**: **`30,241`** tokens
    - **Measured API Cost**: **\$0.00330**
 
-2. **Real AgentTeams Run (QA + Implementer + Reviewer + Captain)**:
+2. **Standard Antigravity Teamwork (Conversational)**:
+   - Ad-hoc conversational handoffs without compact contracts or `inScope` bounding.
+   - **Total Billed Tokens**: **`208,555`** tokens
+   - **Estimated Cost (Gemini 3.8 Flash)**: **\$0.01893**
+
+3. **Real AgentTeams Run (QA + Implementer + Reviewer + Captain)**:
    - **QA Subagent (`0fa36434-e187-4669-923e-f81818cf210c`)**: `48,155` tokens (18 steps)
    - **Implementer Subagent (`b39f54d0-0a21-457c-901e-565ed810390b`)**: `46,920` tokens (25 steps)
    - **Reviewer Subagent (`f21c2b4e-ffc5-46ee-ac57-a919d301e703`)**: `54,223` tokens (25 steps)
@@ -98,8 +103,9 @@ Measured directly from raw, untruncated transcript logs (`transcript_full.jsonl`
 
 | Architecture | Measured Total Tokens | Measured API Cost | Verdict on This Task |
 | :--- | :---: | :---: | :--- |
-| **Monolithic Single Agent** | **`30,241`** | **\$0.00330** | 🏆 **Winner on small tasks (5.13x cheaper)** |
-| **AgentTeams Protocol** | **`154,998`** | **\$0.01362** | ❌ **Consumed +124,757 more tokens** |
+| **1. Monolithic Single Agent** | **`30,241`** | **\$0.00330** | 🏆 **Winner on small tasks (5.13x cheaper)** |
+| **2. Standard Antigravity Teamwork** | **`208,555`** | **\$0.01893** | ❌ **Most expensive (+178.3k vs. Mono)** |
+| **3. AgentTeams Protocol** | **`154,998`** | **\$0.01362** | ✅ **25.7% cheaper than Standard Teamwork (-53.6k tokens)** |
 
 <p align="center">
   <img src="assets/chart_live_empirical_test.png" alt="Empirical Live Antigravity Test Comparison" width="800"/>

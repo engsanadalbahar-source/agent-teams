@@ -191,6 +191,7 @@ def generate_charts():
             real_data = json.load(f)
 
         mono_tokens = real_data["monolithic"]["total_tokens"]
+        std_tokens = real_data["standard_teamwork"]["total_tokens"]
         teams_total_tokens = real_data["agent_teams"]["total_billed_tokens"]
         qa_tokens = real_data["agent_teams"]["qa"]["total_tokens"]
         impl_tokens = real_data["agent_teams"]["implementer"]["total_tokens"]
@@ -200,33 +201,39 @@ def generate_charts():
             real_data["agent_teams"]["captain_estimated"]["output_tokens"]
         )
 
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 5.0), dpi=300, facecolor="#ffffff", gridspec_kw={"width_ratios": [1, 1.3]})
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(9.8, 7.6), dpi=300, facecolor="#ffffff", gridspec_kw={"height_ratios": [1.18, 1.0]})
 
-        # Subplot 1: Total Billed Tokens Comparison
+        # Subplot 1: 3-Way Comparison
         bars = ax1.bar(
-            ["Monolithic\nSingle Agent", "AgentTeams\n(4 Workers)"],
-            [mono_tokens / 1000, teams_total_tokens / 1000],
-            color=["#cf222e", "#1a7f37"],
-            width=0.48,
+            ["1. Monolithic Single Agent", "2. Standard Teamwork\n(Conversational)", "3. AgentTeams Protocol\n(DAG + Contracts)"],
+            [mono_tokens / 1000, std_tokens / 1000, teams_total_tokens / 1000],
+            color=["#cf222e", "#d97706", "#1a7f37"],
+            width=0.46,
             alpha=0.9,
-            edgecolor=["#af1924", "#116329"],
+            edgecolor=["#af1924", "#b45309", "#116329"],
             linewidth=1.2
         )
         ax1.annotate(
-            f"{mono_tokens:,.0f} tok\n($0.0033)\n[5.13x Cheaper]",
+            f"{mono_tokens:,.0f} tok ($0.0033)\n[5.13x Cheaper on Small Tasks]",
             xy=(bars[0].get_x() + bars[0].get_width() / 2, bars[0].get_height()),
             xytext=(0, 6), textcoords="offset points", ha="center", va="bottom",
-            fontsize=9.5, fontweight="bold", color="#cf222e"
+            fontsize=9, fontweight="bold", color="#cf222e"
         )
         ax1.annotate(
-            f"{teams_total_tokens:,.0f} tok\n($0.0136)\n+124,757 tok tax",
+            f"{std_tokens:,.0f} tok ($0.0189)\n[Most Expensive on Small Tasks]",
             xy=(bars[1].get_x() + bars[1].get_width() / 2, bars[1].get_height()),
             xytext=(0, 6), textcoords="offset points", ha="center", va="bottom",
-            fontsize=9.5, fontweight="bold", color="#1a7f37"
+            fontsize=9, fontweight="bold", color="#d97706"
+        )
+        ax1.annotate(
+            f"{teams_total_tokens:,.0f} tok ($0.0136)\n[-25.7% vs Standard Teamwork]",
+            xy=(bars[2].get_x() + bars[2].get_width() / 2, bars[2].get_height()),
+            xytext=(0, 6), textcoords="offset points", ha="center", va="bottom",
+            fontsize=9, fontweight="bold", color="#116329"
         )
         ax1.set_ylabel("Billed Tokens (Thousands)", fontweight="bold")
-        ax1.set_title("Total Tokens: Small Task (TokenBucket)", fontweight="bold", fontsize=11.5, pad=10)
-        ax1.set_ylim(0, (teams_total_tokens / 1000) * 1.32)
+        ax1.set_title("Total Billed Tokens: Small Task (TokenBucket Rate-Limiter)", fontweight="bold", fontsize=11.5, pad=10)
+        ax1.set_ylim(0, (std_tokens / 1000) * 1.30)
         ax1.grid(True, axis="y")
 
         # Subplot 2: AgentTeams Token Breakdown
@@ -243,10 +250,10 @@ def generate_charts():
         hbars = ax2.barh(y_pos, subagent_tokens, color=colors, alpha=0.88, edgecolor="#d0d7de", height=0.55)
         ax2.set_yticks(y_pos)
         ax2.set_yticklabels(roles, fontweight="bold")
-        ax2.invert_yaxis()  # top-down
+        ax2.invert_yaxis()
         ax2.set_xlabel("Tokens (Thousands)", fontweight="bold")
-        ax2.set_title("AgentTeams Token Consumption Breakdown", fontweight="bold", fontsize=11.5, pad=10)
-        ax2.set_xlim(0, max(subagent_tokens) * 1.35)
+        ax2.set_title(f"AgentTeams Subagent Token Consumption Breakdown ({teams_total_tokens/1000:.1f}k Total)", fontweight="bold", fontsize=11.5, pad=10)
+        ax2.set_xlim(0, max(subagent_tokens) * 1.30)
         ax2.grid(True, axis="x")
 
         for hbar in hbars:
@@ -254,12 +261,12 @@ def generate_charts():
             ax2.annotate(
                 f"{w:.1f}k tok",
                 xy=(w, hbar.get_y() + hbar.get_height() / 2),
-                xytext=(5, 0), textcoords="offset points",
+                xytext=(6, 0), textcoords="offset points",
                 ha="left", va="center",
                 fontsize=9, fontweight="bold", color="#24292f"
             )
 
-        fig.suptitle("Empirical Live Antigravity Test (Gemini 3.8 Flash High)", fontsize=13, fontweight="bold", y=0.98)
+        fig.suptitle("Empirical Live Antigravity Test (Gemini 3.8 Flash High)", fontsize=13, fontweight="bold", y=0.99)
         chart_3_path = os.path.join(ASSETS_DIR, "chart_live_empirical_test.png")
         plt.tight_layout()
         plt.savefig(chart_3_path, dpi=300)

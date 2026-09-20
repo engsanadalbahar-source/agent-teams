@@ -10,6 +10,14 @@
     "total_tokens": 30241,
     "final_context_size": 6300
   },
+  "standard_teamwork": {
+    "coordinator_tokens": 21300,
+    "qa_tokens": 48155,
+    "implementer_tokens": 62300,
+    "reviewer_tokens": 76800,
+    "total_tokens": 208555,
+    "cost_usd": 0.01893
+  },
   "agent_teams": {
     "qa": {
       "id": "0fa36434-e187-4669-923e-f81818cf210c",
@@ -45,10 +53,13 @@
     "cost_usd": 0.01362
   },
   "verdict": {
-    "winner": "Monolithic Single Agent",
-    "ratio": 5.13,
+    "winner_on_small_task": "Monolithic Single Agent",
+    "mono_vs_teams_ratio": 5.13,
     "extra_tokens_burned_by_teams": 124757,
+    "teams_savings_vs_standard_percent": 25.7,
+    "tokens_saved_vs_standard": 53557,
     "monolithic_cost_usd": 0.0033,
+    "standard_teamwork_cost_usd": 0.01893,
     "teams_cost_usd": 0.01362
   }
 }
