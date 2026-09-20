@@ -2,16 +2,13 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Framework Agnostic](https://img.shields.io/badge/Framework-Agnostic%20%28Any%20Agent%29-blueviolet.svg)](#-framework-integrations)
+[![Tested on Antigravity](https://img.shields.io/badge/Tested%20On-Antigravity%20%28Gemini%203.8%20Flash%29-orange.svg)](#-agentteams-vs-standard-antigravity-teamwork)
 [![Benchmark](https://img.shields.io/badge/Benchmark-Empirical%20Token%20Analysis-green.svg)](BENCHMARK.md)
 [![Inspired By](https://img.shields.io/badge/Inspired%20By-NanmiCoder%2Fdsh--agent--teams-purple.svg)](https://github.com/NanmiCoder/dsh-agent-teams)
 
 **AgentTeams** is a universal, framework-agnostic protocol and orchestration engine that coordinates autonomous AI agents into a structured, role-specialized team led by a **Captain**.
 
-Whether you are using **Antigravity**, **Claude Code**, **AutoGen**, **CrewAI**, **LangGraph**, **OpenHands**, or **custom AI agent loops**, AgentTeams provides a formal protocol for:
-- **Dependency-Aware Task DAGs**: No task starts until upstream dependencies meet machine-verifiable exit criteria.
-- **Strict Quality Gates**: Automated contracts (`inScope` file boundaries, test commands, independent review verdicts).
-- **Context Isolation & Token Defense**: Eliminating the quadratic $O(N^2)$ context accumulation penalty that plagues monolithic single-agent systems.
-- **Automated Repair Loops**: Deterministic bug fixing without circular dependencies or context pollution.
+> **Tested & Proven on Antigravity**: While the AgentTeams protocol is designed to work with **any agent framework** (Claude Code, AutoGen, CrewAI, LangGraph, OpenHands, or custom agent loops), it was developed, benchmarked, and stress-tested directly on **Google Antigravity** using **Gemini 3.8 Flash** (High, Medium, and Low thinking effort).
 
 > **Attribution & Lineage**: This protocol is directly inspired by and builds upon the pioneering work of **NanmiCoder**'s [dsh-agent-teams](https://github.com/NanmiCoder/dsh-agent-teams). We generalized the specification for all modern agent architectures, adding formal contract schemas, DAG state machine tests, model inheritance, and empirical token efficiency benchmarks.
 
@@ -52,6 +49,24 @@ Rates: **\$0.075 / 1M input tokens**, **\$0.30 / 1M output/thinking tokens**.
 2. **The Isolation Dividend**: On long tasks (> 10 turns) involving large codebases or massive logs (10k–50k+ tokens), a single agent re-transmits that bloated context on *every single turn* ($O(N^2)$ quadratic accumulation). AgentTeams isolates the noise in disposable subagents, saving 40% to 60%+ in tokens and API costs.
 
 👉 **Read the full mathematical analysis and benchmark data in [BENCHMARK.md](BENCHMARK.md)**.
+
+---
+
+## 🥊 AgentTeams vs. Standard Antigravity Teamwork
+
+While Antigravity includes native multi-agent capabilities (such as the `/teamwork-preview` command and ad-hoc subagent invocation), **AgentTeams** introduces a formal engineering protocol on top of it:
+
+| Feature / Dimension | Standard Antigravity Teamwork | AgentTeams Protocol |
+| :--- | :--- | :--- |
+| **Coordination Model** | Ad-hoc / Conversational delegation | Formal Captain-led Task DAG (acyclic dependency graph) |
+| **Task State Machine** | Implicit / Loose | Formal lifecycle (`pending → claimed → in_progress → completed \| failed \| cancelled`) |
+| **Execution Boundaries** | Open-ended prompt instructions | Strict `inScope` file glob enforcement (`changedPaths` audit) |
+| **Verification & Quality Gates** | Conversational ("looks good", "tests pass") | Machine-verifiable contracts (`verify` commands with 0 exit code requirement) |
+| **Review & Auditing** | Self-review or informal review | Independent Reviewer producing structured JSON verdicts (`pass \| needs_revision \| reject`) |
+| **Defect Remediation** | Ad-hoc prompt retries (can cause circular loops) | Deterministic `repair` tasks consuming findings without circular dependencies |
+| **Context & Token Scoping** | Subagents often receive full conversation history | Strict context isolation; disposable noise evicted after task completion |
+| **Model Consistency** | Subagents may default or vary | Strict `Model: 'inherit'` enforcement across all workers |
+| **Target Platforms** | Antigravity only | Universal (Any Agent framework, tested & verified on Antigravity) |
 
 ---
 

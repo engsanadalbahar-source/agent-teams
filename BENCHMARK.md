@@ -3,6 +3,8 @@
 > **Executive Reality Check**: Multi-agent architectures **do not** universally save tokens. In fact, across all agent frameworks (Antigravity, Claude Code, AutoGen, CrewAI, LangGraph, or custom agent loops), for small and simple tasks, multi-agent workflows are **significantly more expensive** than a single agent due to orchestration overhead and system prompt replication.
 >
 > However, for **large, context-heavy engineering workflows** (massive logs, deep codebases, 15+ turns), the AgentTeams architecture prevents quadratic context explosion and delivers **up to 50%+ net token savings** regardless of which LLM agent framework is used.
+>
+> **Testing Environment & Validation**: These benchmarks were executed, modeled, and verified directly using **Google Antigravity** running **Gemini 3.8 Flash** (High, Medium, and Low thinking configurations). While tested on Antigravity, the mathematical scaling laws and context isolation dynamics apply to any LLM-powered agent framework.
 
 ---
 
