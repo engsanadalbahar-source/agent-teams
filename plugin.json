@@ -4,7 +4,7 @@
   "description": "Autonomous multi-agent orchestration for AI coding agents. Cut token costs by 40–80% with structured workflows, quality gates, and isolated subagents.",
   "author": {
     "name": "sanad-source",
-    "url": "https://github.com/engsanadalbahar-source"
+    "url": "https://github.com/sanad-source"
   },
   "contributors": [
     {
@@ -15,7 +15,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/engsanadalbahar-source/agent-teams.git"
+    "url": "https://github.com/sanad-source/agent-teams.git"
   },
   "keywords": [
     "multi-agent",

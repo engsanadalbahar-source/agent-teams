@@ -99,15 +99,15 @@ flowchart TD
 ### 1. Download the Single Skill File (1-Line Command)
 ```bash
 # For Google Antigravity:
-mkdir -p ~/.gemini/config/skills/agent-teams && curl -fsSL https://raw.githubusercontent.com/engsanadalbahar-source/agent-teams/main/skills/agent-teams/SKILL.md -o ~/.gemini/config/skills/agent-teams/SKILL.md
+mkdir -p ~/.gemini/config/skills/agent-teams && curl -fsSL https://raw.githubusercontent.com/sanad-source/agent-teams/main/skills/agent-teams/SKILL.md -o ~/.gemini/config/skills/agent-teams/SKILL.md
 
 # For Claude Code, Cursor, or any other agent:
-curl -fsSL https://raw.githubusercontent.com/engsanadalbahar-source/agent-teams/main/skills/agent-teams/SKILL.md -o AGENT_TEAMS.md
+curl -fsSL https://raw.githubusercontent.com/sanad-source/agent-teams/main/skills/agent-teams/SKILL.md -o AGENT_TEAMS.md
 ```
 
 ### 2. Or Clone as a Full Plugin
 ```bash
-git clone https://github.com/engsanadalbahar-source/agent-teams.git ~/.gemini/config/plugins/agent-teams
+git clone https://github.com/sanad-source/agent-teams.git ~/.gemini/config/plugins/agent-teams
 ```
 
 ---
@@ -251,5 +251,5 @@ Yes. AgentTeams is model-agnostic. It has been empirically tested with **Gemini 
 ## 📄 License & Attribution
 
 - **License**: [MIT](LICENSE)
-- **Author**: [sanad-source](https://github.com/engsanadalbahar-source)
+- **Author**: [sanad-source](https://github.com/sanad-source)
 - **Inspiration**: Directly inspired by [dsh-agent-teams](https://github.com/NanmiCoder/dsh-agent-teams) by [NanmiCoder](https://github.com/NanmiCoder).
