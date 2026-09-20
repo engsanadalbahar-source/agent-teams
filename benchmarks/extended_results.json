@@ -1,0 +1,79 @@
+{
+  "turn_sweep": [
+    {
+      "turns": 3,
+      "monolithic_total": 75300,
+      "agent_teams_total": 135000,
+      "savings_percent": -79.28,
+      "advantage": "Monolithic"
+    },
+    {
+      "turns": 5,
+      "monolithic_total": 114500,
+      "agent_teams_total": 135000,
+      "savings_percent": -17.9,
+      "advantage": "Monolithic"
+    },
+    {
+      "turns": 10,
+      "monolithic_total": 219000,
+      "agent_teams_total": 135000,
+      "savings_percent": 38.36,
+      "advantage": "AgentTeams"
+    },
+    {
+      "turns": 15,
+      "monolithic_total": 358500,
+      "agent_teams_total": 181400,
+      "savings_percent": 49.4,
+      "advantage": "AgentTeams"
+    },
+    {
+      "turns": 20,
+      "monolithic_total": 503000,
+      "agent_teams_total": 282000,
+      "savings_percent": 43.94,
+      "advantage": "AgentTeams"
+    },
+    {
+      "turns": 30,
+      "monolithic_total": 867000,
+      "agent_teams_total": 393000,
+      "savings_percent": 54.67,
+      "advantage": "AgentTeams"
+    },
+    {
+      "turns": 50,
+      "monolithic_total": 1835000,
+      "agent_teams_total": 716000,
+      "savings_percent": 60.98,
+      "advantage": "AgentTeams"
+    }
+  ],
+  "financial_analysis_20_turn_bug_hunt": {
+    "Gemini 1.5 / 2.0 Flash": {
+      "monolithic_cost_usd": 0.0635,
+      "agent_teams_cost_usd": 0.0322,
+      "saved_usd": 0.0314,
+      "savings_percent": 49.35
+    },
+    "Gemini 1.5 Pro": {
+      "monolithic_cost_usd": 1.0588,
+      "agent_teams_cost_usd": 0.5363,
+      "saved_usd": 0.5225,
+      "savings_percent": 49.35
+    },
+    "Claude 3.5 Sonnet": {
+      "monolithic_cost_usd": 2.565,
+      "agent_teams_cost_usd": 1.314,
+      "saved_usd": 1.251,
+      "savings_percent": 48.77
+    },
+    "GPT-4o": {
+      "monolithic_cost_usd": 2.1175,
+      "agent_teams_cost_usd": 1.0725,
+      "saved_usd": 1.045,
+      "savings_percent": 49.35
+    }
+  }
+}

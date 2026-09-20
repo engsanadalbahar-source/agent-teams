@@ -1,0 +1,29 @@
+{
+  "name": "agent-teams",
+  "version": "1.0.0",
+  "description": "Coordinated multi-agent team orchestration, DAG task scheduling, and quality gates for Antigravity. Inspired by dsh-agent-teams by NanmiCoder.",
+  "author": {
+    "name": "sanad-source",
+    "url": "https://github.com/engsanadalbahar-source"
+  },
+  "contributors": [
+    {
+      "name": "NanmiCoder",
+      "url": "https://github.com/NanmiCoder/dsh-agent-teams"
+    }
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/engsanadalbahar-source/agent-teams.git"
+  },
+  "keywords": [
+    "antigravity",
+    "agent-teams",
+    "multi-agent",
+    "orchestration",
+    "subagents",
+    "dag",
+    "quality-gates"
+  ]
+}
