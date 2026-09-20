@@ -1,0 +1,53 @@
+{
+  "task": "Build & test thread-safe TokenBucket with pytest",
+  "model": "Gemini 3.8 Flash (High)",
+  "monolithic": {
+    "id": "8e45e081-55f1-433a-8900-cdafb7afb923",
+    "steps": 16,
+    "input_tokens": 17617,
+    "output_tokens": 2969,
+    "total_tokens": 20586,
+    "final_context_size": 4697
+  },
+  "agent_teams": {
+    "qa": {
+      "id": "0fa36434-e187-4669-923e-f81818cf210c",
+      "steps": 18,
+      "input_tokens": 20578,
+      "output_tokens": 2518,
+      "total_tokens": 23096,
+      "final_context_size": 4902
+    },
+    "implementer": {
+      "id": "b39f54d0-0a21-457c-901e-565ed810390b",
+      "steps": 25,
+      "input_tokens": 34037,
+      "output_tokens": 2313,
+      "total_tokens": 36350,
+      "final_context_size": 4859
+    },
+    "reviewer": {
+      "id": "f21c2b4e-ffc5-46ee-ac57-a919d301e703",
+      "steps": 25,
+      "input_tokens": 40488,
+      "output_tokens": 1610,
+      "total_tokens": 42098,
+      "final_context_size": 5186
+    },
+    "captain": {
+      "input_tokens": 4500,
+      "output_tokens": 1200
+    },
+    "total_input_tokens": 99603,
+    "total_output_tokens": 7641,
+    "total_billed_tokens": 107244,
+    "cost_usd": 0.00976
+  },
+  "verdict": {
+    "winner": "Monolithic Single Agent",
+    "ratio": 5.21,
+    "extra_tokens_burned_by_teams": 86658,
+    "monolithic_cost_usd": 0.00221,
+    "teams_cost_usd": 0.00976
+  }
+}

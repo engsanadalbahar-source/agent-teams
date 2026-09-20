@@ -59,22 +59,32 @@ Empirical testing on **Gemini 3.8 Flash** ($0.075/1M input, $0.30/1M output):
   <img src="assets/chart_token_scaling.png" alt="Token Scaling Curve: Monolithic vs Standard Teamwork vs AgentTeams" width="750"/>
 </p>
 
-### 3. Real Live Antigravity Execution (Verified on Gemini 3.8 Flash)
+### 3. Empirical Live Antigravity Test (Zero Estimates, Real Transcripts)
 
-We executed an end-to-end engineering task live in Antigravity using real subagents (`QA Engineer`, `Implementer`, `Reviewer`) to build a thread-safe `TokenBucket` rate-limiter:
+We ran both architectures live in Antigravity on the exact same task (build a thread-safe `TokenBucket` rate-limiter, write comprehensive tests, and review):
 
-- **QA Subagent (`0fa36434...`)**: Authored 16 unit tests, verified failing baseline (20,578 input tok).
-- **Implementer Subagent (`b39f54d0...`)**: Implemented `token_bucket.py` with `threading.Lock` and passed all 16 tests (34,037 input tok).
-- **Reviewer Subagent (`f21c2b4e...`)**: Independently audited diffs and issued structured verdict: `pass` (40,488 input tok).
-- **Captain Orchestration**: Dispatches and gatekeeping (4,500 input tok).
+1. **Real Monolithic Single Agent (`8e45e081...`)**:
+   - Implemented code, wrote 34 tests, ran pytest, self-reviewed in 16 steps.
+   - **Real Billed Input**: `17,617` tokens | **Output**: `2,969` tokens
+   - **Total Billed Tokens**: **`20,586`** tokens
+   - **Cost (Gemini 3.8 Flash)**: **\$0.00221**
 
-| Metric | Monolithic Equivalent (Single Session) | Real Live AgentTeams Run | Net Savings |
-| :--- | :---: | :---: | :---: |
-| **Billed Input Tokens** | `275,918` | **`99,603`** | **-63.90%** (-176,315 tokens) |
-| **Total Billed Tokens** | `282,359` | **`107,244`** | **-62.02%** (-175,115 tokens) |
-| **API Cost (Gemini 3.8 Flash)** | \$0.0226 | **\$0.0098** | **-56.85%** |
+2. **Real AgentTeams Run (QA + Implementer + Reviewer + Captain)**:
+   - **QA Subagent (`0fa36434...`)**: `23,096` tokens (18 steps)
+   - **Implementer Subagent (`b39f54d0...`)**: `36,350` tokens (25 steps)
+   - **Reviewer Subagent (`f21c2b4e...`)**: `42,098` tokens (25 steps)
+   - **Captain Orchestration**: `5,700` tokens
+   - **Total Billed Tokens**: **`107,244`** tokens
+   - **Cost (Gemini 3.8 Flash)**: **\$0.00976**
 
-*All live code, tests, and transcript parser are preserved in [`live_test/`](live_test/).*
+| Architecture | Measured Total Tokens | Measured API Cost | Verdict on This Task |
+| :--- | :---: | :---: | :--- |
+| **Monolithic Single Agent** | **`20,586`** | **\$0.00221** | 🏆 **Winner on small tasks (5.2x cheaper)** |
+| **AgentTeams Protocol** | **`107,244`** | **\$0.00976** | ❌ **Consumed +86,658 more tokens** |
+
+> **The Honest Engineering Truth**: For small, self-contained tasks (1–2 files), multi-agent is **significantly more expensive** because each subagent incurs tool definitions and system prompt overhead. Multi-agent is an architectural tool for **massive codebases, 50k-token logs, and strict separation of concerns**, NOT for small tasks.
+>
+> *Verify the raw transcripts yourself in [`live_test/real_comparison.json`](live_test/real_comparison.json).*
 
 ---
 
