@@ -112,10 +112,12 @@ def generate_charts():
     ax.legend(loc="upper left", frameon=True, facecolor="#ffffff", edgecolor="#d0d7de", fontsize=9.2)
 
     chart_1_path = os.path.join(ASSETS_DIR, "chart_token_scaling.png")
+    chart_1_v2 = os.path.join(ASSETS_DIR, "chart_token_scaling_v2.png")
     plt.tight_layout()
     plt.savefig(chart_1_path, dpi=300)
+    plt.savefig(chart_1_v2, dpi=300)
     plt.close()
-    print(f"Generated dynamic chart: {chart_1_path}")
+    print(f"Generated dynamic chart: {chart_1_path} and {chart_1_v2}")
 
     # -------------------------------------------------------------
     # Chart 2: Gemini 3.8 Flash Financial Cost (20-Turn Task)
@@ -170,17 +172,18 @@ def generate_charts():
     ax.set_xticks(x)
     ax.set_xticklabels(categories)
     
-    # Properly scaled Y limit to avoid clipping the tallest bar ($0.0659)
     highest_cost = max(max(mono_costs), max(std_costs), max(teams_costs))
     ax.set_ylim(0, highest_cost * 1.30)
     ax.grid(True, axis="y")
     ax.legend(loc="upper left", frameon=True, facecolor="#ffffff", edgecolor="#d0d7de", fontsize=9.5)
 
     chart_2_path = os.path.join(ASSETS_DIR, "chart_gemini_flash_financial.png")
+    chart_2_v2 = os.path.join(ASSETS_DIR, "chart_gemini_flash_financial_v2.png")
     plt.tight_layout()
     plt.savefig(chart_2_path, dpi=300)
+    plt.savefig(chart_2_v2, dpi=300)
     plt.close()
-    print(f"Generated dynamic chart: {chart_2_path}")
+    print(f"Generated dynamic chart: {chart_2_path} and {chart_2_v2}")
 
     # -------------------------------------------------------------
     # Chart 3: Live Empirical Antigravity Test (TokenBucket Task)
@@ -268,10 +271,12 @@ def generate_charts():
 
         fig.suptitle("Empirical Live Antigravity Test (Gemini 3.8 Flash High)", fontsize=13, fontweight="bold", y=0.99)
         chart_3_path = os.path.join(ASSETS_DIR, "chart_live_empirical_test.png")
+        chart_3_3way = os.path.join(ASSETS_DIR, "chart_live_empirical_3way.png")
         plt.tight_layout()
         plt.savefig(chart_3_path, dpi=300)
+        plt.savefig(chart_3_3way, dpi=300)
         plt.close()
-        print(f"Generated dynamic chart: {chart_3_path}")
+        print(f"Generated dynamic chart: {chart_3_path} and {chart_3_3way}")
 
 
 if __name__ == "__main__":

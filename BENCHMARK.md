@@ -71,7 +71,7 @@ Rates: **\$0.075 / 1M input tokens**, **\$0.30 / 1M output/thinking tokens**.
 3. **Deterministic Repair vs. Conversational Debugging**: Standard teamwork enters ad-hoc back-and-forth chat when tests fail. AgentTeams dispatches a single targeted repair task consuming only structured findings JSON.
 
 <p align="center">
-  <img src="assets/chart_gemini_flash_financial.png" alt="Gemini 3.8 Flash Financial Cost" width="800"/>
+  <img src="assets/chart_gemini_flash_financial_v2.png" alt="Gemini 3.8 Flash Financial Cost" width="800"/>
 </p>
 
 ---
@@ -108,7 +108,7 @@ Measured directly from raw, untruncated transcript logs (`transcript_full.jsonl`
 | **3. AgentTeams Protocol** | **`154,998`** | **\$0.01362** | ✅ **25.7% cheaper than Standard Teamwork (-53.6k tokens)** |
 
 <p align="center">
-  <img src="assets/chart_live_empirical_test.png" alt="Empirical Live Antigravity Test Comparison" width="800"/>
+  <img src="assets/chart_live_empirical_3way.png" alt="Empirical Live Antigravity Test Comparison" width="800"/>
 </p>
 
 > **Key Takeaway**: On small tasks (< 10 turns, 1–2 files), single-agent is **5.13x cheaper**. AgentTeams should be deployed when task complexity, context pollution, or independent verification guarantees justify the ~3,500 token per-subagent setup overhead.
@@ -118,7 +118,7 @@ Measured directly from raw, untruncated transcript logs (`transcript_full.jsonl`
 ## 5. The Crossover Point: When Does Multi-Agent Make Sense?
 
 <p align="center">
-  <img src="assets/chart_token_scaling.png" alt="Token Scaling Curve: Monolithic vs Standard Teamwork vs AgentTeams" width="800"/>
+  <img src="assets/chart_token_scaling_v2.png" alt="Token Scaling Curve: Monolithic vs Standard Teamwork vs AgentTeams" width="800"/>
 </p>
 
 The mathematical condition for AgentTeams to achieve net token savings over a monolithic agent is:

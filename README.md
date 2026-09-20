@@ -42,7 +42,7 @@ Empirical testing on **Gemini 3.8 Flash** ($0.075/1M input, $0.30/1M output):
 | **High** (3.8k tok/turn) | \$0.0409 | \$0.0659 | **\$0.0119** | **-81.9%** | **-70.9%** |
 
 <p align="center">
-  <img src="assets/chart_gemini_flash_financial.png" alt="Gemini 3.8 Flash Cost Comparison" width="750"/>
+  <img src="assets/chart_gemini_flash_financial_v2.png" alt="Gemini 3.8 Flash Cost Comparison" width="750"/>
 </p>
 
 ### 2. Token Scaling Over Conversation Turns
@@ -58,7 +58,7 @@ Empirical testing on **Gemini 3.8 Flash** ($0.075/1M input, $0.30/1M output):
 | **50** | `687.7k` tok | `723.5k` tok | `293.1k` tok | ✅ **AgentTeams** (-57.4% vs. Mono) |
 
 <p align="center">
-  <img src="assets/chart_token_scaling.png" alt="Token Scaling Curve: Monolithic vs Standard Teamwork vs AgentTeams" width="750"/>
+  <img src="assets/chart_token_scaling_v2.png" alt="Token Scaling Curve: Monolithic vs Standard Teamwork vs AgentTeams" width="750"/>
 </p>
 
 ### 3. Empirical Live Antigravity Test (Untruncated Transcripts)
@@ -91,7 +91,7 @@ We ran both architectures live in Antigravity on the exact same task (build a th
 | **3. AgentTeams Protocol** | **`154,998`** | **\$0.01362** | ✅ **25.7% cheaper than Standard Teamwork (-53.6k tokens)** |
 
 <p align="center">
-  <img src="assets/chart_live_empirical_test.png" alt="Empirical Live Antigravity Test Comparison" width="750"/>
+  <img src="assets/chart_live_empirical_3way.png" alt="Empirical Live Antigravity Test Comparison" width="750"/>
 </p>
 
 > **The Honest Engineering Truth**: For small, self-contained tasks (1–2 files), multi-agent is **5x more expensive** because each subagent incurs tool definitions and system prompt overhead. Multi-agent is an architectural tool for **massive codebases, 50k-token logs, and strict separation of concerns**, NOT for small scripts.
