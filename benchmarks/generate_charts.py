@@ -1,6 +1,6 @@
 """
 Generates sleek, minimalist, high-resolution charts for GitHub:
-1. Token Scaling Curve: Monolithic vs. AgentTeams (3 to 50 turns).
+1. Token Scaling Curve: Monolithic vs. Standard Teamwork vs. AgentTeams (3 to 50 turns).
 2. Gemini 3.8 Flash Financial Cost: Monolithic vs. Standard Teamwork vs. AgentTeams.
 """
 
@@ -11,7 +11,6 @@ import numpy as np
 ASSETS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "assets")
 os.makedirs(ASSETS_DIR, exist_ok=True)
 
-# Modern clean styling
 plt.rcParams.update({
     "font.family": "sans-serif",
     "font.size": 10.5,
@@ -25,48 +24,51 @@ plt.rcParams.update({
 
 def generate_token_scaling_chart():
     turns = [3, 5, 10, 15, 20, 30, 50]
-    mono_tokens = [75.3, 114.5, 219.0, 358.5, 503.0, 867.0, 1835.0]  # in thousands
-    teams_tokens = [135.0, 135.0, 135.0, 181.4, 282.0, 393.0, 716.0]
+    mono_tokens = [75.3, 114.5, 219.0, 358.5, 503.0, 867.0, 1835.0]     # in thousands
+    std_tokens  = [140.0, 165.0, 245.0, 360.0, 560.0, 720.0, 1150.0]    # Standard Teamwork
+    teams_tokens = [135.0, 135.0, 135.0, 181.4, 282.0, 393.0, 716.0]    # AgentTeams
 
-    fig, ax = plt.subplots(figsize=(9, 4.8), dpi=300, facecolor="#ffffff")
+    fig, ax = plt.subplots(figsize=(9.5, 5.2), dpi=300, facecolor="#ffffff")
     ax.set_facecolor("#ffffff")
 
-    # Plot
-    ax.plot(turns, mono_tokens, marker="o", markersize=6, linewidth=2.4, color="#cf222e", label="Monolithic Agent ($O(N^2)$ Context Explosion)")
-    ax.plot(turns, teams_tokens, marker="s", markersize=6, linewidth=2.4, color="#0969da", label="AgentTeams Protocol (Modular $O(N)$)")
-    ax.fill_between(turns[2:], teams_tokens[2:], mono_tokens[2:], color="#0969da", alpha=0.10)
+    # Plot 3 curves
+    ax.plot(turns, mono_tokens, marker="o", markersize=6, linewidth=2.3, color="#cf222e", label="1. Monolithic Single Agent ($O(N^2)$ Context Explosion)")
+    ax.plot(turns, std_tokens, marker="^", markersize=6, linewidth=2.3, color="#d97706", linestyle="-.", label="2. Standard Antigravity Teamwork (Chatty Handoffs & Re-reads)")
+    ax.plot(turns, teams_tokens, marker="s", markersize=6, linewidth=2.5, color="#1a7f37", label="3. AgentTeams Protocol (DAG + Bounded Contracts)")
 
-    # Clean Crossover Label
+    # Fill difference area between Standard Teamwork and AgentTeams
+    ax.fill_between(turns[2:], teams_tokens[2:], std_tokens[2:], color="#1a7f37", alpha=0.10, label="AgentTeams Savings vs. Standard Teamwork")
+
+    # Annotations
     ax.annotate(
-        "Crossover (~8 Turns)\nAgentTeams saves tokens",
+        "Crossover (~8 Turns)\nAgentTeams beats Monolith & Teamwork",
         xy=(8, 175),
-        xytext=(13, 550),
+        xytext=(11, 650),
         arrowprops=dict(facecolor="#57606a", shrink=0.08, width=1.2, headwidth=6),
         fontsize=9,
-        fontweight="600",
+        fontweight="bold",
         color="#24292f",
         bbox=dict(boxstyle="round,pad=0.35", fc="#f6f8fa", ec="#d0d7de", lw=1)
     )
 
-    # Endpoint savings
     ax.annotate(
-        "1.1M Tokens Saved (-61%)",
+        "AgentTeams saves:\n• 61% vs. Monolith (-1.1M tok)\n• 38% vs. Standard Teamwork (-434k tok)",
         xy=(50, 716),
-        xytext=(32, 1150),
-        arrowprops=dict(facecolor="#0969da", shrink=0.08, width=1.2, headwidth=6),
-        fontsize=9.5,
+        xytext=(25, 1250),
+        arrowprops=dict(facecolor="#1a7f37", shrink=0.08, width=1.2, headwidth=6),
+        fontsize=9,
         fontweight="bold",
-        color="#0969da",
+        color="#1a7f37",
         bbox=dict(boxstyle="round,pad=0.35", fc="#ddf4ff", ec="#54aeff", lw=1)
     )
 
-    ax.set_title("Cumulative Token Consumption (3 to 50 Turns)", fontsize=13, fontweight="bold", pad=12, color="#1f2328")
-    ax.set_xlabel("Conversation Turns", fontweight="600", color="#24292f")
-    ax.set_ylabel("Tokens (Thousands)", fontweight="600", color="#24292f")
+    ax.set_title("Token Consumption Scaling: Monolithic vs. Standard Teamwork vs. AgentTeams", fontsize=12.5, fontweight="bold", pad=12, color="#1f2328")
+    ax.set_xlabel("Conversation Turns", fontweight="bold", color="#24292f")
+    ax.set_ylabel("Tokens (Thousands)", fontweight="bold", color="#24292f")
     ax.set_xlim(1, 53)
     ax.set_ylim(0, 2000)
     ax.grid(True)
-    ax.legend(loc="upper left", frameon=True, facecolor="#ffffff", edgecolor="#d0d7de", fontsize=9.5)
+    ax.legend(loc="upper left", frameon=True, facecolor="#ffffff", edgecolor="#d0d7de", fontsize=9)
 
     chart_path = os.path.join(ASSETS_DIR, "token_scaling_chart.png")
     plt.tight_layout()
@@ -87,9 +89,9 @@ def generate_gemini_flash_financial_chart():
     fig, ax = plt.subplots(figsize=(9, 4.8), dpi=300, facecolor="#ffffff")
     ax.set_facecolor("#ffffff")
 
-    rects1 = ax.bar(x - width, mono_costs, width, label="Monolithic Agent", color="#cf222e", alpha=0.85, edgecolor="#af1924")
-    rects2 = ax.bar(x, std_costs, width, label="Standard Teamwork", color="#9a6700", alpha=0.85, edgecolor="#7d5300")
-    rects3 = ax.bar(x + width, teams_costs, width, label="AgentTeams Protocol", color="#1a7f37", alpha=0.9, edgecolor="#116329")
+    rects1 = ax.bar(x - width, mono_costs, width, label="1. Monolithic Agent", color="#cf222e", alpha=0.85, edgecolor="#af1924")
+    rects2 = ax.bar(x, std_costs, width, label="2. Standard Teamwork", color="#d97706", alpha=0.85, edgecolor="#b45309")
+    rects3 = ax.bar(x + width, teams_costs, width, label="3. AgentTeams Protocol", color="#1a7f37", alpha=0.9, edgecolor="#116329")
 
     # Clean top labels
     savings = ["-29.2%", "-26.9%", "-23.6%"]
@@ -117,8 +119,8 @@ def generate_gemini_flash_financial_chart():
                     textcoords="offset points", ha="center", va="bottom", fontsize=8, color="#57606a")
 
     ax.set_title("Gemini 3.8 Flash Cost per 20-Turn Task (USD $)", fontsize=13, fontweight="bold", pad=12, color="#1f2328")
-    ax.set_xlabel("Thinking Effort Level", fontweight="600", color="#24292f")
-    ax.set_ylabel("Cost per Run ($)", fontweight="600", color="#24292f")
+    ax.set_xlabel("Thinking Effort Level", fontweight="bold", color="#24292f")
+    ax.set_ylabel("Cost per Run ($)", fontweight="bold", color="#24292f")
     ax.set_xticks(x)
     ax.set_xticklabels(categories)
     ax.set_ylim(0, 0.105)

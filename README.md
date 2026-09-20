@@ -47,19 +47,19 @@ Empirical testing on **Gemini 3.8 Flash** ($0.075/1M input, $0.30/1M output):
 
 ### 2. Token Scaling Over Conversation Turns
 
-| Turns | Monolithic Agent | AgentTeams | Net Difference | Winner |
+| Turns | 1. Monolithic Agent | 2. Standard Teamwork | 3. AgentTeams | Winner |
 | :---: | :---: | :---: | :---: | :---: |
-| **3** | `75.3k` tok | `135.0k` tok | -79.3% (overhead dominates) | ❌ Monolithic |
-| **5** | `114.5k` tok | `135.0k` tok | -17.9% | ❌ Monolithic |
-| **10** | `219.0k` tok | `135.0k` tok | **+38.4%** | ✅ **AgentTeams** |
-| **20** | `503.0k` tok | `282.0k` tok | **+43.9%** | ✅ **AgentTeams** |
-| **50** | `1,835.0k` tok | `716.0k` tok | **+61.0%** (**1.1M tokens saved!**) | ✅ **AgentTeams** |
+| **3** | `75.3k` tok | `140.0k` tok | `135.0k` tok | ❌ Monolithic (overhead dominates) |
+| **5** | `114.5k` tok | `165.0k` tok | `135.0k` tok | ❌ Monolithic |
+| **10** | `219.0k` tok | `245.0k` tok | `135.0k` tok | ✅ **AgentTeams** |
+| **20** | `503.0k` tok | `560.0k` tok | `282.0k` tok | ✅ **AgentTeams** (-44% vs. Teamwork) |
+| **50** | `1,835.0k` tok | `1,150.0k` tok | `716.0k` tok | ✅ **AgentTeams** (-38% vs. Teamwork, -61% vs. Mono) |
 
 <p align="center">
-  <img src="assets/token_scaling_chart.png" alt="Token Scaling Curve" width="750"/>
+  <img src="assets/token_scaling_chart.png" alt="Token Scaling Curve: Monolithic vs Standard Teamwork vs AgentTeams" width="750"/>
 </p>
 
-> **The Rule**: Monolithic is cheaper for short tasks (< 8 turns). AgentTeams saves 30%–60% on long tasks (> 10 turns) by evicting disposable logs and test traces.
+> **The Rule**: Monolithic is cheaper for short tasks (< 8 turns). As tasks grow, AgentTeams significantly outperforms both Monolithic agents (saving up to 61%) and Standard Teamwork (saving 25%–44%) by eliminating conversational chat and scoped re-reads.
 
 ---
 
