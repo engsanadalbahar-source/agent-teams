@@ -1,138 +1,135 @@
 """
-Generates high-resolution publication charts for AgentTeams README and BENCHMARK:
-1. Token Scaling Curve: Monolithic O(N^2) vs AgentTeams O(N) over 3 to 50 turns.
-2. Gemini 3.8 Flash Financial Cost: Monolithic vs. Standard Teamwork vs. AgentTeams across Low, Medium, High thinking.
+Generates sleek, minimalist, high-resolution charts for GitHub:
+1. Token Scaling Curve: Monolithic vs. AgentTeams (3 to 50 turns).
+2. Gemini 3.8 Flash Financial Cost: Monolithic vs. Standard Teamwork vs. AgentTeams.
 """
 
 import os
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Output directory
 ASSETS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "assets")
 os.makedirs(ASSETS_DIR, exist_ok=True)
 
-# Set clean styling
-plt.style.use("seaborn-v0_8-whitegrid" if "seaborn-v0_8-whitegrid" in plt.style.available else "default")
+# Modern clean styling
 plt.rcParams.update({
     "font.family": "sans-serif",
-    "font.size": 11,
-    "axes.titlesize": 14,
-    "axes.titleweight": "bold",
-    "axes.labelsize": 12,
-    "axes.labelweight": "bold",
-    "figure.titlesize": 16,
-    "figure.titleweight": "bold",
+    "font.size": 10.5,
+    "axes.edgecolor": "#d0d7de",
+    "axes.linewidth": 1.0,
+    "grid.color": "#eaeef2",
+    "grid.linestyle": "--",
+    "grid.linewidth": 0.8,
 })
 
 
 def generate_token_scaling_chart():
     turns = [3, 5, 10, 15, 20, 30, 50]
-    mono_tokens = [75300, 114500, 219000, 358500, 503000, 867000, 1835000]
-    teams_tokens = [135000, 135000, 135000, 181400, 282000, 393000, 716000]
+    mono_tokens = [75.3, 114.5, 219.0, 358.5, 503.0, 867.0, 1835.0]  # in thousands
+    teams_tokens = [135.0, 135.0, 135.0, 181.4, 282.0, 393.0, 716.0]
 
-    mono_k = [x / 1000 for x in mono_tokens]
-    teams_k = [x / 1000 for x in teams_tokens]
+    fig, ax = plt.subplots(figsize=(9, 4.8), dpi=300, facecolor="#ffffff")
+    ax.set_facecolor("#ffffff")
 
-    fig, ax = plt.subplots(figsize=(10, 6), dpi=300)
+    # Plot
+    ax.plot(turns, mono_tokens, marker="o", markersize=6, linewidth=2.4, color="#cf222e", label="Monolithic Agent ($O(N^2)$ Context Explosion)")
+    ax.plot(turns, teams_tokens, marker="s", markersize=6, linewidth=2.4, color="#0969da", label="AgentTeams Protocol (Modular $O(N)$)")
+    ax.fill_between(turns[2:], teams_tokens[2:], mono_tokens[2:], color="#0969da", alpha=0.10)
 
-    # Plot curves
-    ax.plot(turns, mono_k, marker="o", linewidth=2.8, color="#e63946", label="Monolithic Single Agent (Quadratic O(N²))")
-    ax.plot(turns, teams_k, marker="s", linewidth=2.8, color="#2a9d8f", label="AgentTeams Protocol (Modular O(N))")
-
-    # Fill difference area after crossover
-    ax.fill_between(turns[2:], teams_k[2:], mono_k[2:], color="#2a9d8f", alpha=0.15, label="Token Savings Area (Up to 61%)")
-
-    # Annotate Crossover Point
+    # Clean Crossover Label
     ax.annotate(
-        "Crossover Point (~8 Turns)\nAgentTeams becomes more efficient",
+        "Crossover (~8 Turns)\nAgentTeams saves tokens",
         xy=(8, 175),
-        xytext=(12, 500),
-        arrowprops=dict(facecolor="#333333", shrink=0.08, width=1.5, headwidth=7),
-        fontsize=10,
-        fontweight="bold",
-        bbox=dict(boxstyle="round,pad=0.4", fc="#f1faee", ec="#2a9d8f", lw=1.5)
+        xytext=(13, 550),
+        arrowprops=dict(facecolor="#57606a", shrink=0.08, width=1.2, headwidth=6),
+        fontsize=9,
+        fontweight="600",
+        color="#24292f",
+        bbox=dict(boxstyle="round,pad=0.35", fc="#f6f8fa", ec="#d0d7de", lw=1)
     )
 
-    # Annotate 50-turn endpoint
+    # Endpoint savings
     ax.annotate(
-        "1.1M Tokens Saved!\n(-60.98%)",
+        "1.1M Tokens Saved (-61%)",
         xy=(50, 716),
-        xytext=(36, 1200),
-        arrowprops=dict(facecolor="#2a9d8f", shrink=0.08, width=1.5, headwidth=7),
-        fontsize=10,
+        xytext=(32, 1150),
+        arrowprops=dict(facecolor="#0969da", shrink=0.08, width=1.2, headwidth=6),
+        fontsize=9.5,
         fontweight="bold",
-        bbox=dict(boxstyle="round,pad=0.4", fc="#e8f5e9", ec="#2e7d32", lw=1.5)
+        color="#0969da",
+        bbox=dict(boxstyle="round,pad=0.35", fc="#ddf4ff", ec="#54aeff", lw=1)
     )
 
-    ax.set_title("Token Consumption Scaling: Monolithic vs. AgentTeams", pad=15)
-    ax.set_xlabel("Number of Conversation Turns (N)")
-    ax.set_ylabel("Cumulative Billed Tokens (in Thousands)")
+    ax.set_title("Cumulative Token Consumption (3 to 50 Turns)", fontsize=13, fontweight="bold", pad=12, color="#1f2328")
+    ax.set_xlabel("Conversation Turns", fontweight="600", color="#24292f")
+    ax.set_ylabel("Tokens (Thousands)", fontweight="600", color="#24292f")
     ax.set_xlim(1, 53)
     ax.set_ylim(0, 2000)
-    ax.legend(loc="upper left", frameon=True, facecolor="white", edgecolor="#cccccc")
+    ax.grid(True)
+    ax.legend(loc="upper left", frameon=True, facecolor="#ffffff", edgecolor="#d0d7de", fontsize=9.5)
 
     chart_path = os.path.join(ASSETS_DIR, "token_scaling_chart.png")
     plt.tight_layout()
     plt.savefig(chart_path, dpi=300)
     plt.close()
-    print(f"Created: {chart_path}")
+    print(f"Generated: {chart_path}")
 
 
 def generate_gemini_flash_financial_chart():
-    categories = ["Low\n(~350 tok/turn)", "Medium\n(~1,400 tok/turn)", "High\n(~3,800 tok/turn)"]
+    categories = ["Low\n(350 tok/turn)", "Medium\n(1.4k tok/turn)", "High\n(3.8k tok/turn)"]
     mono_costs = [0.0656, 0.0719, 0.0863]
     std_costs = [0.0487, 0.0575, 0.0777]
     teams_costs = [0.0345, 0.0421, 0.0594]
 
     x = np.arange(len(categories))
-    width = 0.25
+    width = 0.24
 
-    fig, ax = plt.subplots(figsize=(10.5, 6), dpi=300)
+    fig, ax = plt.subplots(figsize=(9, 4.8), dpi=300, facecolor="#ffffff")
+    ax.set_facecolor("#ffffff")
 
-    rects1 = ax.bar(x - width, mono_costs, width, label="1. Monolithic Single Agent", color="#e76f51", edgecolor="#333333", alpha=0.9)
-    rects2 = ax.bar(x, std_costs, width, label="2. Standard Antigravity Teamwork", color="#f4a261", edgecolor="#333333", alpha=0.9)
-    rects3 = ax.bar(x + width, teams_costs, width, label="3. AgentTeams Protocol (DAG + Contracts)", color="#2a9d8f", edgecolor="#333333", alpha=0.9)
+    rects1 = ax.bar(x - width, mono_costs, width, label="Monolithic Agent", color="#cf222e", alpha=0.85, edgecolor="#af1924")
+    rects2 = ax.bar(x, std_costs, width, label="Standard Teamwork", color="#9a6700", alpha=0.85, edgecolor="#7d5300")
+    rects3 = ax.bar(x + width, teams_costs, width, label="AgentTeams Protocol", color="#1a7f37", alpha=0.9, edgecolor="#116329")
 
-    # Add cost labels
-    for rect in rects1:
-        h = rect.get_height()
-        ax.annotate(f"${h:.4f}", xy=(rect.get_x() + rect.get_width()/2, h), xytext=(0, 3),
-                    textcoords="offset points", ha="center", va="bottom", fontsize=8.5, color="#555555")
-
-    for rect in rects2:
-        h = rect.get_height()
-        ax.annotate(f"${h:.4f}", xy=(rect.get_x() + rect.get_width()/2, h), xytext=(0, 3),
-                    textcoords="offset points", ha="center", va="bottom", fontsize=8.5, color="#555555")
-
-    # Add savings labels on AgentTeams
-    savings_vs_std = [29.2, 26.9, 23.6]
+    # Clean top labels
+    savings = ["-29.2%", "-26.9%", "-23.6%"]
     for i, rect in enumerate(rects3):
         h = rect.get_height()
         ax.annotate(
-            f"${h:.4f}\n(-{savings_vs_std[i]}% vs Std)",
+            f"${h:.4f}\n({savings[i]})",
             xy=(rect.get_x() + rect.get_width()/2, h),
             xytext=(0, 4),
             textcoords="offset points",
             ha="center", va="bottom",
             fontsize=8.5,
             fontweight="bold",
-            color="#1b4332"
+            color="#116329"
         )
 
-    ax.set_title("Financial Cost: Monolithic vs. Standard Teamwork vs. AgentTeams\n(Gemini 3.8 Flash across Thinking Effort Tiers)", pad=15)
-    ax.set_xlabel("Gemini 3.8 Flash Thinking Effort Tier")
-    ax.set_ylabel("API Cost per Task Run (USD $)")
+    for rect in rects1:
+        h = rect.get_height()
+        ax.annotate(f"${h:.4f}", xy=(rect.get_x() + rect.get_width()/2, h), xytext=(0, 3),
+                    textcoords="offset points", ha="center", va="bottom", fontsize=8, color="#57606a")
+
+    for rect in rects2:
+        h = rect.get_height()
+        ax.annotate(f"${h:.4f}", xy=(rect.get_x() + rect.get_width()/2, h), xytext=(0, 3),
+                    textcoords="offset points", ha="center", va="bottom", fontsize=8, color="#57606a")
+
+    ax.set_title("Gemini 3.8 Flash Cost per 20-Turn Task (USD $)", fontsize=13, fontweight="bold", pad=12, color="#1f2328")
+    ax.set_xlabel("Thinking Effort Level", fontweight="600", color="#24292f")
+    ax.set_ylabel("Cost per Run ($)", fontweight="600", color="#24292f")
     ax.set_xticks(x)
     ax.set_xticklabels(categories)
-    ax.set_ylim(0, 0.11)
-    ax.legend(loc="upper left", frameon=True, facecolor="white", edgecolor="#cccccc")
+    ax.set_ylim(0, 0.105)
+    ax.grid(True, axis="y")
+    ax.legend(loc="upper left", frameon=True, facecolor="#ffffff", edgecolor="#d0d7de", fontsize=9.5)
 
     chart_path = os.path.join(ASSETS_DIR, "gemini_flash_financial_chart.png")
     plt.tight_layout()
     plt.savefig(chart_path, dpi=300)
     plt.close()
-    print(f"Created: {chart_path}")
+    print(f"Generated: {chart_path}")
 
 
 if __name__ == "__main__":
