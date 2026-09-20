@@ -84,6 +84,10 @@ We ran both architectures live in Antigravity on the exact same task (build a th
 | **Monolithic Single Agent** | **`30,241`** | **\$0.00330** | 🏆 **Winner on small tasks (5.13x cheaper)** |
 | **AgentTeams Protocol** | **`154,998`** | **\$0.01362** | ❌ **Consumed +124,757 more tokens** |
 
+<p align="center">
+  <img src="assets/chart_live_empirical_test.png" alt="Empirical Live Antigravity Test Comparison" width="750"/>
+</p>
+
 > **The Honest Engineering Truth**: For small, self-contained tasks (1–2 files), multi-agent is **5x more expensive** because each subagent incurs tool definitions and system prompt overhead. Multi-agent is an architectural tool for **massive codebases, 50k-token logs, and strict separation of concerns**, NOT for small scripts.
 >
 > *Verify the raw untruncated transcripts yourself in [`live_test/real_comparison.json`](live_test/real_comparison.json).*

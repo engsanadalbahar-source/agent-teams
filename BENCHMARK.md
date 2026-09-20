@@ -101,6 +101,10 @@ Measured directly from raw, untruncated transcript logs (`transcript_full.jsonl`
 | **Monolithic Single Agent** | **`30,241`** | **\$0.00330** | 🏆 **Winner on small tasks (5.13x cheaper)** |
 | **AgentTeams Protocol** | **`154,998`** | **\$0.01362** | ❌ **Consumed +124,757 more tokens** |
 
+<p align="center">
+  <img src="assets/chart_live_empirical_test.png" alt="Empirical Live Antigravity Test Comparison" width="800"/>
+</p>
+
 > **Key Takeaway**: On small tasks (< 10 turns, 1–2 files), single-agent is **5.13x cheaper**. AgentTeams should be deployed when task complexity, context pollution, or independent verification guarantees justify the ~3,500 token per-subagent setup overhead.
 
 ---
