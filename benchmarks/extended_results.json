@@ -50,30 +50,45 @@
       "advantage": "AgentTeams"
     }
   ],
-  "financial_analysis_20_turn_bug_hunt": {
-    "Gemini 1.5 / 2.0 Flash": {
-      "monolithic_cost_usd": 0.0635,
-      "agent_teams_cost_usd": 0.0322,
-      "saved_usd": 0.0314,
-      "savings_percent": 49.35
+  "gemini_3_8_flash_financial_analysis": {
+    "Gemini 3.8 Flash (Low)": {
+      "thinking_effort": "Low",
+      "thinking_tokens_per_turn": 350,
+      "monolithic_input_tokens": 815000,
+      "monolithic_output_tokens": 15000,
+      "monolithic_cost_usd": 0.06563,
+      "agent_teams_input_tokens": 393000,
+      "agent_teams_output_tokens": 16800,
+      "agent_teams_cost_usd": 0.03451,
+      "dollar_savings_usd": 0.03111,
+      "savings_percent": 47.41,
+      "description": "Minimal reasoning overhead; quick execution"
     },
-    "Gemini 1.5 Pro": {
-      "monolithic_cost_usd": 1.0588,
-      "agent_teams_cost_usd": 0.5363,
-      "saved_usd": 0.5225,
-      "savings_percent": 49.35
+    "Gemini 3.8 Flash (Medium)": {
+      "thinking_effort": "Medium",
+      "thinking_tokens_per_turn": 1400,
+      "monolithic_input_tokens": 815000,
+      "monolithic_output_tokens": 36000,
+      "monolithic_cost_usd": 0.07193,
+      "agent_teams_input_tokens": 393000,
+      "agent_teams_output_tokens": 42000,
+      "agent_teams_cost_usd": 0.04208,
+      "dollar_savings_usd": 0.02985,
+      "savings_percent": 41.5,
+      "description": "Balanced reasoning; standard software tasks"
     },
-    "Claude 3.5 Sonnet": {
-      "monolithic_cost_usd": 2.565,
-      "agent_teams_cost_usd": 1.314,
-      "saved_usd": 1.251,
-      "savings_percent": 48.77
-    },
-    "GPT-4o": {
-      "monolithic_cost_usd": 2.1175,
-      "agent_teams_cost_usd": 1.0725,
-      "saved_usd": 1.045,
-      "savings_percent": 49.35
+    "Gemini 3.8 Flash (High)": {
+      "thinking_effort": "High",
+      "thinking_tokens_per_turn": 3800,
+      "monolithic_input_tokens": 815000,
+      "monolithic_output_tokens": 84000,
+      "monolithic_cost_usd": 0.08632,
+      "agent_teams_input_tokens": 393000,
+      "agent_teams_output_tokens": 99600,
+      "agent_teams_cost_usd": 0.05935,
+      "dollar_savings_usd": 0.02697,
+      "savings_percent": 31.24,
+      "description": "Deep reasoning; complex architecture & verification"
     }
   }
 }

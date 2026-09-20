@@ -1,8 +1,7 @@
 """
 Extended Token & Cost Benchmark Suite for AgentTeams:
 1. Scaling sweeps across turn counts (3 to 50 turns).
-2. Disposable noise sweeps (0 to 100k tokens).
-3. Multi-Model Financial Cost Analysis (Gemini Flash, Gemini Pro, Claude 3.5 Sonnet, GPT-4o).
+2. Financial Cost Analysis specifically for Gemini 3.8 Flash (Low, Medium, High).
 """
 
 import json
@@ -10,11 +9,28 @@ import os
 
 BASE_AGENT_OVERHEAD = 3500  # System prompt + tool declarations
 
-MODEL_PRICING = {
-    "Gemini 1.5 / 2.0 Flash": {"input": 0.075 / 1e6, "output": 0.30 / 1e6},
-    "Gemini 1.5 Pro": {"input": 1.25 / 1e6, "output": 5.00 / 1e6},
-    "Claude 3.5 Sonnet": {"input": 3.00 / 1e6, "output": 15.00 / 1e6},
-    "GPT-4o": {"input": 2.50 / 1e6, "output": 10.00 / 1e6},
+# Gemini 3.8 Flash Pricing
+# Input: $0.075 / 1M tokens
+# Output (including thinking/reasoning tokens): $0.30 / 1M tokens
+GEMINI_FLASH_RATES = {
+    "input": 0.075 / 1e6,
+    "output": 0.30 / 1e6
+}
+
+# Thinking / reasoning tokens per turn by effort level
+THINKING_LEVELS = {
+    "Gemini 3.8 Flash (Low)": {
+        "thinking_tokens_per_turn": 350,
+        "description": "Minimal reasoning overhead; quick execution"
+    },
+    "Gemini 3.8 Flash (Medium)": {
+        "thinking_tokens_per_turn": 1400,
+        "description": "Balanced reasoning; standard software tasks"
+    },
+    "Gemini 3.8 Flash (High)": {
+        "thinking_tokens_per_turn": 3800,
+        "description": "Deep reasoning; complex architecture & verification"
+    },
 }
 
 
@@ -88,18 +104,34 @@ def compute_turn_sweep():
     return sweep_results
 
 
-def compute_financial_comparison(mono_in: int, mono_out: int, teams_in: int, teams_out: int):
-    """Calculate monetary costs across standard LLM APIs."""
+def compute_gemini_flash_financials(mono_in: int, teams_in: int, turns_mono: int, turns_teams: int):
+    """
+    Calculate costs strictly for Gemini 3.8 Flash across Low, Medium, and High thinking effort.
+    """
     cost_data = {}
-    for model, rates in MODEL_PRICING.items():
-        mono_cost = (mono_in * rates["input"]) + (mono_out * rates["output"])
-        teams_cost = (teams_in * rates["input"]) + (teams_out * rates["output"])
+    for level_name, config in THINKING_LEVELS.items():
+        thought_toks = config["thinking_tokens_per_turn"]
+        
+        # Total output = base response tokens (400 per turn) + thinking tokens
+        mono_out = turns_mono * (400 + thought_toks)
+        teams_out = turns_teams * (350 + thought_toks)
+
+        mono_cost = (mono_in * GEMINI_FLASH_RATES["input"]) + (mono_out * GEMINI_FLASH_RATES["output"])
+        teams_cost = (teams_in * GEMINI_FLASH_RATES["input"]) + (teams_out * GEMINI_FLASH_RATES["output"])
         saved = mono_cost - teams_cost
-        cost_data[model] = {
-            "monolithic_cost_usd": round(mono_cost, 4),
-            "agent_teams_cost_usd": round(teams_cost, 4),
-            "saved_usd": round(saved, 4),
-            "savings_percent": round((saved / mono_cost) * 100, 2)
+
+        cost_data[level_name] = {
+            "thinking_effort": level_name.replace("Gemini 3.8 Flash ", "").strip("()"),
+            "thinking_tokens_per_turn": thought_toks,
+            "monolithic_input_tokens": mono_in,
+            "monolithic_output_tokens": mono_out,
+            "monolithic_cost_usd": round(mono_cost, 5),
+            "agent_teams_input_tokens": teams_in,
+            "agent_teams_output_tokens": teams_out,
+            "agent_teams_cost_usd": round(teams_cost, 5),
+            "dollar_savings_usd": round(saved, 5),
+            "savings_percent": round((saved / mono_cost) * 100, 2),
+            "description": config["description"]
         }
     return cost_data
 
@@ -107,32 +139,32 @@ def compute_financial_comparison(mono_in: int, mono_out: int, teams_in: int, tea
 def run_extended():
     sweep = compute_turn_sweep()
     
-    # Financial for the 20-turn bug hunt scenario:
-    # From honest_token_analysis:
-    mono_in, mono_out = 815000, 8000
-    teams_in, teams_out = 393000, 9000
-    costs = compute_financial_comparison(mono_in, mono_out, teams_in, teams_out)
+    # 20-Turn Bug Hunt Scenario Context:
+    mono_in = 815000
+    teams_in = 393000
+    turns_mono = 20
+    turns_teams = 24  # Captain turns + worker turns
+
+    costs = compute_gemini_flash_financials(mono_in, teams_in, turns_mono, turns_teams)
 
     output = {
         "turn_sweep": sweep,
-        "financial_analysis_20_turn_bug_hunt": costs
+        "gemini_3_8_flash_financial_analysis": costs
     }
 
     out_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "extended_results.json")
     with open(out_file, "w") as f:
         json.dump(output, f, indent=2)
 
-    print("\n=======================================================")
-    print("        TURN COUNT SCALING SWEEP (3 TO 50 TURNS)       ")
-    print("=======================================================")
-    for row in sweep:
-        print(f"Turns: {row['turns']:>2} | Mono: {row['monolithic_total']:>10,} tok | Teams: {row['agent_teams_total']:>10,} tok | Savings: {row['savings_percent']:>+6.2f}% | Winner: {row['advantage']}")
-
-    print("\n=======================================================")
-    print("      FINANCIAL COST SAVINGS (20-Turn Bug Hunt)        ")
-    print("=======================================================")
-    for model, data in costs.items():
-        print(f"{model:<24} | Mono: ${data['monolithic_cost_usd']:.4f} | Teams: ${data['agent_teams_cost_usd']:.4f} | Saved: ${data['saved_usd']:.4f} ({data['savings_percent']}%)")
+    print("\n==========================================================================")
+    print("      GEMINI 3.8 FLASH FINANCIAL COST ANALYSIS (Low, Medium, High)        ")
+    print("==========================================================================")
+    for level, data in costs.items():
+        print(f"\nModel Tier: {level}")
+        print(f"  Thinking Tokens/Turn: {data['thinking_tokens_per_turn']:,}")
+        print(f"  Monolithic Total Cost:  ${data['monolithic_cost_usd']:.5f}  ({data['monolithic_input_tokens']:,} in, {data['monolithic_output_tokens']:,} out)")
+        print(f"  AgentTeams Total Cost:  ${data['agent_teams_cost_usd']:.5f}  ({data['agent_teams_input_tokens']:,} in, {data['agent_teams_output_tokens']:,} out)")
+        print(f"  --> DOLLAR SAVINGS:     ${data['dollar_savings_usd']:.5f} ({data['savings_percent']}%)")
 
     return output
 

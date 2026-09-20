@@ -46,13 +46,27 @@ We simulated three real-world software engineering tasks measuring raw tokens, p
 
 | Scenario | Nature of Task | Monolithic Billed Tokens | AgentTeams Billed Tokens | Net Impact | Verdict |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **1. Small Task / Quick Tweak** (3 turns, 1k context) | Rename a method, update 1 test | `18,300` | `68,250` | **-272.9%** (3.7x more expensive) | ❌ **Wastes Tokens** |
+| **1. Small Task / Quick Tweak** (3 turns, 1k context) | Rename a method, update 1 test | `18,300` | `68,250` | **-272.9%** (3.7x cost) | ❌ **Wastes Tokens** |
 | **2. Standard Medium Feature** (8 turns, 5k repo, 2k test logs) | Add tiered discount to OrderService | `106,800` | `113,000` | **-5.8%** (Roughly break-even) | ⚖️ **Neutral / Slight Loss** |
 | **3. Massive Bug Hunt** (20 turns, 10k repo, 35k server logs) | Deadlock diagnosis, repro, patch, audit | `823,000` | `402,000` | **+51.1%** (**421,000 tokens saved!**) | ✅ **Massive Savings** |
 
 ---
 
-## 3. The Crossover Point: When Does Multi-Agent Make Sense?
+## 3. Financial Cost Analysis: Gemini 3.8 Flash (High, Medium, Low)
+
+Using Gemini 3.8 Flash pricing (**\$0.075 / 1M input tokens**, **\$0.30 / 1M output tokens**) on the 20-Turn Bug Hunt scenario:
+
+| Configuration | Thinking Tokens / Turn | Monolithic Cost | AgentTeams Cost | Dollar Savings | Percent Saved |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Gemini 3.8 Flash (Low)** | ~350 tok/turn | \$0.0656 | \$0.0345 | **+\$0.0311** | **47.41%** |
+| **Gemini 3.8 Flash (Medium)** | ~1,400 tok/turn | \$0.0719 | \$0.0421 | **+\$0.0298** | **41.50%** |
+| **Gemini 3.8 Flash (High)** | ~3,800 tok/turn | \$0.0863 | \$0.0594 | **+\$0.0270** | **31.24%** |
+
+Even with High thinking effort generating deep reasoning traces, AgentTeams' eviction of the 35,000-token server log saves **over \$0.027 per run (31.24%)**. On 1,000 runs, this translates to substantial cumulative savings.
+
+---
+
+## 4. The Crossover Point: When Does Multi-Agent Make Sense?
 
 The mathematical condition for AgentTeams to achieve net token savings over a monolithic agent is:
 
