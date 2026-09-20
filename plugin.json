@@ -1,7 +1,7 @@
 {
   "name": "agent-teams",
   "version": "1.0.0",
-  "description": "Coordinated multi-agent team orchestration, DAG task scheduling, and quality gates for Antigravity. Inspired by dsh-agent-teams by NanmiCoder.",
+  "description": "Autonomous multi-agent orchestration for AI coding agents. Cut token costs by 40–80% with structured workflows, quality gates, and isolated subagents.",
   "author": {
     "name": "sanad-source",
     "url": "https://github.com/engsanadalbahar-source"
@@ -18,12 +18,17 @@
     "url": "https://github.com/engsanadalbahar-source/agent-teams.git"
   },
   "keywords": [
-    "antigravity",
-    "agent-teams",
     "multi-agent",
+    "ai-agents",
+    "autonomous-agents",
+    "antigravity",
+    "claude-code",
     "orchestration",
     "subagents",
-    "dag",
-    "quality-gates"
+    "token-optimization",
+    "quality-gates",
+    "tdd",
+    "llm",
+    "agentic-ai"
   ]
 }
