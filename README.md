@@ -30,6 +30,10 @@ Rates: **\$0.075 / 1M input tokens**, **\$0.30 / 1M output/thinking tokens**.
 
 *Note: As thinking effort increases to High, output reasoning tokens scale up. Because AgentTeams saves over 420,000 input tokens by evicting disposable context, it preserves a **31% to 47% cost advantage** across all thinking configurations.*
 
+<p align="center">
+  <img src="assets/gemini_flash_financial_chart.png" alt="Gemini 3.8 Flash Cost Comparison" width="800"/>
+</p>
+
 ---
 
 ### 2. Scaling Sweep Across Turn Counts (3 to 50 Turns)
@@ -43,6 +47,10 @@ Rates: **\$0.075 / 1M input tokens**, **\$0.30 / 1M output/thinking tokens**.
 | **20** | `503,000` tok | `282,000` tok | **+43.94%** | ✅ **AgentTeams** |
 | **30** | `867,000` tok | `393,000` tok | **+54.67%** | ✅ **AgentTeams** |
 | **50** | `1,835,000` tok | `716,000` tok | **+60.98%** (**1.1M tokens saved!**) | ✅ **AgentTeams** |
+
+<p align="center">
+  <img src="assets/token_scaling_chart.png" alt="Token Scaling Curve: Monolithic vs AgentTeams" width="800"/>
+</p>
 
 ### Why This Crossover Happens:
 1. **The Multi-Agent Overhead Tax**: Every subagent requires its own system prompt and tool definitions (~3,500 tokens per subagent) plus dispatch/report RPC messages. On short tasks (< 8 turns), this fixed overhead makes multi-agent more expensive.

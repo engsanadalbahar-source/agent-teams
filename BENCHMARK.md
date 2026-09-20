@@ -66,9 +66,17 @@ Using Gemini 3.8 Flash pricing (**\$0.075 / 1M input tokens**, **\$0.30 / 1M out
 
 Even with High thinking effort generating deep reasoning traces, AgentTeams' eviction of the 35,000-token server log saves **over \$0.027 per run (31.24%)**. On 1,000 runs, this translates to substantial cumulative savings.
 
+<p align="center">
+  <img src="assets/gemini_flash_financial_chart.png" alt="Gemini 3.8 Flash Financial Cost" width="800"/>
+</p>
+
 ---
 
 ## 4. The Crossover Point: When Does Multi-Agent Make Sense?
+
+<p align="center">
+  <img src="assets/token_scaling_chart.png" alt="Token Scaling Curve: Monolithic vs AgentTeams" width="800"/>
+</p>
 
 The mathematical condition for AgentTeams to achieve net token savings over a monolithic agent is:
 
