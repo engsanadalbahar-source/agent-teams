@@ -1,8 +1,8 @@
 # AgentTeams: An Honest Empirical Token & Cost Analysis
 
-> **Executive Reality Check**: Multi-agent architectures **do not** universally save tokens. In fact, for small and simple tasks, multi-agent workflows are **significantly more expensive** than a single agent due to orchestration overhead and system prompt replication.
+> **Executive Reality Check**: Multi-agent architectures **do not** universally save tokens. In fact, across all agent frameworks (Antigravity, Claude Code, AutoGen, CrewAI, LangGraph, or custom agent loops), for small and simple tasks, multi-agent workflows are **significantly more expensive** than a single agent due to orchestration overhead and system prompt replication.
 >
-> However, for **large, context-heavy engineering workflows** (massive logs, deep codebases, 15+ turns), AgentTeams prevents quadratic context explosion and delivers **up to 50%+ net token savings**.
+> However, for **large, context-heavy engineering workflows** (massive logs, deep codebases, 15+ turns), the AgentTeams architecture prevents quadratic context explosion and delivers **up to 50%+ net token savings** regardless of which LLM agent framework is used.
 
 ---
 

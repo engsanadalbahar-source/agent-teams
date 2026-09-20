@@ -1,13 +1,19 @@
-# AgentTeams: Multi-Agent Orchestration & Quality Gates for Antigravity
+# AgentTeams: Universal Multi-Agent Orchestration & Quality Gate Protocol
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Antigravity](https://img.shields.io/badge/Antigravity-Skill%20%26%20Plugin-orange.svg)](https://github.com/engsanadalbahar-source/agent-teams)
+[![Framework Agnostic](https://img.shields.io/badge/Framework-Agnostic%20%28Any%20Agent%29-blueviolet.svg)](#-framework-integrations)
 [![Benchmark](https://img.shields.io/badge/Benchmark-Empirical%20Token%20Analysis-green.svg)](BENCHMARK.md)
 [![Inspired By](https://img.shields.io/badge/Inspired%20By-NanmiCoder%2Fdsh--agent--teams-purple.svg)](https://github.com/NanmiCoder/dsh-agent-teams)
 
-**AgentTeams** transforms Antigravity from a single-threaded coding assistant into a **Captain** orchestrating a coordinated, specialized team of autonomous subagents.
+**AgentTeams** is a universal, framework-agnostic protocol and orchestration engine that coordinates autonomous AI agents into a structured, role-specialized team led by a **Captain**.
 
-> **Attribution & Lineage**: This project is directly inspired by and builds upon the pioneering work of **NanmiCoder**'s [dsh-agent-teams](https://github.com/NanmiCoder/dsh-agent-teams) protocol. We adapted and extended the concept for Antigravity, adding strict model inheritance (`Model: 'inherit'`), machine-verifiable task contracts, automated repair loops, and empirical token efficiency benchmarking.
+Whether you are using **Antigravity**, **Claude Code**, **AutoGen**, **CrewAI**, **LangGraph**, **OpenHands**, or **custom AI agent loops**, AgentTeams provides a formal protocol for:
+- **Dependency-Aware Task DAGs**: No task starts until upstream dependencies meet machine-verifiable exit criteria.
+- **Strict Quality Gates**: Automated contracts (`inScope` file boundaries, test commands, independent review verdicts).
+- **Context Isolation & Token Defense**: Eliminating the quadratic $O(N^2)$ context accumulation penalty that plagues monolithic single-agent systems.
+- **Automated Repair Loops**: Deterministic bug fixing without circular dependencies or context pollution.
+
+> **Attribution & Lineage**: This protocol is directly inspired by and builds upon the pioneering work of **NanmiCoder**'s [dsh-agent-teams](https://github.com/NanmiCoder/dsh-agent-teams). We generalized the specification for all modern agent architectures, adding formal contract schemas, DAG state machine tests, model inheritance, and empirical token efficiency benchmarks.
 
 ---
 
@@ -49,76 +55,17 @@ Rates: **\$0.075 / 1M input tokens**, **\$0.30 / 1M output/thinking tokens**.
 
 ---
 
-## 🚀 Key Capabilities
+## 🏛️ The Universal Protocol Specification
 
-1. **Captain-Led Task DAG**:
-   - The primary Antigravity session acts as the Captain.
-   - Tasks follow an explicit lifecycle: `pending → claimed → in_progress → completed | failed | cancelled`.
-   - Downstream tasks cannot unlock until all upstream dependencies succeed.
+AgentTeams defines a standardized, language-agnostic contract for multi-agent workflows:
 
-2. **Strict Model Inheritance (`Model: 'inherit'`)**:
-   - Every subagent strictly runs on whichever model you have selected in the interface (e.g. Gemini 3.8 Flash High, Medium, or Low), never silently diverging to other models.
-
-3. **Machine-Verifiable Quality Gates**:
-   - Work is validated through structured contracts: explicit acceptance criteria, strict file boundaries (`inScope`), and automated test executions (`verify`).
-   - Independent Reviewers issue structured verdicts (`pass`, `needs_revision`, `reject`).
-
-4. **Automated Repair Loops**:
-   - If a review detects issues, an isolated repair task is spawned targeting only the reported findings, without creating circular dependencies or polluting the primary context.
-
----
-
-## 👥 Standard Team Roster
-
-| Role | Responsibility | Tool Access |
-| :--- | :--- | :--- |
-| **Captain** | DAG management, delegation, gatekeeping, final integration | Full access |
-| **Analyst** | Requirements elicitation, user stories, acceptance criteria | Read-only / Research |
-| **Architect** | Interface design, data models, module boundaries | Read-only / Docs |
-| **Implementer** | TDD implementation strictly bounded to `inScope` files | Full write / Command |
-| **QA / Tester** | Test suite fixtures, edge cases, executing test commands | Full write / Command |
-| **Reviewer** | Independent audit of diffs, security, and scope compliance | Read-only / Research |
-
----
-
-## 📦 Installation
-
-### Option 1: Install as an Antigravity Plugin (Recommended)
-Clone this repository into your Antigravity plugin directory:
-```bash
-git clone https://github.com/engsanadalbahar-source/agent-teams.git ~/.gemini/config/plugins/agent-teams
-```
-
-### Option 2: Install as a Standalone Skill
-Copy the skill folder into your Antigravity skills directory:
-```bash
-cp -r skills/agent-teams ~/.gemini/config/skills/
-```
-
----
-
-## 🛠️ Usage
-
-### 1. Natural Language Activation
-In any Antigravity conversation, simply prompt:
-- `"Use the agent-teams skill to implement <feature>"`
-- `"/goal use agent-teams to diagnose and fix the webhook deadlock"`
-- `"Coordinate a multi-agent team with QA and independent review to refactor <module>"`
-
-### 2. Teamwork Preview Slash Command
-Use the built-in slash command to inspect and draft a team roster before execution:
-```
-/teamwork-preview
-```
-
----
-
-## 📋 Task Contract Example
+### 1. Task Contract Schema
+Every task in the DAG must declare its operational bounds:
 
 ```yaml
 id: "task-checkout-discount"
 subject: "Implement VIP tiered discount calculation"
-kind: "implementation"
+kind: "implementation"     # requirements | architecture | implementation | verification | review | repair | integration
 assignee: "implementer"
 dependencies: ["task-checkout-spec", "task-checkout-tests"]
 inScope:
@@ -130,17 +77,118 @@ verify:
   - "pytest tests/test_order_service.py"
 ```
 
+### 2. DAG Lifecycle State Machine
+
+```
+  [ pending ]
+       │  (All upstream dependencies completed)
+       ▼
+  [ claimed ]
+       │  (Worker starts execution)
+       ▼
+  [ in_progress ]
+       ├──▶ [ completed ]  ──▶ (Unlocks downstream tasks)
+       ├──▶ [ failed ]     ──▶ (Blocks downstream; triggers repair/halt)
+       └──▶ [ cancelled ]  ──▶ (Task abandoned or superseded)
+```
+
+* **Invariant**: A task can only transition to `claimed` when:
+  $$\forall d \in \text{dependencies}, \quad \text{state}(d) == \text{completed}$$
+* **Acyclic Guarantee**: Verified via DFS topological sorting in [`benchmarks/test_dag_contracts.py`](benchmarks/test_dag_contracts.py).
+
+### 3. Structured Review Verdicts & Repair Loops
+
+```json
+{
+  "taskId": "task-review-core-logic",
+  "verdict": "pass | needs_revision | reject",
+  "summary": "High-level summary of review findings",
+  "findings": [
+    {
+      "severity": "blocker | high | medium | low",
+      "file": "src/services/order.py",
+      "line": 42,
+      "description": "Tax calculation applied to pre-discounted subtotal",
+      "remediation": "Compute tax on (subtotal - discount_amount)"
+    }
+  ],
+  "scopeAudit": {
+    "declaredInScope": ["src/services/order.py"],
+    "observedChanges": ["src/services/order.py"],
+    "violations": []
+  }
+}
+```
+
+* When verdict is `needs_revision`: An automated `repair` task is spawned that depends on the implementation (consuming the review findings), ensuring no circular dependencies exist.
+
 ---
 
-## 🔬 Running the Benchmarks Locally
+## 👥 Standard Team Roster
+
+| Role | Responsibility | Permitted Actions |
+| :--- | :--- | :--- |
+| **Captain** | DAG orchestration, user communication, final integration review | Full tool access |
+| **Analyst** | Requirements elicitation, user stories, acceptance criteria definition | Read-only / Research |
+| **Architect** | Interface design, data models, module boundaries | Read-only / Docs |
+| **Implementer** | TDD implementation strictly bounded to `inScope` files | Code edits & local tests |
+| **QA / Tester** | Test suite implementation, edge-case coverage, executing test commands | Test execution & edits |
+| **Reviewer** | Independent audit of diffs, security, and scope compliance | Read-only / Git diff audit |
+
+---
+
+## 🔌 Framework Integrations
+
+### 1. Any Custom Agent / Python Workflow
+Import and use the standalone DAG engine and contract validator:
+
+```python
+from benchmarks.test_dag_contracts import DAG, TaskContract
+
+dag = DAG()
+dag.add_task(TaskContract("spec", "requirements", "analyst", []))
+dag.add_task(TaskContract("impl", "implementation", "coder", ["spec"], in_scope=["src/**"]))
+dag.add_task(TaskContract("test", "verification", "qa", ["impl"]))
+
+assert not dag.detect_cycle()
+```
+
+### 2. Antigravity Integration
+AgentTeams includes native Antigravity skill and plugin support:
+
+* **Install as Plugin**:
+  ```bash
+  git clone https://github.com/engsanadalbahar-source/agent-teams.git ~/.gemini/config/plugins/agent-teams
+  ```
+* **Install as Skill**:
+  ```bash
+  cp -r skills/agent-teams ~/.gemini/config/skills/
+  ```
+* **Activate in Chat**:
+  * `"Use the agent-teams skill to implement <feature>"`
+  * `"/goal use agent-teams to diagnose and fix the webhook deadlock"`
+  * `/teamwork-preview`
+
+### 3. Claude Code / OpenHands / AutoGen / CrewAI / LangGraph
+The task contracts (`references/contracts.md`) and profiles (`references/profiles.md`) can be loaded into any agent system's system prompt or tool layer to enforce Captain-led DAG coordination.
+
+---
+
+## 🔬 Running the Benchmarks & Tests Locally
 
 ```bash
 cd benchmarks
 python3 -m venv .venv
 source .venv/bin/activate
 pip install tiktoken pytest
+
+# Run DAG state machine & contract tests
 pytest test_dag_contracts.py
+
+# Run turn scaling sweep & Gemini 3.8 Flash financial analysis
 python3 extended_benchmarks.py
+
+# Run token overhead & prompt caching analysis
 python3 honest_token_analysis.py
 ```
 
