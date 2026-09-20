@@ -19,13 +19,16 @@ import os
 import tiktoken
 
 encoder = tiktoken.get_encoding("cl100k_base")
-BRAIN_DIR = "~/.gemini/antigravity/brain"
+BRAIN_DIR = os.environ.get("ANTIGRAVITY_BRAIN_DIR", os.path.expanduser("~/.gemini/antigravity/brain"))
 
 
 def parse_subagent_full_tokens(subagent_id: str):
     transcript_path = os.path.join(BRAIN_DIR, subagent_id, ".system_generated", "logs", "transcript_full.jsonl")
     if not os.path.exists(transcript_path):
         transcript_path = os.path.join(BRAIN_DIR, subagent_id, ".system_generated", "logs", "transcript.jsonl")
+
+    if not os.path.exists(transcript_path):
+        return None
 
     steps = []
     with open(transcript_path, "r", encoding="utf-8") as f:
@@ -82,6 +85,21 @@ def main():
 
     capt_in = 4500
     capt_out = 1200
+
+    out_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "real_comparison.json")
+    if mono_data is None or qa_data is None or impl_data is None or rev_data is None:
+        if os.path.exists(out_path):
+            with open(out_path, "r", encoding="utf-8") as f:
+                saved = json.load(f)
+            mono_data = saved["monolithic"]
+            qa_data = saved["agent_teams"]["qa"]
+            impl_data = saved["agent_teams"]["implementer"]
+            rev_data = saved["agent_teams"]["reviewer"]
+            capt_in = saved["agent_teams"]["captain_estimated"]["input_tokens"]
+            capt_out = saved["agent_teams"]["captain_estimated"]["output_tokens"]
+        else:
+            print("Error: Transcripts not found on disk and real_comparison.json missing.")
+            return
 
     teams_total_in = qa_data["input_tokens"] + impl_data["input_tokens"] + rev_data["input_tokens"] + capt_in
     teams_total_out = qa_data["output_tokens"] + impl_data["output_tokens"] + rev_data["output_tokens"] + capt_out

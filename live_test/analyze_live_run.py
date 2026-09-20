@@ -20,7 +20,7 @@ SUBAGENTS = {
     "Reviewer": "f21c2b4e-ffc5-46ee-ac57-a919d301e703",
 }
 
-BRAIN_DIR = "~/.gemini/antigravity/brain"
+BRAIN_DIR = os.environ.get("ANTIGRAVITY_BRAIN_DIR", os.path.expanduser("~/.gemini/antigravity/brain"))
 
 
 def parse_transcript(subagent_id: str):

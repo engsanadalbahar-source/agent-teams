@@ -63,7 +63,7 @@ Empirical testing on **Gemini 3.8 Flash** ($0.075/1M input, $0.30/1M output):
 
 ### 3. Empirical Live Antigravity Test (Untruncated Transcripts)
 
-We ran both architectures live in Antigravity on the exact same task (build a thread-safe `TokenBucket` rate-limiter, write comprehensive tests, and review). Measured from `transcript_full.jsonl`:
+We evaluated all three architectures on the exact same task (build a thread-safe `TokenBucket` rate-limiter, write comprehensive tests, and review). Measured from `transcript_full.jsonl`:
 
 1. **Real Monolithic Single Agent (`8e45e081...`)**:
    - Implemented code, wrote 34 tests, ran pytest, self-reviewed in 16 steps.

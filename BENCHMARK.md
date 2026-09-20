@@ -44,7 +44,7 @@ graph TD
 
 ## 2. Empirical Benchmark Results
 
-We simulated three real-world software engineering tasks measuring raw tokens, prompt caching effects, and inter-agent communication:
+We simulated three real-world software engineering tasks measuring raw tokens, prompt caching effects, and inter-agent communication (`benchmarks/honest_token_analysis.py`):
 
 | Scenario | Nature of Task | Monolithic Billed Tokens | AgentTeams Billed Tokens | Net Impact | Verdict |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -78,7 +78,7 @@ Rates: **\$0.075 / 1M input tokens**, **\$0.30 / 1M output/thinking tokens**.
 
 ## 4. Live Empirical Validation in Antigravity (Untruncated Transcripts)
 
-To test these dynamics in production, we executed both architectures live in **Google Antigravity** on the identical problem: implement a thread-safe `TokenBucket` rate-limiter, write comprehensive unit and concurrency tests, and conduct a code review.
+To test these dynamics in production, we executed all three architectures on the identical problem: implement a thread-safe `TokenBucket` rate-limiter, write comprehensive unit and concurrency tests, and conduct a code review.
 
 Measured directly from raw, untruncated transcript logs (`transcript_full.jsonl`):
 
