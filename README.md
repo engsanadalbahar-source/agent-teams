@@ -59,7 +59,22 @@ Empirical testing on **Gemini 3.8 Flash** ($0.075/1M input, $0.30/1M output):
   <img src="assets/chart_token_scaling.png" alt="Token Scaling Curve: Monolithic vs Standard Teamwork vs AgentTeams" width="750"/>
 </p>
 
-> **Key Takeaway**: All numbers above are **100% dynamically measured** using `tiktoken` on realistic code payloads, server logs, and conversation turns. By isolating disposable context in the Detective/Analyst worker, AgentTeams keeps downstream workers at bounded contract sizes (~4.5k tokens total), completely preventing context explosion.
+### 3. Real Live Antigravity Execution (Verified on Gemini 3.8 Flash)
+
+We executed an end-to-end engineering task live in Antigravity using real subagents (`QA Engineer`, `Implementer`, `Reviewer`) to build a thread-safe `TokenBucket` rate-limiter:
+
+- **QA Subagent (`0fa36434...`)**: Authored 16 unit tests, verified failing baseline (20,578 input tok).
+- **Implementer Subagent (`b39f54d0...`)**: Implemented `token_bucket.py` with `threading.Lock` and passed all 16 tests (34,037 input tok).
+- **Reviewer Subagent (`f21c2b4e...`)**: Independently audited diffs and issued structured verdict: `pass` (40,488 input tok).
+- **Captain Orchestration**: Dispatches and gatekeeping (4,500 input tok).
+
+| Metric | Monolithic Equivalent (Single Session) | Real Live AgentTeams Run | Net Savings |
+| :--- | :---: | :---: | :---: |
+| **Billed Input Tokens** | `275,918` | **`99,603`** | **-63.90%** (-176,315 tokens) |
+| **Total Billed Tokens** | `282,359` | **`107,244`** | **-62.02%** (-175,115 tokens) |
+| **API Cost (Gemini 3.8 Flash)** | \$0.0226 | **\$0.0098** | **-56.85%** |
+
+*All live code, tests, and transcript parser are preserved in [`live_test/`](live_test/).*
 
 ---
 

@@ -1,0 +1,359 @@
+{
+  "task": "Build & Test Concurrency-Safe TokenBucket Rate Limiter",
+  "platform": "Google Antigravity",
+  "model": "Gemini 3.8 Flash (High)",
+  "subagents": {
+    "QA Engineer": {
+      "subagent_id": "0fa36434-e187-4669-923e-f81818cf210c",
+      "total_steps": 18,
+      "total_input_tokens": 20578,
+      "total_output_tokens": 2518,
+      "peak_context_tokens": 4902,
+      "turns": [
+        {
+          "type": "input",
+          "tokens": 269,
+          "cumulative_context": 269
+        },
+        {
+          "type": "output",
+          "tokens": 101,
+          "cumulative_context": 370
+        },
+        {
+          "type": "input",
+          "tokens": 1026,
+          "cumulative_context": 1396
+        },
+        {
+          "type": "output",
+          "tokens": 151,
+          "cumulative_context": 1547
+        },
+        {
+          "type": "input",
+          "tokens": 106,
+          "cumulative_context": 1653
+        },
+        {
+          "type": "output",
+          "tokens": 912,
+          "cumulative_context": 2565
+        },
+        {
+          "type": "input",
+          "tokens": 98,
+          "cumulative_context": 2663
+        },
+        {
+          "type": "output",
+          "tokens": 108,
+          "cumulative_context": 2771
+        },
+        {
+          "type": "input",
+          "tokens": 63,
+          "cumulative_context": 2834
+        },
+        {
+          "type": "output",
+          "tokens": 126,
+          "cumulative_context": 2960
+        },
+        {
+          "type": "input",
+          "tokens": 215,
+          "cumulative_context": 3175
+        },
+        {
+          "type": "output",
+          "tokens": 32,
+          "cumulative_context": 3207
+        },
+        {
+          "type": "output",
+          "tokens": 163,
+          "cumulative_context": 3370
+        },
+        {
+          "type": "input",
+          "tokens": 537,
+          "cumulative_context": 3907
+        },
+        {
+          "type": "output",
+          "tokens": 704,
+          "cumulative_context": 4611
+        },
+        {
+          "type": "input",
+          "tokens": 70,
+          "cumulative_context": 4681
+        },
+        {
+          "type": "output",
+          "tokens": 221,
+          "cumulative_context": 4902
+        }
+      ]
+    },
+    "Implementer": {
+      "subagent_id": "b39f54d0-0a21-457c-901e-565ed810390b",
+      "total_steps": 25,
+      "total_input_tokens": 34037,
+      "total_output_tokens": 2313,
+      "peak_context_tokens": 4859,
+      "turns": [
+        {
+          "type": "input",
+          "tokens": 312,
+          "cumulative_context": 312
+        },
+        {
+          "type": "output",
+          "tokens": 127,
+          "cumulative_context": 439
+        },
+        {
+          "type": "input",
+          "tokens": 1076,
+          "cumulative_context": 1515
+        },
+        {
+          "type": "output",
+          "tokens": 64,
+          "cumulative_context": 1579
+        },
+        {
+          "type": "output",
+          "tokens": 924,
+          "cumulative_context": 2503
+        },
+        {
+          "type": "input",
+          "tokens": 97,
+          "cumulative_context": 2600
+        },
+        {
+          "type": "output",
+          "tokens": 109,
+          "cumulative_context": 2709
+        },
+        {
+          "type": "input",
+          "tokens": 72,
+          "cumulative_context": 2781
+        },
+        {
+          "type": "output",
+          "tokens": 91,
+          "cumulative_context": 2872
+        },
+        {
+          "type": "input",
+          "tokens": 190,
+          "cumulative_context": 3062
+        },
+        {
+          "type": "output",
+          "tokens": 69,
+          "cumulative_context": 3131
+        },
+        {
+          "type": "input",
+          "tokens": 72,
+          "cumulative_context": 3203
+        },
+        {
+          "type": "output",
+          "tokens": 146,
+          "cumulative_context": 3349
+        },
+        {
+          "type": "input",
+          "tokens": 241,
+          "cumulative_context": 3590
+        },
+        {
+          "type": "output",
+          "tokens": 84,
+          "cumulative_context": 3674
+        },
+        {
+          "type": "input",
+          "tokens": 192,
+          "cumulative_context": 3866
+        },
+        {
+          "type": "output",
+          "tokens": 69,
+          "cumulative_context": 3935
+        },
+        {
+          "type": "input",
+          "tokens": 72,
+          "cumulative_context": 4007
+        },
+        {
+          "type": "output",
+          "tokens": 183,
+          "cumulative_context": 4190
+        },
+        {
+          "type": "input",
+          "tokens": 152,
+          "cumulative_context": 4342
+        },
+        {
+          "type": "output",
+          "tokens": 347,
+          "cumulative_context": 4689
+        },
+        {
+          "type": "input",
+          "tokens": 70,
+          "cumulative_context": 4759
+        },
+        {
+          "type": "output",
+          "tokens": 100,
+          "cumulative_context": 4859
+        }
+      ]
+    },
+    "Reviewer": {
+      "subagent_id": "f21c2b4e-ffc5-46ee-ac57-a919d301e703",
+      "total_steps": 25,
+      "total_input_tokens": 40488,
+      "total_output_tokens": 1610,
+      "peak_context_tokens": 5186,
+      "turns": [
+        {
+          "type": "input",
+          "tokens": 277,
+          "cumulative_context": 277
+        },
+        {
+          "type": "input",
+          "tokens": 732,
+          "cumulative_context": 1009
+        },
+        {
+          "type": "output",
+          "tokens": 167,
+          "cumulative_context": 1176
+        },
+        {
+          "type": "input",
+          "tokens": 1076,
+          "cumulative_context": 2252
+        },
+        {
+          "type": "output",
+          "tokens": 196,
+          "cumulative_context": 2448
+        },
+        {
+          "type": "input",
+          "tokens": 72,
+          "cumulative_context": 2520
+        },
+        {
+          "type": "input",
+          "tokens": 175,
+          "cumulative_context": 2695
+        },
+        {
+          "type": "output",
+          "tokens": 93,
+          "cumulative_context": 2788
+        },
+        {
+          "type": "input",
+          "tokens": 189,
+          "cumulative_context": 2977
+        },
+        {
+          "type": "output",
+          "tokens": 70,
+          "cumulative_context": 3047
+        },
+        {
+          "type": "input",
+          "tokens": 71,
+          "cumulative_context": 3118
+        },
+        {
+          "type": "output",
+          "tokens": 108,
+          "cumulative_context": 3226
+        },
+        {
+          "type": "input",
+          "tokens": 412,
+          "cumulative_context": 3638
+        },
+        {
+          "type": "output",
+          "tokens": 226,
+          "cumulative_context": 3864
+        },
+        {
+          "type": "input",
+          "tokens": 167,
+          "cumulative_context": 4031
+        },
+        {
+          "type": "input",
+          "tokens": 152,
+          "cumulative_context": 4183
+        },
+        {
+          "type": "input",
+          "tokens": 71,
+          "cumulative_context": 4254
+        },
+        {
+          "type": "output",
+          "tokens": 131,
+          "cumulative_context": 4385
+        },
+        {
+          "type": "input",
+          "tokens": 112,
+          "cumulative_context": 4497
+        },
+        {
+          "type": "output",
+          "tokens": 470,
+          "cumulative_context": 4967
+        },
+        {
+          "type": "input",
+          "tokens": 70,
+          "cumulative_context": 5037
+        },
+        {
+          "type": "output",
+          "tokens": 149,
+          "cumulative_context": 5186
+        }
+      ]
+    }
+  },
+  "summary": {
+    "agent_teams_input_tokens": 99603,
+    "agent_teams_output_tokens": 7641,
+    "agent_teams_total_tokens": 107244,
+    "monolithic_input_tokens": 275918,
+    "monolithic_output_tokens": 6441,
+    "monolithic_total_tokens": 282359,
+    "input_tokens_saved": 176315,
+    "input_savings_percent": 63.9,
+    "total_tokens_saved": 175115,
+    "total_savings_percent": 62.02,
+    "monolithic_cost_usd": 0.02263,
+    "agent_teams_cost_usd": 0.00976,
+    "cost_savings_percent": 56.85
+  }
+}
