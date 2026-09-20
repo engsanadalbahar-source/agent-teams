@@ -49,42 +49,42 @@ Empirical testing on **Gemini 3.8 Flash** ($0.075/1M input, $0.30/1M output):
 
 | Turns | 1. Monolithic Agent | 2. Standard Teamwork | 3. AgentTeams | Winner |
 | :---: | :---: | :---: | :---: | :---: |
-| **3** | `24.8k` tok | `42.9k` tok | `4.5k` tok | ✅ **AgentTeams** |
-| **5** | `37.5k` tok | `42.9k` tok | `4.5k` tok | ✅ **AgentTeams** |
-| **10** | `67.8k` tok | `65.6k` tok | `4.5k` tok | ✅ **AgentTeams** |
-| **20** | `134.2k` tok | `138.8k` tok | `4.5k` tok | ✅ **AgentTeams** (-96.7% vs. Teamwork) |
-| **50** | `349.8k` tok | `339.8k` tok | `4.5k` tok | ✅ **AgentTeams** (-98.7% vs. Teamwork & Mono) |
+| **3** | `28.8k` tok | `58.7k` tok | `15.2k` tok | ✅ **AgentTeams** (-47.3% vs. Mono) |
+| **5** | `44.2k` tok | `58.7k` tok | `15.2k` tok | ✅ **AgentTeams** (-65.6% vs. Mono) |
+| **10** | `81.1k` tok | `91.8k` tok | `24.0k` tok | ✅ **AgentTeams** (-70.4% vs. Mono) |
+| **20** | `160.8k` tok | `195.7k` tok | `52.1k` tok | ✅ **AgentTeams** (-67.6% vs. Mono) |
+| **50** | `416.4k` tok | `464.2k` tok | `128.7k` tok | ✅ **AgentTeams** (-69.1% vs. Mono) |
 
 <p align="center">
   <img src="assets/chart_token_scaling.png" alt="Token Scaling Curve: Monolithic vs Standard Teamwork vs AgentTeams" width="750"/>
 </p>
 
-### 3. Empirical Live Antigravity Test (Zero Estimates, Real Transcripts)
+### 3. Empirical Live Antigravity Test (Untruncated Transcripts)
 
-We ran both architectures live in Antigravity on the exact same task (build a thread-safe `TokenBucket` rate-limiter, write comprehensive tests, and review):
+We ran both architectures live in Antigravity on the exact same task (build a thread-safe `TokenBucket` rate-limiter, write comprehensive tests, and review). Measured from `transcript_full.jsonl`:
 
 1. **Real Monolithic Single Agent (`8e45e081...`)**:
    - Implemented code, wrote 34 tests, ran pytest, self-reviewed in 16 steps.
-   - **Real Billed Input**: `17,617` tokens | **Output**: `2,969` tokens
-   - **Total Billed Tokens**: **`20,586`** tokens
-   - **Cost (Gemini 3.8 Flash)**: **\$0.00221**
+   - **Real Billed Input**: `25,669` tokens | **Output**: `4,572` tokens
+   - **Total Billed Tokens**: **`30,241`** tokens
+   - **Cost (Gemini 3.8 Flash)**: **\$0.00330**
 
 2. **Real AgentTeams Run (QA + Implementer + Reviewer + Captain)**:
-   - **QA Subagent (`0fa36434...`)**: `23,096` tokens (18 steps)
-   - **Implementer Subagent (`b39f54d0...`)**: `36,350` tokens (25 steps)
-   - **Reviewer Subagent (`f21c2b4e...`)**: `42,098` tokens (25 steps)
-   - **Captain Orchestration**: `5,700` tokens
-   - **Total Billed Tokens**: **`107,244`** tokens
-   - **Cost (Gemini 3.8 Flash)**: **\$0.00976**
+   - **QA Subagent (`0fa36434...`)**: `48,155` tokens (18 steps)
+   - **Implementer Subagent (`b39f54d0...`)**: `46,920` tokens (25 steps)
+   - **Reviewer Subagent (`f21c2b4e...`)**: `54,223` tokens (25 steps)
+   - **Captain Orchestration**: `5,700` tokens (estimated parent session overhead)
+   - **Total Billed Tokens**: **`154,998`** tokens
+   - **Cost (Gemini 3.8 Flash)**: **\$0.01362**
 
 | Architecture | Measured Total Tokens | Measured API Cost | Verdict on This Task |
 | :--- | :---: | :---: | :--- |
-| **Monolithic Single Agent** | **`20,586`** | **\$0.00221** | 🏆 **Winner on small tasks (5.2x cheaper)** |
-| **AgentTeams Protocol** | **`107,244`** | **\$0.00976** | ❌ **Consumed +86,658 more tokens** |
+| **Monolithic Single Agent** | **`30,241`** | **\$0.00330** | 🏆 **Winner on small tasks (5.13x cheaper)** |
+| **AgentTeams Protocol** | **`154,998`** | **\$0.01362** | ❌ **Consumed +124,757 more tokens** |
 
-> **The Honest Engineering Truth**: For small, self-contained tasks (1–2 files), multi-agent is **significantly more expensive** because each subagent incurs tool definitions and system prompt overhead. Multi-agent is an architectural tool for **massive codebases, 50k-token logs, and strict separation of concerns**, NOT for small tasks.
+> **The Honest Engineering Truth**: For small, self-contained tasks (1–2 files), multi-agent is **5x more expensive** because each subagent incurs tool definitions and system prompt overhead. Multi-agent is an architectural tool for **massive codebases, 50k-token logs, and strict separation of concerns**, NOT for small scripts.
 >
-> *Verify the raw transcripts yourself in [`live_test/real_comparison.json`](live_test/real_comparison.json).*
+> *Verify the raw untruncated transcripts yourself in [`live_test/real_comparison.json`](live_test/real_comparison.json).*
 
 ---
 

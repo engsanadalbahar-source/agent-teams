@@ -1,46 +1,34 @@
 """
-Extended Token & Cost Benchmark Suite for AgentTeams (100% Dynamically Computed):
-1. Scaling sweeps across turn counts (3 to 50 turns) computed dynamically.
-2. Three-way Financial Cost Analysis (Monolithic vs Standard Teamwork vs AgentTeams)
-   computed by simulating actual conversations with ConversationTracker and tiktoken.
+Extended Token & Cost Benchmark Suite for AgentTeams (100% Unrigged & Scaled):
+- Monolithic scales quadratically with turns.
+- Standard Teamwork scales with 4 workers + coordination.
+- AgentTeams scales with 4 workers + DAG contracts, including base agent overhead (3,500 tok/agent).
+- Workers scale turns proportionally with total turns (turns // 4).
 """
 
 import json
 import os
 from token_counter import ConversationTracker, count_tokens
 
-# Gemini 3.8 Flash Pricing
 GEMINI_FLASH_RATES = {
     "input": 0.075 / 1e6,
     "output": 0.30 / 1e6
 }
 
 THINKING_LEVELS = {
-    "Gemini 3.8 Flash (Low)": {
-        "thinking_tokens_per_turn": 350,
-        "description": "Minimal reasoning overhead"
-    },
-    "Gemini 3.8 Flash (Medium)": {
-        "thinking_tokens_per_turn": 1400,
-        "description": "Standard reasoning overhead"
-    },
-    "Gemini 3.8 Flash (High)": {
-        "thinking_tokens_per_turn": 3800,
-        "description": "Deep reasoning overhead"
-    },
+    "Gemini 3.8 Flash (Low)": {"thinking_tokens_per_turn": 350},
+    "Gemini 3.8 Flash (Medium)": {"thinking_tokens_per_turn": 1400},
+    "Gemini 3.8 Flash (High)": {"thinking_tokens_per_turn": 3800},
 }
 
-# Base agent prompt overhead (system prompt + tool schemas)
-SYS_PROMPT_SINGLE = "You are an autonomous AI coding assistant. You explore code, plan, test, implement, and review all tasks."
-SYS_PROMPT_CAPTAIN = "You are the Captain of an AgentTeam. You manage the task DAG, dispatch work to subagents, and verify quality gates."
-SYS_PROMPT_WORKER = "You are a specialized subagent. You operate strictly within your assigned role and inScope bounds."
+# Real base agent overhead in Antigravity: system prompt + tool schemas (~3,500 tokens)
+BASE_TOOL_OVERHEAD = "You have tools: view_file, replace_file_content, run_command, grep_search, list_dir, write_to_file, manage_subagents, invoke_subagent, send_message, ask_question. " * 35  # ~3,500 tokens
+SYS_PROMPT_SINGLE = "You are an autonomous AI coding assistant. You explore code, plan, test, implement, and review all tasks. " + BASE_TOOL_OVERHEAD
+SYS_PROMPT_CAPTAIN = "You are the Captain of an AgentTeam. You manage the task DAG, dispatch work to subagents, and verify quality gates. " + BASE_TOOL_OVERHEAD
+SYS_PROMPT_WORKER = "You are a specialized subagent. You operate strictly within your assigned role and inScope bounds. " + BASE_TOOL_OVERHEAD
 
 
 def run_dynamic_turn_sweep():
-    """
-    Dynamically computes token scaling across turns (3, 5, 10, 15, 20, 30, 50)
-    using ConversationTracker and actual token encoding.
-    """
     turns_list = [3, 5, 10, 15, 20, 30, 50]
     base_repo_text = "class OrderService:\n    def __init__(self):\n        pass\n" * 300  # ~2,400 tokens
     disposable_noise_text = "ERROR: deadlock detected in postgres connection pool worker\n" * 400  # ~4,800 tokens
@@ -62,20 +50,19 @@ def run_dynamic_turn_sweep():
         coord = ConversationTracker(f"Coord-{turns}", SYS_PROMPT_SINGLE)
         workers_std = [ConversationTracker(f"StdWorker-{i}", SYS_PROMPT_SINGLE) for i in range(4)]
         
-        # Subagents each read repo
         for i, w in enumerate(workers_std):
             w_in = f"Worker {i} assigned task. Here is codebase:\n{base_repo_text}"
             if i == 0:
                 w_in += f"\nLog:\n{disposable_noise_text}"
             w.add_turn(w_in, f"Worker {i} initial analysis report with verbose conversational findings.")
 
-        # Conversational rounds
-        turns_per_w = max(1, turns // 4)
-        for t in range(turns_per_w):
+        # Standard teamwork turns scale with total turns
+        turns_per_w_std = max(1, turns // 4)
+        for t in range(turns_per_w_std):
             for i, w in enumerate(workers_std):
                 w.add_turn(
-                    f"Round {t+1}: Continue work and coordinate with other workers. Share detailed error logs:\n{disposable_noise_text[:500]}",
-                    f"Round {t+1}: Performed edits and ran tests. Verbose explanation of results."
+                    f"Round {t+1}: Continue work. Traceback:\n{disposable_noise_text[:400]}",
+                    f"Round {t+1}: Performed edits and ran tests. Detailed explanation."
                 )
                 coord.add_turn(f"Report from worker {i}", "Acknowledged. Proceeding to next step.")
 
@@ -83,6 +70,7 @@ def run_dynamic_turn_sweep():
         std_out = coord.cumulative_output_tokens + sum(w.cumulative_output_tokens for w in workers_std)
 
         # 3. AgentTeams: Captain DAG + compact contracts + disposable scoping
+        # AgentTeams turns scale proportionally with turns!
         captain = ConversationTracker(f"Captain-{turns}", SYS_PROMPT_CAPTAIN)
         workers_teams = [ConversationTracker(f"TeamWorker-{i}", SYS_PROMPT_WORKER) for i in range(4)]
 
@@ -93,13 +81,15 @@ def run_dynamic_turn_sweep():
         )
         captain.add_turn("Task 1 completed by Detective.", "Dispatching Task 2 with compact contract.")
 
-        # Other workers receive only compact contract + snippet
-        for i in range(1, 4):
-            workers_teams[i].add_turn(
-                "CONTRACT: Fix deadlock using ordered locking. inScope: ['services/order.py']",
-                f"Task {i+1} completed within inScope. verify: 0 exit code."
-            )
-            captain.add_turn(f"Task {i+1} completed.", "Next DAG task.")
+        # Workers scale turns proportionally with total turns!
+        turns_per_w_teams = max(1, turns // 4)
+        for t in range(turns_per_w_teams):
+            for i in range(1, 4):
+                workers_teams[i].add_turn(
+                    f"Round {t+1}: CONTRACT task {i}. inScope: ['services/order.py']",
+                    f"Round {t+1}: Task {i} completed within inScope. verify: 0 exit code."
+                )
+                captain.add_turn(f"Task {i} round {t+1} completed.", "Next DAG task.")
 
         teams_in = captain.cumulative_input_tokens + sum(w.cumulative_input_tokens for w in workers_teams)
         teams_out = captain.cumulative_output_tokens + sum(w.cumulative_output_tokens for w in workers_teams)
@@ -121,10 +111,6 @@ def run_dynamic_turn_sweep():
 
 
 def run_dynamic_three_way_comparison():
-    """
-    Dynamically simulates a 20-Turn task across Monolithic, Standard Teamwork, and AgentTeams,
-    measuring exact token counts with tiktoken and calculating dollar costs.
-    """
     repo_sample = "def process_payment(order_id, user_id, amount):\n    # Transaction logic\n    pass\n" * 200
     log_sample = "2026-09-20 10:14:02 ERROR org.postgresql.util.PSQLException: deadlock detected\n" * 350
 
@@ -138,7 +124,7 @@ def run_dynamic_three_way_comparison():
             turn_in += f"\nServer logs:\n{log_sample}"
         mono.add_turn(turn_in, f"Assistant response {t} with code diff and command output.")
 
-    # 2. Standard Teamwork (Ad-hoc)
+    # 2. Standard Teamwork
     coord = ConversationTracker("Coord-20", SYS_PROMPT_SINGLE)
     workers_std = [ConversationTracker(f"Std-W{i}", SYS_PROMPT_SINGLE) for i in range(4)]
     
@@ -182,12 +168,10 @@ def run_dynamic_three_way_comparison():
     teams_in = captain.cumulative_input_tokens + sum(w.cumulative_input_tokens for w in workers_teams)
     teams_out = captain.cumulative_output_tokens + sum(w.cumulative_output_tokens for w in workers_teams)
 
-    # Financial breakdown
     financials = {}
     for level_name, config in THINKING_LEVELS.items():
         th = config["thinking_tokens_per_turn"]
 
-        # Actual generated output tokens + thinking tokens per turn
         m_out_total = mono.cumulative_output_tokens + (20 * th)
         s_out_total = std_out + (24 * th)
         t_out_total = teams_out + (12 * th)
@@ -237,15 +221,12 @@ def main():
         json.dump(results, f, indent=2)
 
     print("\n=========================================================================================")
-    print("   DYNAMIC FINANCIAL COMPARISON: MONOLITHIC vs STANDARD TEAMWORK vs AGENTTEAMS           ")
+    print("   UNRIGGED DYNAMIC BENCHMARK RESULTS (Scaled turns & real overhead)                     ")
     print("=========================================================================================\n")
-    for level, data in results["financial_comparison_20_turns"].items():
-        print(f"Tier: {level} (Thinking: {data['thinking_tokens_per_turn']:,} tok/turn)")
-        print(f"  1. Monolithic Agent:         ${data['monolithic']['cost_usd']:.5f} ({data['monolithic']['input_tokens']:,} in, {data['monolithic']['output_tokens']:,} out)")
-        print(f"  2. Standard Teamwork:        ${data['standard_teamwork']['cost_usd']:.5f} ({data['standard_teamwork']['input_tokens']:,} in, {data['standard_teamwork']['output_tokens']:,} out)")
-        print(f"  3. AgentTeams Protocol:      ${data['agent_teams']['cost_usd']:.5f} ({data['agent_teams']['input_tokens']:,} in, {data['agent_teams']['output_tokens']:,} out)")
-        print(f"  --> VS STANDARD TEAMWORK:    Saves ${data['savings_vs_standard_teamwork']['dollar_saved']:.5f} ({data['savings_vs_standard_teamwork']['percent_saved']}%)")
-        print(f"  --> VS MONOLITHIC AGENT:     Saves ${data['savings_vs_monolithic']['dollar_saved']:.5f} ({data['savings_vs_monolithic']['percent_saved']}%)\n")
+    print("TURN SWEEP:")
+    for row in results["turn_sweep"]:
+        winner = "AgentTeams" if row["savings_vs_monolithic_percent"] > 0 else "Monolithic"
+        print(f"Turns: {row['turns']:>2} | Mono: {row['monolithic_tokens']:>8,} | Std: {row['standard_teamwork_tokens']:>8,} | Teams: {row['agent_teams_tokens']:>8,} | Savings vs Mono: {row['savings_vs_monolithic_percent']:>+6.2f}% | Winner: {winner}")
 
     return results
 

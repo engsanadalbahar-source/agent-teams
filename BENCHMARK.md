@@ -61,9 +61,9 @@ Rates: **\$0.075 / 1M input tokens**, **\$0.30 / 1M output/thinking tokens**.
 
 | Model Configuration | Thinking Tokens / Turn | Monolithic Single Agent | Standard Antigravity Teamwork | AgentTeams Protocol (DAG + Contracts) | Savings vs Standard Teamwork | Savings vs Monolithic |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Gemini 3.8 Flash (Low)** | ~350 tok/turn | \$0.0149 | \$0.0123 | **\$0.0020** | **+84.24%** (-\$0.0104) | **+86.95%** (-\$0.0130) |
-| **Gemini 3.8 Flash (Medium)** | ~1,400 tok/turn | \$0.0212 | \$0.0199 | **\$0.0057** | **+71.23%** (-\$0.0142) | **+73.01%** (-\$0.0155) |
-| **Gemini 3.8 Flash (High)** | ~3,800 tok/turn | \$0.0356 | \$0.0372 | **\$0.0144** | **+61.36%** (-\$0.0228) | **+59.66%** (-\$0.0212) |
+| **Gemini 3.8 Flash (Low)** | ~350 tok/turn | \$0.0169 | \$0.0163 | **\$0.0027** | **+83.20%** (-\$0.0136) | **+83.77%** (-\$0.0142) |
+| **Gemini 3.8 Flash (Medium)** | ~1,400 tok/turn | \$0.0232 | \$0.0239 | **\$0.0065** | **+72.69%** (-\$0.0174) | **+71.89%** (-\$0.0167) |
+| **Gemini 3.8 Flash (High)** | ~3,800 tok/turn | \$0.0376 | \$0.0412 | **\$0.0152** | **+63.17%** (-\$0.0260) | **+59.68%** (-\$0.0224) |
 
 *Why AgentTeams is 23%–29% Cheaper Than Standard Teamwork:*
 1. **Compact Contracts vs. Conversational Handoffs**: Standard teamwork uses verbose conversational instructions (~1,200 tokens per message) between subagents, whereas AgentTeams passes compact ~300-token YAML contracts.
@@ -76,7 +76,36 @@ Rates: **\$0.075 / 1M input tokens**, **\$0.30 / 1M output/thinking tokens**.
 
 ---
 
-## 4. The Crossover Point: When Does Multi-Agent Make Sense?
+## 4. Live Empirical Validation in Antigravity (Untruncated Transcripts)
+
+To test these dynamics in production, we executed both architectures live in **Google Antigravity** on the identical problem: implement a thread-safe `TokenBucket` rate-limiter, write comprehensive unit and concurrency tests, and conduct a code review.
+
+Measured directly from raw, untruncated transcript logs (`transcript_full.jsonl`):
+
+1. **Real Monolithic Single Agent (`8e45e081-55f1-433a-8900-cdafb7afb923`)**:
+   - Implemented code, wrote 34 tests, ran pytest, self-reviewed in 16 steps.
+   - **Input Tokens**: `25,669` | **Output Tokens**: `4,572`
+   - **Total Billed Tokens**: **`30,241`** tokens
+   - **Measured API Cost**: **\$0.00330**
+
+2. **Real AgentTeams Run (QA + Implementer + Reviewer + Captain)**:
+   - **QA Subagent (`0fa36434-e187-4669-923e-f81818cf210c`)**: `48,155` tokens (18 steps)
+   - **Implementer Subagent (`b39f54d0-0a21-457c-901e-565ed810390b`)**: `46,920` tokens (25 steps)
+   - **Reviewer Subagent (`f21c2b4e-ffc5-46ee-ac57-a919d301e703`)**: `54,223` tokens (25 steps)
+   - **Captain Orchestration**: `5,700` tokens (parent session overhead)
+   - **Total Billed Tokens**: **`154,998`** tokens
+   - **Measured API Cost**: **\$0.01362**
+
+| Architecture | Measured Total Tokens | Measured API Cost | Verdict on This Task |
+| :--- | :---: | :---: | :--- |
+| **Monolithic Single Agent** | **`30,241`** | **\$0.00330** | 🏆 **Winner on small tasks (5.13x cheaper)** |
+| **AgentTeams Protocol** | **`154,998`** | **\$0.01362** | ❌ **Consumed +124,757 more tokens** |
+
+> **Key Takeaway**: On small tasks (< 10 turns, 1–2 files), single-agent is **5.13x cheaper**. AgentTeams should be deployed when task complexity, context pollution, or independent verification guarantees justify the ~3,500 token per-subagent setup overhead.
+
+---
+
+## 5. The Crossover Point: When Does Multi-Agent Make Sense?
 
 <p align="center">
   <img src="assets/chart_token_scaling.png" alt="Token Scaling Curve: Monolithic vs Standard Teamwork vs AgentTeams" width="800"/>
@@ -120,14 +149,25 @@ Where:
 
 ---
 
-## 4. How to Run the Benchmark
+## 6. How to Run the Benchmark
 
-The benchmark scripts are located in `benchmarks/`:
+The benchmark scripts are located in `benchmarks/` and `live_test/`:
 
 ```bash
-cd benchmarks
+# Set up virtual environment
 python3 -m venv .venv
 source .venv/bin/activate
-pip install tiktoken
-python3 honest_token_analysis.py
+pip install tiktoken pytest matplotlib
+
+# Run the unrigged scaling simulation
+python3 benchmarks/extended_benchmarks.py
+
+# Generate visualization charts
+python3 benchmarks/generate_charts.py
+
+# Re-verify the live Antigravity test transcripts
+python3 live_test/compare_real_runs.py
+
+# Run DAG and contract verification tests
+pytest benchmarks/test_dag_contracts.py
 ```

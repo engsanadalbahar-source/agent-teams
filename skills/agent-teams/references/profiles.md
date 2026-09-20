@@ -8,11 +8,11 @@ This reference contains ready-to-use profiles and task DAG definitions for commo
 
 ### Roster
 - **Captain**: Primary session (`inherit`)
-- **Analyst**: `flash` — Product & acceptance criteria
-- **Architect**: `pro` — Domain modeling & contract definition
+- **Analyst**: `inherit` — Product & acceptance criteria
+- **Architect**: `inherit` — Domain modeling & contract definition
 - **Implementer**: `inherit` — TDD code execution
-- **QA**: `flash` — Unit & integration test execution
-- **Reviewer**: `pro` — Independent correctness & security audit
+- **QA**: `inherit` — Unit & integration test execution
+- **Reviewer**: `inherit` — Independent correctness & security audit
 
 ### DAG Specification
 ```yaml
@@ -69,9 +69,9 @@ tasks:
 
 ### Roster
 - **Captain**: Primary session (`inherit`)
-- **Detective**: `flash` — Root cause analysis & minimal repro test
+- **Detective**: `inherit` — Root cause analysis & minimal repro test
 - **Implementer**: `inherit` — Minimal surgical patch
-- **Reviewer**: `pro` — Scope & regression review
+- **Reviewer**: `inherit` — Scope & regression review
 
 ### DAG Specification
 ```yaml

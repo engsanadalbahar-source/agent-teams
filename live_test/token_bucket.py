@@ -1,3 +1,4 @@
+import math
 import threading
 import time
 
@@ -6,10 +7,10 @@ class TokenBucket:
     """A thread-safe token bucket rate limiter implementation."""
 
     def __init__(self, capacity: int, refill_rate_per_sec: float):
-        if capacity <= 0:
-            raise ValueError(f"Capacity must be positive, got {capacity}")
-        if refill_rate_per_sec <= 0:
-            raise ValueError(f"Refill rate must be positive, got {refill_rate_per_sec}")
+        if math.isnan(capacity) or math.isinf(capacity) or capacity <= 0:
+            raise ValueError(f"Capacity must be a finite positive number, got {capacity}")
+        if math.isnan(refill_rate_per_sec) or math.isinf(refill_rate_per_sec) or refill_rate_per_sec <= 0:
+            raise ValueError(f"Refill rate must be a finite positive number, got {refill_rate_per_sec}")
 
         self.capacity: float = float(capacity)
         self.refill_rate_per_sec: float = float(refill_rate_per_sec)
@@ -41,8 +42,8 @@ class TokenBucket:
         Raises:
             ValueError: If tokens <= 0.
         """
-        if tokens <= 0:
-            raise ValueError(f"Tokens to consume must be positive, got {tokens}")
+        if math.isnan(tokens) or math.isinf(tokens) or tokens <= 0:
+            raise ValueError(f"Tokens to consume must be a finite positive number, got {tokens}")
 
         with self._lock:
             self._refill()

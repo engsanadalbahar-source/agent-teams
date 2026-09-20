@@ -6,6 +6,9 @@ import pytest
 import fnmatch
 
 
+from pathlib import PurePosixPath
+
+
 class TaskContract:
     def __init__(self, task_id: str, kind: str, assignee: str, dependencies: list[str], in_scope: list[str] = None):
         self.id = task_id
@@ -21,8 +24,9 @@ class TaskContract:
 
     def is_file_in_scope(self, file_path: str) -> bool:
         if not self.in_scope:
-            return True
-        return any(fnmatch.fnmatch(file_path, pattern) for pattern in self.in_scope)
+            return False  # Fail-closed: empty scope rejects all file edits
+        posix_path = PurePosixPath(file_path)
+        return any(posix_path.match(pattern) for pattern in self.in_scope)
 
 
 class DAG:
