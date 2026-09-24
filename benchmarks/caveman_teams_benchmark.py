@@ -200,7 +200,7 @@ def run_live_task_v1_v2_comparison():
 
     # Real Monolith
     mono_tot = real["monolithic"]["total_tokens"]
-    mono_cost = real["verdict"]["monolithic_cost_usd"]
+    mono_cost = real["verdict"]["mono_cost_usd"]
 
     # Standard Teamwork
     std_tot = real["standard_teamwork"]["total_tokens"]
@@ -210,24 +210,21 @@ def run_live_task_v1_v2_comparison():
     teams_tot = real["agent_teams"]["total_billed_tokens"]
     teams_cost = real["agent_teams"]["cost_usd"]
 
-    # CaveAgents v1 (Measured: 115,647 tokens)
-    v1_tot = 115647
-    v1_cost = 0.00951
+    # Real CaveAgents v2 (100% Live Run on TokenBucket)
+    c2_tot = real["caveagents_v2"]["total_billed_tokens"]
+    c2_cost = real["caveagents_v2"]["cost_usd"]
 
-    # CaveAgents v2 (Partitioned Implementer + Scout + Direct P2P):
-    # - Search recon moved to disposable Scout (saves 8,500 re-read tokens)
-    # - Coder scope partitioned: 1 implementer for token_bucket.py, 1 for concurrency stress tests
-    # - Captain overhead reduced from 5,700 -> 1,800 tokens (no chat relay)
-    # Result: ~88,500 total billed tokens!
-    v2_tot = 88420
-    v2_cost = round((83200 * GEMINI_FLASH_RATES["input"]) + (5220 * GEMINI_FLASH_RATES["output"]), 5)
+    # CaveAgents v1 (Measured previously on SlidingWindowLimiter live run: 120,134 tokens)
+    # On TokenBucket specifically, v1 has not been executed live; simulation predicts ~115k.
+    v1_tot = 120134
+    v1_cost = 0.01072
 
     return {
-        "standard_teamwork": {"tokens": std_tot, "cost": std_cost},
-        "agent_teams_standard": {"tokens": teams_tot, "cost": teams_cost},
-        "caveagents_v1": {"tokens": v1_tot, "cost": v1_cost},
-        "caveagents_v2": {"tokens": v2_tot, "cost": v2_cost},
-        "monolithic_standard": {"tokens": mono_tot, "cost": mono_cost},
+        "standard_teamwork": {"tokens": std_tot, "cost": std_cost, "status": "Real Live Run (TokenBucket)"},
+        "agent_teams_standard": {"tokens": teams_tot, "cost": teams_cost, "status": "Real Live Run (TokenBucket)"},
+        "caveagents_v2": {"tokens": c2_tot, "cost": c2_cost, "status": "Real Live Run (TokenBucket)"},
+        "caveagents_v1": {"tokens": v1_tot, "cost": v1_cost, "status": "Real Live Run (SlidingWindow)"},
+        "monolithic_standard": {"tokens": mono_tot, "cost": mono_cost, "status": "Real Live Run (TokenBucket)"},
     }
 
 

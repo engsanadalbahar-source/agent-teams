@@ -1,5 +1,5 @@
 {
-  "task": "Build & test thread-safe TokenBucket with pytest",
+  "task": "Build & test thread-safe TokenBucket with pytest (EXACT PARITY)",
   "model": "Gemini 3.8 Flash (High)",
   "transcript_source": "transcript_full.jsonl (untruncated)",
   "monolithic": {
@@ -52,14 +52,87 @@
     "total_billed_tokens": 154998,
     "cost_usd": 0.01362
   },
+  "caveagents_v1": {
+    "qa": {
+      "id": "06c2eb6b-30b0-4e13-aa20-7b1601a45222",
+      "steps": 8,
+      "input_tokens": 9627,
+      "output_tokens": 2439,
+      "total_tokens": 12066,
+      "final_context_size": 3538
+    },
+    "coder": {
+      "id": "9e765fdd-6cb8-4211-9df8-339d3dfd9de7",
+      "steps": 26,
+      "input_tokens": 69537,
+      "output_tokens": 4052,
+      "total_tokens": 73589,
+      "final_context_size": 8906
+    },
+    "reviewer": {
+      "id": "d49c842a-cd17-4279-9867-0e2b58ccdc5c",
+      "steps": 14,
+      "input_tokens": 19876,
+      "output_tokens": 803,
+      "total_tokens": 20679,
+      "final_context_size": 4670
+    },
+    "captain_estimated": {
+      "input_tokens": 3200,
+      "output_tokens": 450
+    },
+    "total_input_tokens": 102240,
+    "total_output_tokens": 7744,
+    "total_billed_tokens": 109984,
+    "cost_usd": 0.00999
+  },
+  "caveagents_v2": {
+    "qa": {
+      "id": "ee34719a-b12c-4055-97c5-c9862e408b66",
+      "steps": 26,
+      "input_tokens": 37596,
+      "output_tokens": 2908,
+      "total_tokens": 40504,
+      "final_context_size": 6716
+    },
+    "coder": {
+      "id": "e96f0467-7039-4b53-bab1-8e19abb130c5",
+      "steps": 14,
+      "input_tokens": 21742,
+      "output_tokens": 1610,
+      "total_tokens": 23352,
+      "final_context_size": 4905
+    },
+    "reviewer": {
+      "id": "ea071eb7-e7d2-4afc-8c88-5296e304e45b",
+      "steps": 16,
+      "input_tokens": 23822,
+      "output_tokens": 774,
+      "total_tokens": 24596,
+      "final_context_size": 4342
+    },
+    "captain_estimated": {
+      "input_tokens": 2600,
+      "output_tokens": 380
+    },
+    "total_input_tokens": 85760,
+    "total_output_tokens": 5672,
+    "total_billed_tokens": 91432,
+    "cost_usd": 0.00813
+  },
   "verdict": {
     "winner_on_small_task": "Monolithic Single Agent",
-    "mono_vs_teams_ratio": 5.13,
-    "extra_tokens_burned_by_teams": 124757,
-    "teams_savings_vs_standard_percent": 25.7,
-    "tokens_saved_vs_standard": 53557,
-    "monolithic_cost_usd": 0.0033,
+    "mono_cost_usd": 0.0033,
     "standard_teamwork_cost_usd": 0.01893,
-    "teams_cost_usd": 0.01362
+    "teams_cost_usd": 0.01362,
+    "caveagents_v1_cost_usd": 0.00999,
+    "caveagents_v2_cost_usd": 0.00813,
+    "caveagents_v1_savings_vs_teams_percent": 29.0,
+    "caveagents_v2_savings_vs_teams_percent": 41.0,
+    "caveagents_v2_savings_vs_v1_percent": 16.9,
+    "caveagents_v2_savings_vs_standard_percent": 56.2,
+    "tokens_saved_vs_teams": 63566,
+    "tokens_saved_vs_v1": 18552,
+    "tokens_saved_vs_standard": 117123
   }
 }

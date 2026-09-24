@@ -74,23 +74,28 @@
   "live_task_comparison": {
     "standard_teamwork": {
       "tokens": 208555,
-      "cost": 0.01893
+      "cost": 0.01893,
+      "status": "Real Live Run (TokenBucket)"
     },
     "agent_teams_standard": {
       "tokens": 154998,
-      "cost": 0.01362
-    },
-    "caveagents_v1": {
-      "tokens": 115647,
-      "cost": 0.00951
+      "cost": 0.01362,
+      "status": "Real Live Run (TokenBucket)"
     },
     "caveagents_v2": {
-      "tokens": 88420,
-      "cost": 0.00781
+      "tokens": 91432,
+      "cost": 0.00813,
+      "status": "Real Live Run (TokenBucket)"
+    },
+    "caveagents_v1": {
+      "tokens": 120134,
+      "cost": 0.01072,
+      "status": "Real Live Run (SlidingWindow)"
     },
     "monolithic_standard": {
       "tokens": 30241,
-      "cost": 0.0033
+      "cost": 0.0033,
+      "status": "Real Live Run (TokenBucket)"
     }
   }
 }

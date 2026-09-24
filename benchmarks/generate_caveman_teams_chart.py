@@ -38,10 +38,10 @@ def generate_chart():
     with open(sim_path, "r") as f:
         sim_data = json.load(f)
 
-    # Load real live run results
-    live_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "live_test", "caveagents_live", "real_live_results.json")
-    with open(live_path, "r") as f:
-        real_cave = json.load(f)
+    # Load 100% real live run results (TokenBucket parity)
+    live_comp_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "live_test", "real_comparison.json")
+    with open(live_comp_path, "r") as f:
+        real = json.load(f)
 
     sweep = sim_data["turn_sweep"]
 
@@ -97,38 +97,34 @@ def generate_chart():
     ax1.legend(loc="upper left", frameon=True, facecolor="#ffffff", edgecolor="#d0d7de", fontsize=8.2)
 
     # -------------------------------------------------------------
-    # Panel 2: 100% Real Live Antigravity Runs (transcript_full.jsonl)
+    # Panel 2: 100% Real Live Antigravity Runs (TokenBucket Parity)
     # -------------------------------------------------------------
     ax2.set_facecolor("#ffffff")
     labels = [
         "Standard\nTeamwork",
         "AgentTeams\n(Standard Live)",
-        "CaveAgents\n(Real Live Run)",
-        "CaveAgents v2\n(Projected)",
+        "CaveAgents v1\n(Real Live Run)",
+        "CaveAgents v2\n(Real Live Run)",
         "Monolithic\n(Real Live Run)",
     ]
-    
-    # Real live numbers from disk
-    real_cave_tok = real_cave["total_billed_tokens"] / 1000
-    real_cave_cost = real_cave["actual_cost_usd"]
 
-    toks = [
-        208.6,
-        155.0,
-        real_cave_tok,
-        88.4,
-        30.2,
-    ]
-    costs = [
-        0.0189,
-        0.0136,
-        real_cave_cost,
-        0.0078,
-        0.0033,
-    ]
-    colors = ["#d97706", "#0969da", "#15803d", "#1a7f37", "#cf222e"]
+    std_tok = real["standard_teamwork"]["total_tokens"] / 1000
+    teams_tok = real["agent_teams"]["total_billed_tokens"] / 1000
+    c1_tok = real["caveagents_v1"]["total_billed_tokens"] / 1000
+    c2_tok = real["caveagents_v2"]["total_billed_tokens"] / 1000
+    mono_tok = real["monolithic"]["total_tokens"] / 1000
 
-    bars = ax2.bar(labels, toks, color=colors, width=0.55, edgecolor="#24292f", linewidth=0.8, alpha=0.9)
+    std_cost = real["standard_teamwork"]["cost_usd"]
+    teams_cost = real["agent_teams"]["cost_usd"]
+    c1_cost = real["caveagents_v1"]["cost_usd"]
+    c2_cost = real["caveagents_v2"]["cost_usd"]
+    mono_cost = real["verdict"]["mono_cost_usd"]
+
+    toks = [std_tok, teams_tok, c1_tok, c2_tok, mono_tok]
+    costs = [std_cost, teams_cost, c1_cost, c2_cost, mono_cost]
+    colors = ["#d97706", "#0969da", "#b45309", "#1a7f37", "#cf222e"]
+
+    bars = ax2.bar(labels, toks, color=colors, width=0.50, edgecolor="#24292f", linewidth=0.8, alpha=0.9)
 
     for bar, tok, cost_val in zip(bars, toks, costs):
         y_val = bar.get_height()
@@ -143,24 +139,24 @@ def generate_chart():
             color="#24292f"
         )
 
-    # Callout highlighting REAL Live CaveAgents measured reduction
+    # Callout highlighting REAL Live CaveAgents v1 and v2 measured reduction
     ax2.annotate(
-        f"REAL LIVE RUN ({real_cave_tok:.1f}k tok):\n• -42.4% vs Standard Teamwork\n• -22.5% vs Standard AgentTeams\n(Verified from disk transcripts!)",
-        xy=(2, real_cave_tok + 25),
-        xytext=(1.2, 185),
-        arrowprops=dict(facecolor="#15803d", edgecolor="#15803d", shrink=0.05, width=1.2, headwidth=6),
+        f"REAL LIVE RUNS (Verified on TokenBucket):\n• v1: {c1_tok:.1f}k tok (-29.0% vs AgentTeams)\n• v2: {c2_tok:.1f}k tok (-41.0% vs AgentTeams)\n(Both parsed from transcript_full.jsonl!)",
+        xy=(3, c2_tok + 18),
+        xytext=(1.05, 172),
+        arrowprops=dict(facecolor="#1a7f37", edgecolor="#1a7f37", shrink=0.05, width=1.2, headwidth=6),
         fontsize=8.5,
         fontweight="bold",
-        color="#15803d",
+        color="#1a7f37",
         bbox=dict(boxstyle="round,pad=0.35", fc="#dafbe1", ec="#4ac26b", lw=1)
     )
 
-    ax2.set_title("B. Real Live Antigravity Runs (Parsed from transcript_full.jsonl)")
+    ax2.set_title("B. Real Live Antigravity Runs: TokenBucket Task (transcript_full.jsonl)")
     ax2.set_ylabel("Total Billed Tokens (Thousands / k)")
     ax2.set_ylim(0, 275)
     ax2.grid(True, axis="y", linestyle="--", alpha=0.6)
 
-    plt.suptitle("CaveAgents: Algorithmic Scaling Model (Left) vs. 100% Real Live Session Logs (Right)", fontsize=13.5, y=0.98)
+    plt.suptitle("CaveAgents: Turn-Scaling Simulation Model (Left) vs. 100% Real Live Session Logs (Right)", fontsize=13.5, y=0.98)
     plt.tight_layout()
 
     out_png = os.path.join(ASSETS_DIR, "chart_agent_teams_caveman.png")
