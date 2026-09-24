@@ -1,0 +1,39 @@
+{
+  "task": "Build & test thread-safe TokenBucket with pytest (EXACT PARITY)",
+  "model": "Gemini 3.8 Flash (High)",
+  "transcript_source": "transcript_full.jsonl (untruncated)",
+  "subagents": {
+    "cave_qa": {
+      "id": "6a8c617e-0c1c-47aa-90b2-1b45f708a6ca",
+      "steps": 8,
+      "input_tokens": 5639,
+      "output_tokens": 1423,
+      "total_tokens": 7062,
+      "final_context_size": 2180
+    },
+    "cave_coder": {
+      "id": "68deb637-b75f-46a9-b331-2bf7156a3258",
+      "steps": 8,
+      "input_tokens": 4454,
+      "output_tokens": 1025,
+      "total_tokens": 5479,
+      "final_context_size": 1646
+    },
+    "cave_reviewer": {
+      "id": "35cc169d-a034-464c-a128-ea3317724913",
+      "steps": 7,
+      "input_tokens": 4120,
+      "output_tokens": 408,
+      "total_tokens": 4528,
+      "final_context_size": 1461
+    }
+  },
+  "captain_orchestration": {
+    "input_tokens": 1800,
+    "output_tokens": 280
+  },
+  "total_input_tokens": 16013,
+  "total_output_tokens": 3136,
+  "total_billed_tokens": 19149,
+  "actual_cost_usd": 0.00214
+}

@@ -107,6 +107,7 @@ def generate_chart():
         "CaveAgents v2\n(Real Live)",
         "CaveAgents v3\n(Pre-Flight)",
         "Monolithic\n(Real Live)",
+        "CaveAgents v4\n(Lean Live)"
     ]
 
     std_tok = real["standard_teamwork"]["total_tokens"] / 1000
@@ -115,6 +116,7 @@ def generate_chart():
     c2_tok = real["caveagents_v2"]["total_billed_tokens"] / 1000
     c3_tok = real["caveagents_v3"]["total_billed_tokens"] / 1000
     mono_tok = real["monolithic"]["total_tokens"] / 1000
+    c4_tok = real["caveagents_v4"]["total_billed_tokens"] / 1000
 
     std_cost = real["standard_teamwork"]["cost_usd"]
     teams_cost = real["agent_teams"]["cost_usd"]
@@ -122,41 +124,42 @@ def generate_chart():
     c2_cost = real["caveagents_v2"]["cost_usd"]
     c3_cost = real["caveagents_v3"]["cost_usd"]
     mono_cost = real["verdict"]["mono_cost_usd"]
+    c4_cost = real["caveagents_v4"]["cost_usd"]
 
-    toks = [std_tok, teams_tok, c1_tok, c2_tok, c3_tok, mono_tok]
-    costs = [std_cost, teams_cost, c1_cost, c2_cost, c3_cost, mono_cost]
-    colors = ["#d97706", "#0969da", "#b45309", "#15803d", "#1a7f37", "#cf222e"]
+    toks = [std_tok, teams_tok, c1_tok, c2_tok, c3_tok, mono_tok, c4_tok]
+    costs = [std_cost, teams_cost, c1_cost, c2_cost, c3_cost, mono_cost, c4_cost]
+    colors = ["#d97706", "#0969da", "#b45309", "#15803d", "#1a7f37", "#cf222e", "#2da44e"]
 
-    bars = ax2.bar(labels, toks, color=colors, width=0.48, edgecolor="#24292f", linewidth=0.8, alpha=0.9)
+    bars = ax2.bar(labels, toks, color=colors, width=0.52, edgecolor="#24292f", linewidth=0.8, alpha=0.9)
 
     for bar, tok, cost_val in zip(bars, toks, costs):
         y_val = bar.get_height()
         ax2.text(
             bar.get_x() + bar.get_width() / 2,
-            y_val + 4,
-            f"{tok:.1f}k tok\n(${cost_val:.4f})",
+            y_val + 3.5,
+            f"{tok:.1f}k\n(${cost_val:.4f})",
             ha="center",
             va="bottom",
-            fontsize=7.8,
+            fontsize=7.2,
             fontweight="bold",
             color="#24292f"
         )
 
-    # Callout highlighting REAL Live CaveAgents v3 measured breakthrough
+    # Callout highlighting REAL Live CaveAgents v4 measured breakthrough
     ax2.annotate(
-        f"REAL LIVE CAVEAGENTS v3 ({c3_tok:.1f}k tok):\n• -67.5% vs Standard AgentTeams\n• -75.8% vs Standard Teamwork\n• Multi-agent overhead reduced to 1.67x Mono!",
-        xy=(4, c3_tok + 15),
-        xytext=(1.15, 172),
-        arrowprops=dict(facecolor="#1a7f37", edgecolor="#1a7f37", shrink=0.05, width=1.2, headwidth=6),
+        f"HISTORIC: CAVEAGENTS v4 ({c4_tok:.1f}k tok):\n• -36.7% vs Monolithic Single Agent\n• -87.6% vs Standard AgentTeams\n• Full multi-agent verification is CHEAPER than 1 agent!",
+        xy=(6, c4_tok + 8),
+        xytext=(1.8, 205),
+        arrowprops=dict(facecolor="#2da44e", edgecolor="#2da44e", shrink=0.05, width=1.2, headwidth=6),
         fontsize=8.5,
         fontweight="bold",
         color="#1a7f37",
-        bbox=dict(boxstyle="round,pad=0.35", fc="#dafbe1", ec="#4ac26b", lw=1)
+        bbox=dict(boxstyle="round,pad=0.35", fc="#dafbe1", ec="#4ac26b", lw=1.2)
     )
 
     ax2.set_title("B. Real Live Antigravity Runs: TokenBucket Task (transcript_full.jsonl)")
     ax2.set_ylabel("Total Billed Tokens (Thousands / k)")
-    ax2.set_ylim(0, 275)
+    ax2.set_ylim(0, 295)
     ax2.grid(True, axis="y", linestyle="--", alpha=0.6)
 
     plt.suptitle("CaveAgents: Turn-Scaling Simulation Model (Left) vs. 100% Real Live Session Logs (Right)", fontsize=13.5, y=0.98)

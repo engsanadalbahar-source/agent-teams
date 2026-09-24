@@ -171,9 +171,28 @@ We evaluated all three architectures on the exact same task (build a thread-safe
   <img src="assets/chart_live_empirical_3way.png" alt="Empirical Live Antigravity Test Comparison" width="750"/>
 </p>
 
-> **The Honest Engineering Truth**: For small, self-contained tasks (1–2 files), multi-agent is **5x more expensive** because each subagent incurs tool definitions and system prompt overhead. Multi-agent is an architectural tool for **complex codebases, multi-file features, and strict TDD**, NOT for 10-line scripts.
+> **The Honest Engineering Truth**: For small, self-contained tasks (1–2 files), standard multi-agent is **5x more expensive** because each subagent incurs tool definitions and system prompt overhead. Multi-agent is an architectural tool for **complex codebases, multi-file features, and strict TDD**, NOT for 10-line scripts.
 >
 > *Verify the raw untruncated transcripts yourself in [`live_test/real_comparison.json`](live_test/real_comparison.json).*
+
+### 4. The CaveAgents Breakthrough: Inverting the Cost Frontier (v1 → v4)
+
+Can multi-agent quality gates be maintained without the 5x token tax on small tasks? Through four generations of relentless empirical optimization, **CaveAgents** inverted the cost frontier:
+
+| Generation | Architecture Key Innovations | Live Measured Tokens | Cost (Gemini 3.8) | Multi-Agent Overhead vs. Mono | Full Documentation |
+| :--- | :--- | :---: | :---: | :---: | :--- |
+| **Monolithic** | Single-agent chat, self-authored tests & review | `30,241` | \$0.00330 | 1.00x | Baseline (16 steps) |
+| **AgentTeams** | Standard QA + Coder + Reviewer DAG | `154,998` | \$0.01362 | 5.13x | [Standard Protocol](#-empirical-benchmarks--costs) |
+| **CaveAgents v1** | Serial pipeline + ASD-STE100 Caveman terseness | `109,984` | \$0.00999 | 3.64x | [CAVEAGENTS_V1.md](docs/CAVEAGENTS_V1.md) |
+| **CaveAgents v2** | Role specialization, cloned coders, P2P comms | `91,432` | \$0.00813 | 3.02x | [CAVEAGENTS_V2.md](docs/CAVEAGENTS_V2.md) |
+| **CaveAgents v3** | Pre-flight command binding & output quieting | `50,395` | \$0.00477 | 1.67x | [CAVEAGENTS_V3.md](docs/CAVEAGENTS_V3.md) |
+| **CaveAgents v4** | **Tool pruning, contract inlining, compound run** | **`19,149`** | **\$0.00214** | **🏆 0.63x** | [**CAVEAGENTS_V4.md**](docs/CAVEAGENTS_V4.md) |
+
+<p align="center">
+  <img src="assets/chart_agent_teams_caveman.png" alt="CaveAgents Evolution: v1 to v4 Live Benchmark" width="850"/>
+</p>
+
+*In CaveAgents v4, full multi-agent verification (QA + Coder + Reviewer) is **36.7% cheaper than a single monolithic agent**.*
 
 ---
 

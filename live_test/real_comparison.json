@@ -154,19 +154,55 @@
     "total_billed_tokens": 50395,
     "cost_usd": 0.00477
   },
+  "caveagents_v4": {
+    "qa": {
+      "id": "6a8c617e-0c1c-47aa-90b2-1b45f708a6ca",
+      "steps": 8,
+      "input_tokens": 5639,
+      "output_tokens": 1423,
+      "total_tokens": 7062,
+      "final_context_size": 2180
+    },
+    "coder": {
+      "id": "68deb637-b75f-46a9-b331-2bf7156a3258",
+      "steps": 8,
+      "input_tokens": 4454,
+      "output_tokens": 1025,
+      "total_tokens": 5479,
+      "final_context_size": 1646
+    },
+    "reviewer": {
+      "id": "35cc169d-a034-464c-a128-ea3317724913",
+      "steps": 7,
+      "input_tokens": 4120,
+      "output_tokens": 408,
+      "total_tokens": 4528,
+      "final_context_size": 1461
+    },
+    "captain_estimated": {
+      "input_tokens": 1800,
+      "output_tokens": 280
+    },
+    "total_input_tokens": 16013,
+    "total_output_tokens": 3136,
+    "total_billed_tokens": 19149,
+    "cost_usd": 0.00214
+  },
   "verdict": {
-    "winner_on_small_task": "Monolithic Single Agent",
+    "winner_on_small_task": "CaveAgents v4",
     "mono_cost_usd": 0.0033,
     "standard_teamwork_cost_usd": 0.01893,
     "teams_cost_usd": 0.01362,
     "caveagents_v1_cost_usd": 0.00999,
     "caveagents_v2_cost_usd": 0.00813,
     "caveagents_v3_cost_usd": 0.00477,
-    "caveagents_v3_savings_vs_teams_percent": 67.5,
-    "caveagents_v3_savings_vs_v2_percent": 44.9,
-    "caveagents_v3_savings_vs_standard_percent": 75.8,
-    "tokens_saved_vs_teams": 104603,
-    "tokens_saved_vs_v2": 41037,
-    "tokens_saved_vs_standard": 158160
+    "caveagents_v4_cost_usd": 0.00214,
+    "caveagents_v4_savings_vs_mono_percent": 36.7,
+    "caveagents_v4_savings_vs_teams_percent": 87.6,
+    "caveagents_v4_savings_vs_v3_percent": 62.0,
+    "caveagents_v4_savings_vs_standard_percent": 90.8,
+    "tokens_saved_vs_teams": 135849,
+    "tokens_saved_vs_mono": 11092,
+    "tokens_saved_vs_v3": 31246
   }
 }
