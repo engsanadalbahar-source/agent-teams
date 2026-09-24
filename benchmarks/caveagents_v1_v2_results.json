@@ -1,0 +1,96 @@
+{
+  "turn_sweep": [
+    {
+      "turns": 3,
+      "mono_standard": 13068,
+      "agent_teams_standard": 28862,
+      "caveagents_v1": 28553,
+      "caveagents_v2": 21566,
+      "v1_savings_vs_mono_pct": -118.5,
+      "v2_savings_vs_mono_pct": -65.03,
+      "v2_savings_vs_v1_pct": 24.47
+    },
+    {
+      "turns": 5,
+      "mono_standard": 24405,
+      "agent_teams_standard": 28862,
+      "caveagents_v1": 28553,
+      "caveagents_v2": 25267,
+      "v1_savings_vs_mono_pct": -17.0,
+      "v2_savings_vs_mono_pct": -3.53,
+      "v2_savings_vs_v1_pct": 11.51
+    },
+    {
+      "turns": 10,
+      "mono_standard": 70053,
+      "agent_teams_standard": 52289,
+      "caveagents_v1": 51533,
+      "caveagents_v2": 36275,
+      "v1_savings_vs_mono_pct": 26.44,
+      "v2_savings_vs_mono_pct": 48.22,
+      "v2_savings_vs_v1_pct": 29.61
+    },
+    {
+      "turns": 15,
+      "mono_standard": 136917,
+      "agent_teams_standard": 76265,
+      "caveagents_v1": 74870,
+      "caveagents_v2": 43749,
+      "v1_savings_vs_mono_pct": 45.32,
+      "v2_savings_vs_mono_pct": 68.05,
+      "v2_savings_vs_v1_pct": 41.57
+    },
+    {
+      "turns": 20,
+      "mono_standard": 198953,
+      "agent_teams_standard": 124343,
+      "caveagents_v1": 121076,
+      "caveagents_v2": 58913,
+      "v1_savings_vs_mono_pct": 39.14,
+      "v2_savings_vs_mono_pct": 70.39,
+      "v2_savings_vs_v1_pct": 51.34
+    },
+    {
+      "turns": 30,
+      "mono_standard": 352353,
+      "agent_teams_standard": 175739,
+      "caveagents_v1": 169808,
+      "caveagents_v2": 74365,
+      "v1_savings_vs_mono_pct": 51.81,
+      "v2_savings_vs_mono_pct": 78.89,
+      "v2_savings_vs_v1_pct": 56.21
+    },
+    {
+      "turns": 50,
+      "mono_standard": 765653,
+      "agent_teams_standard": 311489,
+      "caveagents_v1": 295433,
+      "caveagents_v2": 114255,
+      "v1_savings_vs_mono_pct": 61.41,
+      "v2_savings_vs_mono_pct": 85.08,
+      "v2_savings_vs_v1_pct": 61.33
+    }
+  ],
+  "live_task_comparison": {
+    "standard_teamwork": {
+      "tokens": 208555,
+      "cost": 0.01893
+    },
+    "agent_teams_standard": {
+      "tokens": 154998,
+      "cost": 0.01362
+    },
+    "caveagents_v1": {
+      "tokens": 115647,
+      "cost": 0.00951
+    },
+    "caveagents_v2": {
+      "tokens": 88420,
+      "cost": 0.00781
+    },
+    "monolithic_standard": {
+      "tokens": 30241,
+      "cost": 0.0033
+    }
+  }
+}

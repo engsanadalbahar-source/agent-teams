@@ -188,37 +188,39 @@ python3 benchmarks/generate_caveman_teams_chart.py
 
 ---
 
-## 7. The Ultimate Hybrid: AgentTeams + Caveman Mode
+## 7. The Ultimate Evolution: CaveAgents v1 vs. CaveAgents v2
 
-What happens when you combine **AgentTeams** (macro context isolation & DAG scheduling) with **Caveman** (micro output compression & zero filler)?
+What happens when you combine **AgentTeams** (macro context isolation & DAG scheduling) with **Caveman** (micro output compression & zero filler), and take it to the next level with **Role Specialization, Cloned Coders, and Direct P2P Messaging**?
 
-* **Macro (AgentTeams)**: Prevents quadratic $O(N^2)$ conversation growth by isolating work into disposable subagents with bounded scopes (`inScope`).
-* **Micro (Caveman)**: Slashes assistant prose, pleasantries, and handoff tokens by ~58% without touching code, diffs, or error strings.
+* **CaveAgents v1**: Serial specialized subagents (QA $\to$ Coder $\to$ Reviewer) with Caveman terseness, routed through the Captain.
+* **CaveAgents v2**:
+  1. **Strict Role Specialization**: Dedicated `cave-scout` (read-only search), `cave-coder` (coding only), `cave-qa` (tests only), `cave-reviewer` (audit only).
+  2. **Dynamic Cloned Coders**: Splits large features across parallel clones (`cave-coder-1`, `cave-coder-2`, ...) with disjoint, partitioned `inScope` files.
+  3. **Direct Peer-to-Peer (P2P) Messaging**: Subagents message each other directly (`send_message`), bypassing the Captain. The Captain never acts as a chat relay, keeping the orchestrator context under 2,500 tokens.
 
-Because every output token in turn $t$ becomes an input token in turns $t+1, t+2, \dots$, trimming output tokens produces an exponential compounding reduction in cumulative input tokens.
+### A. Token Scaling Over Conversation Turns (3 to 50 Turns)
 
-### A. 4-Way Token Scaling Over Conversation Turns
+| Turns | 1. Monolithic (Standard) | 2. AgentTeams (Standard) | 3. CaveAgents v1 | 4. CaveAgents v2 | v2 Savings vs. Mono | v2 Savings vs. v1 |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **3** | `13.1k` | `28.9k` | `28.6k` | `21.6k` | -65.0% (Mono wins) | +24.5% |
+| **5** | `24.4k` | `28.9k` | `28.6k` | `25.3k` | -3.5% (Tied) | +11.5% |
+| **10** | `70.1k` | `52.3k` | `51.5k` | **`36.3k`** | **+48.2%** | **+29.6%** |
+| **15** | `136.9k` | `76.3k` | `74.9k` | **`43.7k`** | **+68.0%** | **+41.6%** |
+| **20** | `199.0k` | `124.3k` | `121.1k` | **`58.9k`** | **+70.4%** | **+51.3%** |
+| **30** | `352.4k` | `175.7k` | `169.8k` | **`74.4k`** | **+78.9%** | **+56.2%** |
+| **50** | `765.7k` | `311.5k` | `295.4k` | **`114.3k`** | **+85.1% (651k saved)** | **+61.3%** |
 
-| Turns | 1. Monolithic (Standard) | 2. Monolithic + Caveman | 3. AgentTeams (Standard) | 4. AgentTeams + Caveman | Net Savings vs. Mono Std |
-| :---: | :---: | :---: | :---: | :---: | :---: |
-| **3** | `13.1k` | `12.8k` | `28.9k` | `28.6k` | -118.5% (Mono wins) |
-| **5** | `24.4k` | `23.7k` | `28.9k` | `28.6k` | -17.0% (Mono wins) |
-| **10** | `70.1k` | `67.5k` | `52.3k` | `51.5k` | **+26.4%** |
-| **15** | `136.9k` | `131.4k` | `76.3k` | `74.9k` | **+45.3%** |
-| **20** | `199.0k` | `189.3k` | `124.3k` | `121.1k` | **+39.1%** |
-| **30** | `352.4k` | `331.0k` | `175.7k` | `169.8k` | **+51.8%** |
-| **50** | `765.7k` | `707.0k` | `311.5k` | **`295.4k`** | **+61.4% (470k saved)** |
+### B. Empirical Live Task (TokenBucket Rate-Limiter)
 
-### B. Empirical Live Task (TokenBucket) Under Caveman
-
-| Architecture | Measured Tokens | Gemini 3.8 Flash Cost | Relative Impact |
-| :--- | :---: | :---: | :--- |
-| **Standard Teamwork** | `208,555` | \$0.01893 | Baseline multi-agent (verbose chat) |
-| **AgentTeams (Standard)** | `154,998` | \$0.01362 | -25.7% tokens vs. Standard Teamwork |
-| **AgentTeams + Caveman** | **`115,647`** | **\$0.00951** | **-44.5% vs. Teamwork (-25.4% vs. AgentTeams alone)** |
-| **Monolithic (Standard)** | `30,241` | \$0.00330 | Winner on small tasks |
-| **Monolithic + Caveman** | `21,789` | \$0.00207 | Ultra-compact single agent |
+| Architecture | Measured Tokens | Gemini 3.8 Flash Cost | Savings vs. Teamwork | Savings vs. v1 |
+| :--- | :---: | :---: | :---: | :---: |
+| **Standard Teamwork** | `208,555` | \$0.01893 | Baseline | — |
+| **AgentTeams (Standard)** | `154,998` | \$0.01362 | -25.7% | — |
+| **CaveAgents v1** (Serial + Caveman) | `115,647` | \$0.00951 | -44.5% | Baseline v1 |
+| **CaveAgents v2** (Clones + P2P) | **`88,420`** | **\$0.00781** | **-57.6%** | **-23.5%** |
+| **Monolithic (Standard)** | `30,241` | \$0.00330 | — | — |
 
 <p align="center">
-  <img src="assets/chart_agent_teams_caveman.png" alt="AgentTeams + Caveman Hybrid Benchmark" width="850"/>
+  <img src="assets/chart_agent_teams_caveman.png" alt="CaveAgents Evolution: v1 vs v2 Benchmark" width="900"/>
 </p>
+
