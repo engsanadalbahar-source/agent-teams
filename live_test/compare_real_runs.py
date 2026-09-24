@@ -74,9 +74,13 @@ def main():
     mono_id = "8e45e081-55f1-433a-8900-cdafb7afb923"
     mono_data = parse_subagent_full_tokens(mono_id)
 
-    # 2. Real Caveman Monolithic Single Agent (Ultra-Terse)
+    # 2. Real Caveman Monolithic Single Agent (Ultra-Terse, 16 Tools)
     caveman_mono_id = "9a1b3ca8-9267-4169-a201-3f9f1434aed5"
     caveman_mono_data = parse_subagent_full_tokens(caveman_mono_id)
+
+    # 3. Real Pruned-Tool Monolithic Single Agent (Control, 5 Tools)
+    pruned_mono_id = "b9942f2c-a8a9-4f48-ae0c-687a832c1d6e"
+    pruned_mono_data = parse_subagent_full_tokens(pruned_mono_id)
 
     # 3. Real AgentTeams
     qa_id = "0fa36434-e187-4669-923e-f81818cf210c"
@@ -187,6 +191,7 @@ def main():
 
     mono_cost = (mono_data["input_tokens"] * rate_in) + (mono_data["output_tokens"] * rate_out)
     caveman_mono_cost = (caveman_mono_data["input_tokens"] * rate_in) + (caveman_mono_data["output_tokens"] * rate_out)
+    pruned_mono_cost = (pruned_mono_data["input_tokens"] * rate_in) + (pruned_mono_data["output_tokens"] * rate_out) if pruned_mono_data else 0.0
     teams_cost = (teams_total_in * rate_in) + (teams_total_out * rate_out)
     std_cost = (std_total_tokens * 0.93 * rate_in) + (std_total_tokens * 0.07 * rate_out)
     c1_cost = (c1_total_in * rate_in) + (c1_total_out * rate_out)
@@ -195,9 +200,18 @@ def main():
     c4_cost = (c4_total_in * rate_in) + (c4_total_out * rate_out)
 
     print("\n==========================================================================")
-    print("      UNTRUNCATED FULL EMPIRICAL COMPARISON: 8 PARADIGMS                    ")
+    print("      UNTRUNCATED FULL EMPIRICAL COMPARISON: 9 PARADIGMS                    ")
     print("      (Parsed from transcript_full.jsonl on Gemini 3.8 Flash)              ")
     print("==========================================================================\n")
+
+    if pruned_mono_data:
+        print(f"0. REAL PRUNED-TOOL MONOLITHIC CONTROL (5 Tools, ID: {pruned_mono_id[:8]}...):")
+        print(f"   Steps in transcript:      {pruned_mono_data['steps']}")
+        print(f"   Input tokens billed:      {pruned_mono_data['input_tokens']:,}")
+        print(f"   Output tokens generated:  {pruned_mono_data['output_tokens']:,}")
+        print(f"   Total Billed Tokens:      {pruned_mono_data['total_tokens']:,}")
+        print(f"   Final Context Size:       {pruned_mono_data['final_context_size']:,} tokens")
+        print(f"   Actual Cost (Gemini 3.8): ${pruned_mono_cost:.5f}\n")
 
     print(f"1. REAL MONOLITHIC SINGLE AGENT (Standard Verbose, ID: {mono_id[:8]}...):")
     print(f"   Steps in transcript:      {mono_data['steps']}")
@@ -283,21 +297,26 @@ def main():
     c4_savings_vs_v3_pct = round((c3_total_billed - c4_total_billed) / c3_total_billed * 100, 1)
     c4_savings_vs_mono_pct = round((mono_data['total_tokens'] - c4_total_billed) / mono_data['total_tokens'] * 100, 1)
     caveman_mono_savings_vs_mono_pct = round((mono_data['total_tokens'] - caveman_mono_data['total_tokens']) / mono_data['total_tokens'] * 100, 1)
+    pruned_mono_savings_vs_mono_pct = round((mono_data['total_tokens'] - pruned_mono_data['total_tokens']) / mono_data['total_tokens'] * 100, 1) if pruned_mono_data else 0
     c4_overhead_vs_caveman_mono = round(c4_total_billed / caveman_mono_data['total_tokens'], 2)
+    c4_overhead_vs_pruned_mono = round(c4_total_billed / pruned_mono_data['total_tokens'], 2) if pruned_mono_data else 0
 
     print(f"==========================================================================")
     print(f"VERDICTS ON THIS SMALL TASK (TokenBucket Parity):")
-    print(f"🥇 LOWEST ABSOLUTE TOKENS: Caveman Monolithic ({caveman_mono_data['total_tokens']:,} tokens, -{caveman_mono_savings_vs_mono_pct}% vs Standard Monolith)!")
-    print(f"🏆 CAVEAGENTS v4 WINS MULTI-AGENT: {c4_total_billed:,} tokens vs Standard Monolith's {mono_data['total_tokens']:,} tokens (-{c4_savings_vs_mono_pct}% cheaper)!")
-    print(f"⚡ CaveAgents v4 crushed AgentTeams by -{c4_savings_vs_teams_pct}% ({c4_total_billed/1000:.1f}k vs 155k tokens)!")
-    print(f"🔥 CaveAgents v4 beat CaveAgents v3 by -{c4_savings_vs_v3_pct}% ({c4_total_billed/1000:.1f}k vs 50k tokens)!")
-    print(f"🛡️  Multi-Agent TDD Isolation Overhead: CaveAgents v4 is only {c4_overhead_vs_caveman_mono}x over Caveman Monolith (just +10.5k tokens / +$0.001) for 3 independent agents!")
+    if pruned_mono_data:
+        print(f"🥇 LOWEST ABSOLUTE TOKENS: Pruned Monolith Control ({pruned_mono_data['total_tokens']:,} tokens, -{pruned_mono_savings_vs_mono_pct}% vs Standard Monolith)!")
+        print(f"🥈 SECOND LOWEST: Caveman Monolithic ({caveman_mono_data['total_tokens']:,} tokens, -{caveman_mono_savings_vs_mono_pct}% vs Standard Monolith)!")
+        print(f"⚖️  PRUNED-TO-PRUNED RATIO: Pruned Monolith is {c4_overhead_vs_pruned_mono}x cheaper than CaveAgents v4 ({pruned_mono_data['total_tokens']:,} vs {c4_total_billed:,} tokens)!")
+    print(f"🏆 CAVEAGENTS v4 WINS MULTI-AGENT: {c4_total_billed:,} tokens vs Standard Teamwork's {std_total_tokens:,} (-{c4_savings_vs_std_pct}%) and AgentTeams' {teams_total_billed:,} (-{c4_savings_vs_teams_pct}%)!")
+    print(f"⚡ CaveAgents v4 beat CaveAgents v3 by -{c4_savings_vs_v3_pct}% ({c4_total_billed/1000:.1f}k vs 50k tokens)!")
+    print(f"🛡️  Multi-Agent TDD Isolation Overhead: CaveAgents v4 is {c4_overhead_vs_pruned_mono}x of Pruned Monolith (+$0.00153) for 3 hermetically isolated agents!")
     out_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "real_comparison.json")
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump({
             "task": "Build & test thread-safe TokenBucket with pytest (EXACT PARITY)",
             "model": "Gemini 3.8 Flash (High)",
             "transcript_source": "transcript_full.jsonl (untruncated)",
+            "pruned_monolithic_control": pruned_mono_data,
             "monolithic": mono_data,
             "caveman_monolithic": caveman_mono_data,
             "standard_teamwork": {

@@ -2,6 +2,14 @@
   "task": "Build & test thread-safe TokenBucket with pytest (EXACT PARITY)",
   "model": "Gemini 3.8 Flash (High)",
   "transcript_source": "transcript_full.jsonl (untruncated)",
+  "pruned_monolithic_control": {
+    "id": "b9942f2c-a8a9-4f48-ae0c-687a832c1d6e",
+    "steps": 10,
+    "input_tokens": 9281,
+    "output_tokens": 2100,
+    "total_tokens": 11381,
+    "final_context_size": 2915
+  },
   "monolithic": {
     "id": "8e45e081-55f1-433a-8900-cdafb7afb923",
     "steps": 16,
