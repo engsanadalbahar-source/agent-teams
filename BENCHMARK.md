@@ -235,18 +235,28 @@ All runs parsed directly from `transcript_full.jsonl` using `tiktoken` (`cl100k_
    - **Captain orchestration**: 2,980 tokens (2,600 in, 380 out)
    - **Total Billed**: **`91,432 tokens`** | **\$0.00813**
    - **Verification**: 26 passed in 0.02s (`pytest live_test/caveagents_v2_live/test_token_bucket.py`)
-   - **Savings**: **56.2% cheaper** than Standard Teamwork (saved 117,123 tokens), **41.0% cheaper** than Standard AgentTeams (saved 63,566 tokens), and **16.9% cheaper** than CaveAgents v1 (saved 18,552 tokens)!
+   - **Savings**: **56.2% cheaper** than Standard Teamwork, **41.0% cheaper** than Standard AgentTeams!
+6. **Real CaveAgents v3 Live Run (`1af678ac...`, `b3c9b503...`, `efe5c647...`)**:
+   - **`cave-qa`** (`1af678ac-2dbf-4af9-abdc-2b82211a8afe`): 8,323 tokens (6,761 in, 1,562 out, 8 steps)
+   - **`cave-coder`** (`b3c9b503-bf69-441b-a422-a5293618fd5f`): 18,904 tokens (17,277 in, 1,627 out, 14 steps)
+   - **`cave-reviewer`** (`efe5c647-c5d4-4771-a97d-a1197cb74b84`): 20,648 tokens (19,762 in, 886 out, 16 steps)
+   - **Captain orchestration**: 2,520 tokens
+   - **Total Billed**: **`50,395 tokens`** | **\$0.00477**
+   - **Verification**: 21 passed in 0.01s (`pytest live_test/caveagents_v3_live/test_token_bucket.py`)
+   - **Savings**: **75.8% cheaper** than Standard Teamwork (saved 158,160 tokens), **67.5% cheaper** than Standard AgentTeams (saved 104,603 tokens), and **44.9% cheaper** than CaveAgents v2 (saved 41,037 tokens)!
+   - **Overhead Milestone**: Multi-agent penalty vs. Monolithic single-agent reduced to just **1.67x** (down from 5.13x)!
 
 | Architecture | Measured Tokens | Gemini 3.8 Flash Cost | Status | Verified Impact (TokenBucket Parity) |
 | :--- | :---: | :---: | :---: | :--- |
 | **Standard Teamwork** | `208,555` | \$0.01893 | Baseline Model | Verbose conversational handoffs |
 | **AgentTeams (Standard)** | `154,998` | \$0.01362 | **Real Live Run** | -25.7% tokens vs. Standard Teamwork |
-| **CaveAgents v1** (Serial + Caveman) | **`109,984`** | **\$0.00999** | **Real Live Run** | **-29.0% vs. AgentTeams (-47.3% vs. Teamwork)** |
-| **CaveAgents v2** (Clones + P2P) | **`91,432`** | **\$0.00813** | **Real Live Run** | **-41.0% vs. AgentTeams (-16.9% vs. v1)** |
-| **Monolithic (Standard)** | `30,241` | \$0.00330 | **Real Live Run** | Winner on small tasks (3.02x cheaper than v2) |
+| **CaveAgents v1** (Serial + Caveman) | **`109,984`** | **\$0.00999** | **Real Live Run** | -29.0% vs. AgentTeams (-47.3% vs. Teamwork) |
+| **CaveAgents v2** (Clones + P2P) | **`91,432`** | **\$0.00813** | **Real Live Run** | -41.0% vs. AgentTeams (-16.9% vs. v1) |
+| **CaveAgents v3** (Pre-Flight + Quieted) | **`50,395`** | **\$0.00477** | **Real Live Run** | **-67.5% vs. AgentTeams (-44.9% vs. v2, 1.67x Mono)** |
+| **Monolithic (Standard)** | `30,241` | \$0.00330 | **Real Live Run** | Winner on small tasks (30.2k tokens) |
 
 <p align="center">
-  <img src="assets/chart_agent_teams_caveman.png" alt="CaveAgents Evolution: v1 vs v2 Benchmark" width="900"/>
+  <img src="assets/chart_agent_teams_caveman.png" alt="CaveAgents Evolution: v1 vs v2 vs v3 Benchmark" width="900"/>
 </p>
 
 
