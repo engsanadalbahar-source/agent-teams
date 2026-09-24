@@ -210,17 +210,36 @@ What happens when you combine **AgentTeams** (macro context isolation & DAG sche
 | **30** | `352.4k` | `175.7k` | `169.8k` | **`74.4k`** | **+78.9%** | **+56.2%** |
 | **50** | `765.7k` | `311.5k` | `295.4k` | **`114.3k`** | **+85.1% (651k saved)** | **+61.3%** |
 
-### B. Empirical Live Task (TokenBucket Rate-Limiter)
+### B. Empirical Live Antigravity Runs (Gemini 3.8 Flash)
 
-| Architecture | Measured Tokens | Gemini 3.8 Flash Cost | Savings vs. Teamwork | Savings vs. v1 |
-| :--- | :---: | :---: | :---: | :---: |
-| **Standard Teamwork** | `208,555` | \$0.01893 | Baseline | — |
-| **AgentTeams (Standard)** | `154,998` | \$0.01362 | -25.7% | — |
-| **CaveAgents v1** (Serial + Caveman) | `115,647` | \$0.00951 | -44.5% | Baseline v1 |
-| **CaveAgents v2** (Clones + P2P) | **`88,420`** | **\$0.00781** | **-57.6%** | **-23.5%** |
-| **Monolithic (Standard)** | `30,241` | \$0.00330 | — | — |
+All runs parsed directly from `transcript_full.jsonl` using `tiktoken` (`cl100k_base`):
+
+1. **Monolithic Single Agent (`8e45e081...`)**:
+   - `30,241 tokens` | \$0.00330 (16 steps, self-contained single session)
+2. **Standard Antigravity Teamwork (Conversational)**:
+   - `208,555 tokens` | \$0.01893 (un-scoped conversational handoffs)
+3. **AgentTeams Standard Live Run (`0fa36434...`, `b39f54d0...`, `f21c2b4e...`)**:
+   - `154,998 tokens` | \$0.01362 (QA + Implementer + Reviewer + Captain)
+4. **CaveAgents Real Live Run (`003ee785...`, `1a04d593...`, `474864ba...`)**:
+   - **`cave-qa`**: 68,960 tokens (65,371 in, 3,589 out, 33 steps)
+   - **`cave-coder`**: 24,777 tokens (21,940 in, 2,837 out, 12 steps)
+   - **`cave-reviewer`**: 23,147 tokens (22,432 in, 715 out, 12 steps)
+   - **Captain orchestration**: 3,250 tokens
+   - **Total Billed**: **`120,134 tokens`** | **\$0.01072**
+   - **Savings**: **42.4% cheaper** than Standard Teamwork, **22.5% cheaper** than Standard AgentTeams!
+5. **CaveAgents v2 (Projected: Cloned Coders + P2P)**:
+   - **`88,420 tokens`** | **\$0.00781** (57.6% savings vs. Standard Teamwork)
+
+| Architecture | Measured Tokens | Gemini 3.8 Flash Cost | Status | Verified Impact |
+| :--- | :---: | :---: | :---: | :--- |
+| **Standard Teamwork** | `208,555` | \$0.01893 | Real Live Model | Baseline multi-agent (verbose chat) |
+| **AgentTeams (Standard)** | `154,998` | \$0.01362 | **Real Live Run** | -25.7% tokens vs. Standard Teamwork |
+| **CaveAgents (Live Run)** | **`120,134`** | **\$0.01072** | **Real Live Run** | **-42.4% vs. Teamwork (-22.5% vs. AgentTeams)** |
+| **CaveAgents v2** (Clones + P2P) | `88,420` | \$0.00781 | Projected Model | -57.6% vs. Teamwork (cloned parallel coders) |
+| **Monolithic (Standard)** | `30,241` | \$0.00330 | **Real Live Run** | Winner on small tasks (5.13x cheaper) |
 
 <p align="center">
   <img src="assets/chart_agent_teams_caveman.png" alt="CaveAgents Evolution: v1 vs v2 Benchmark" width="900"/>
 </p>
+
 

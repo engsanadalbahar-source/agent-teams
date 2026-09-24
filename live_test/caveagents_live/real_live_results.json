@@ -1,0 +1,36 @@
+{
+  "subagents": {
+    "cave_qa": {
+      "id": "003ee785-229d-4d70-9a07-b4d78dd1b518",
+      "steps": 33,
+      "input_tokens": 65371,
+      "output_tokens": 3589,
+      "total_tokens": 68960,
+      "final_context_size": 6923
+    },
+    "cave_coder": {
+      "id": "1a04d593-c306-4420-9fdf-590dc4a051ec",
+      "steps": 12,
+      "input_tokens": 21940,
+      "output_tokens": 2837,
+      "total_tokens": 24777,
+      "final_context_size": 5760
+    },
+    "cave_reviewer": {
+      "id": "474864ba-27d9-4bc2-bf47-62d4c8df9d59",
+      "steps": 12,
+      "input_tokens": 22432,
+      "output_tokens": 715,
+      "total_tokens": 23147,
+      "final_context_size": 4673
+    }
+  },
+  "captain_orchestration": {
+    "input_tokens": 2800,
+    "output_tokens": 450
+  },
+  "total_input_tokens": 112543,
+  "total_output_tokens": 7591,
+  "total_billed_tokens": 120134,
+  "actual_cost_usd": 0.01072
+}
