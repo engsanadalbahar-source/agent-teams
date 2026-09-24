@@ -1,0 +1,89 @@
+{
+  "turn_sweep": [
+    {
+      "turns": 3,
+      "mono_standard": 13068,
+      "mono_caveman": 12795,
+      "agent_teams_standard": 28862,
+      "agent_teams_caveman": 28553,
+      "caveman_boost_on_teams_pct": 1.07,
+      "total_savings_vs_mono_std_pct": -118.5
+    },
+    {
+      "turns": 5,
+      "mono_standard": 24405,
+      "mono_caveman": 23720,
+      "agent_teams_standard": 28862,
+      "agent_teams_caveman": 28553,
+      "caveman_boost_on_teams_pct": 1.07,
+      "total_savings_vs_mono_std_pct": -17.0
+    },
+    {
+      "turns": 10,
+      "mono_standard": 70053,
+      "mono_caveman": 67527,
+      "agent_teams_standard": 52289,
+      "agent_teams_caveman": 51533,
+      "caveman_boost_on_teams_pct": 1.45,
+      "total_savings_vs_mono_std_pct": 26.44
+    },
+    {
+      "turns": 15,
+      "mono_standard": 136917,
+      "mono_caveman": 131403,
+      "agent_teams_standard": 76265,
+      "agent_teams_caveman": 74870,
+      "caveman_boost_on_teams_pct": 1.83,
+      "total_savings_vs_mono_std_pct": 45.32
+    },
+    {
+      "turns": 20,
+      "mono_standard": 198953,
+      "mono_caveman": 189302,
+      "agent_teams_standard": 124343,
+      "agent_teams_caveman": 121076,
+      "caveman_boost_on_teams_pct": 2.63,
+      "total_savings_vs_mono_std_pct": 39.14
+    },
+    {
+      "turns": 30,
+      "mono_standard": 352353,
+      "mono_caveman": 330977,
+      "agent_teams_standard": 175739,
+      "agent_teams_caveman": 169808,
+      "caveman_boost_on_teams_pct": 3.37,
+      "total_savings_vs_mono_std_pct": 51.81
+    },
+    {
+      "turns": 50,
+      "mono_standard": 765653,
+      "mono_caveman": 707027,
+      "agent_teams_standard": 311489,
+      "agent_teams_caveman": 295433,
+      "caveman_boost_on_teams_pct": 5.15,
+      "total_savings_vs_mono_std_pct": 61.41
+    }
+  ],
+  "live_run_projection": {
+    "monolithic_standard": {
+      "tokens": 30241,
+      "cost": 0.0033
+    },
+    "monolithic_caveman": {
+      "tokens": 21789,
+      "cost": 0.00207
+    },
+    "standard_teamwork": {
+      "tokens": 208555,
+      "cost": 0.01893
+    },
+    "agent_teams_standard": {
+      "tokens": 154998,
+      "cost": 0.01362
+    },
+    "agent_teams_caveman": {
+      "tokens": 115647,
+      "cost": 0.00951
+    }
+  }
+}

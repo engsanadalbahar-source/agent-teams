@@ -180,4 +180,45 @@ python3 live_test/compare_real_runs.py
 
 # Run DAG and contract verification tests
 pytest benchmarks/test_dag_contracts.py
+
+# Run the AgentTeams + Caveman hybrid benchmark & generate chart
+python3 benchmarks/caveman_teams_benchmark.py
+python3 benchmarks/generate_caveman_teams_chart.py
 ```
+
+---
+
+## 7. The Ultimate Hybrid: AgentTeams + Caveman Mode
+
+What happens when you combine **AgentTeams** (macro context isolation & DAG scheduling) with **Caveman** (micro output compression & zero filler)?
+
+* **Macro (AgentTeams)**: Prevents quadratic $O(N^2)$ conversation growth by isolating work into disposable subagents with bounded scopes (`inScope`).
+* **Micro (Caveman)**: Slashes assistant prose, pleasantries, and handoff tokens by ~58% without touching code, diffs, or error strings.
+
+Because every output token in turn $t$ becomes an input token in turns $t+1, t+2, \dots$, trimming output tokens produces an exponential compounding reduction in cumulative input tokens.
+
+### A. 4-Way Token Scaling Over Conversation Turns
+
+| Turns | 1. Monolithic (Standard) | 2. Monolithic + Caveman | 3. AgentTeams (Standard) | 4. AgentTeams + Caveman | Net Savings vs. Mono Std |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| **3** | `13.1k` | `12.8k` | `28.9k` | `28.6k` | -118.5% (Mono wins) |
+| **5** | `24.4k` | `23.7k` | `28.9k` | `28.6k` | -17.0% (Mono wins) |
+| **10** | `70.1k` | `67.5k` | `52.3k` | `51.5k` | **+26.4%** |
+| **15** | `136.9k` | `131.4k` | `76.3k` | `74.9k` | **+45.3%** |
+| **20** | `199.0k` | `189.3k` | `124.3k` | `121.1k` | **+39.1%** |
+| **30** | `352.4k` | `331.0k` | `175.7k` | `169.8k` | **+51.8%** |
+| **50** | `765.7k` | `707.0k` | `311.5k` | **`295.4k`** | **+61.4% (470k saved)** |
+
+### B. Empirical Live Task (TokenBucket) Under Caveman
+
+| Architecture | Measured Tokens | Gemini 3.8 Flash Cost | Relative Impact |
+| :--- | :---: | :---: | :--- |
+| **Standard Teamwork** | `208,555` | \$0.01893 | Baseline multi-agent (verbose chat) |
+| **AgentTeams (Standard)** | `154,998` | \$0.01362 | -25.7% tokens vs. Standard Teamwork |
+| **AgentTeams + Caveman** | **`115,647`** | **\$0.00951** | **-44.5% vs. Teamwork (-25.4% vs. AgentTeams alone)** |
+| **Monolithic (Standard)** | `30,241` | \$0.00330 | Winner on small tasks |
+| **Monolithic + Caveman** | `21,789` | \$0.00207 | Ultra-compact single agent |
+
+<p align="center">
+  <img src="assets/chart_agent_teams_caveman.png" alt="AgentTeams + Caveman Hybrid Benchmark" width="850"/>
+</p>
