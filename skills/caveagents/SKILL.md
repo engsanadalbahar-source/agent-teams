@@ -90,15 +90,16 @@ Empirical testing on **Gemini 3.8 Flash** ($0.075/1M input, $0.30/1M output):
 
 ### 1. Empirical Live Task (TokenBucket Rate-Limiter Parity)
 
-| Architecture | Measured Tokens | Gemini 3.8 Cost | Savings vs. Teamwork | Savings vs. AgentTeams | Multi-Agent Overhead vs. Mono |
+| Architecture | Measured Tokens | Gemini 3.8 Cost | Savings vs. Teamwork | Savings vs. AgentTeams | Ratio vs. Monolith |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Standard Teamwork** | `208,555` | \$0.01893 | Baseline | — | 6.90x |
-| **AgentTeams (Standard)** | `154,998` | \$0.01362 | -25.7% | Baseline Teams | 5.13x |
-| **CaveAgents v1** (Serial + Caveman) | **`109,984`** | **\$0.00999** | **-47.3%** | **-29.0%** | 3.64x |
-| **CaveAgents v2** (Clones + P2P) | **`91,432`** | **\$0.00813** | **-56.2%** | **-41.0%** | 3.02x |
-| **CaveAgents v3** (Pre-Flight Bound) | **`50,395`** | **\$0.00477** | **-75.8%** | **-67.5%** | **1.67x (Breakthrough!)** |
-| **Monolithic (Standard)** | `30,241` | \$0.00330 | Baseline Single Agent | — | 1.00x |
+| **Caveman Monolithic** | **`16,285`** | **\$0.00176** | **-92.2%** | **-89.5%** | 🥇 **0.54x (Lowest Absolute)** |
 | **CaveAgents v4** (Lean Schema + Autonomous) | **`26,784`** | **\$0.00277** | **-87.2%** | **-82.7%** | **🏆 0.89x (Cheaper than Mono!)** |
+| **Monolithic (Standard)** | `30,241` | \$0.00330 | Baseline Single Agent | — | 1.00x |
+| **CaveAgents v3** (Pre-Flight Bound) | **`50,395`** | **\$0.00477** | **-75.8%** | **-67.5%** | **1.67x** |
+| **CaveAgents v2** (Clones + P2P) | **`91,432`** | **\$0.00813** | **-56.2%** | **-41.0%** | 3.02x |
+| **CaveAgents v1** (Serial + Caveman) | **`109,984`** | **\$0.00999** | **-47.3%** | **-29.0%** | 3.64x |
+| **AgentTeams (Standard)** | `154,998` | \$0.01362 | -25.7% | Baseline Teams | 5.13x |
+| **Standard Teamwork** | `208,555` | \$0.01893 | Baseline | — | 6.90x |
 
 ### 2. Token Scaling Over Conversation Turns (3 to 50 Turns)
 

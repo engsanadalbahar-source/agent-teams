@@ -45,7 +45,7 @@ def generate_chart():
 
     sweep = sim_data["turn_sweep"]
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6.4), dpi=300, facecolor="#ffffff")
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16.2, 6.5), dpi=300, facecolor="#ffffff")
     fig.patch.set_facecolor("#ffffff")
 
     # -------------------------------------------------------------
@@ -102,12 +102,13 @@ def generate_chart():
     ax2.set_facecolor("#ffffff")
     labels = [
         "Standard\nTeamwork",
-        "AgentTeams\n(Standard Live)",
-        "CaveAgents v1\n(Real Live)",
-        "CaveAgents v2\n(Real Live)",
-        "CaveAgents v3\n(Pre-Flight)",
-        "Monolithic\n(Real Live)",
-        "CaveAgents v4\n(Lean Live)"
+        "AgentTeams\n(Live)",
+        "CaveAgents\nv1 (Live)",
+        "CaveAgents\nv2 (Live)",
+        "CaveAgents\nv3 (Pre-Flight)",
+        "Monolith\n(Standard)",
+        "CaveAgents\nv4 (Live)",
+        "Caveman\nMono (Live)"
     ]
 
     std_tok = real["standard_teamwork"]["total_tokens"] / 1000
@@ -117,6 +118,7 @@ def generate_chart():
     c3_tok = real["caveagents_v3"]["total_billed_tokens"] / 1000
     mono_tok = real["monolithic"]["total_tokens"] / 1000
     c4_tok = real["caveagents_v4"]["total_billed_tokens"] / 1000
+    c_mono_tok = real["caveman_monolithic"]["total_tokens"] / 1000
 
     std_cost = real["standard_teamwork"]["cost_usd"]
     teams_cost = real["agent_teams"]["cost_usd"]
@@ -125,12 +127,13 @@ def generate_chart():
     c3_cost = real["caveagents_v3"]["cost_usd"]
     mono_cost = real["verdict"]["mono_cost_usd"]
     c4_cost = real["caveagents_v4"]["cost_usd"]
+    c_mono_cost = real["verdict"]["caveman_mono_cost_usd"]
 
-    toks = [std_tok, teams_tok, c1_tok, c2_tok, c3_tok, mono_tok, c4_tok]
-    costs = [std_cost, teams_cost, c1_cost, c2_cost, c3_cost, mono_cost, c4_cost]
-    colors = ["#d97706", "#0969da", "#b45309", "#15803d", "#1a7f37", "#cf222e", "#2da44e"]
+    toks = [std_tok, teams_tok, c1_tok, c2_tok, c3_tok, mono_tok, c4_tok, c_mono_tok]
+    costs = [std_cost, teams_cost, c1_cost, c2_cost, c3_cost, mono_cost, c4_cost, c_mono_cost]
+    colors = ["#d97706", "#0969da", "#b45309", "#15803d", "#1a7f37", "#cf222e", "#2da44e", "#8250df"]
 
-    bars = ax2.bar(labels, toks, color=colors, width=0.52, edgecolor="#24292f", linewidth=0.8, alpha=0.9)
+    bars = ax2.bar(labels, toks, color=colors, width=0.55, edgecolor="#24292f", linewidth=0.8, alpha=0.9)
 
     for bar, tok, cost_val in zip(bars, toks, costs):
         y_val = bar.get_height()
@@ -140,21 +143,33 @@ def generate_chart():
             f"{tok:.1f}k\n(${cost_val:.4f})",
             ha="center",
             va="bottom",
-            fontsize=7.2,
+            fontsize=6.8,
             fontweight="bold",
             color="#24292f"
         )
 
     # Callout highlighting REAL Live CaveAgents v4 measured breakthrough
     ax2.annotate(
-        f"HISTORIC: CAVEAGENTS v4 ({c4_tok:.1f}k tok):\n• -11.4% vs Monolithic Single Agent\n• -82.7% vs Standard AgentTeams\n• Zero shortcuts: Coder reads tests & passes 23/23!",
+        f"CAVEAGENTS v4 ({c4_tok:.1f}k tok):\n• -11.4% vs Standard Monolith (30.2k)\n• -82.7% vs AgentTeams (155k)\n• 3-agent team passes 23/23 tests!",
         xy=(6, c4_tok + 8),
-        xytext=(1.8, 205),
-        arrowprops=dict(facecolor="#2da44e", edgecolor="#2da44e", shrink=0.05, width=1.2, headwidth=6),
-        fontsize=8.5,
+        xytext=(3.6, 215),
+        arrowprops=dict(facecolor="#2da44e", edgecolor="#2da44e", shrink=0.08, width=1.1, headwidth=5),
+        fontsize=8.0,
         fontweight="bold",
         color="#1a7f37",
         bbox=dict(boxstyle="round,pad=0.35", fc="#dafbe1", ec="#4ac26b", lw=1.2)
+    )
+
+    # Callout for Caveman Monolithic
+    ax2.annotate(
+        f"CAVEMAN MONOLITH ({c_mono_tok:.1f}k tok):\n• Absolute lowest token count\n• -46.1% vs Standard Monolith\n• Single agent with ultra-terse mode",
+        xy=(7, c_mono_tok + 8),
+        xytext=(4.5, 95),
+        arrowprops=dict(facecolor="#8250df", edgecolor="#8250df", shrink=0.08, width=1.0, headwidth=5),
+        fontsize=7.8,
+        fontweight="bold",
+        color="#5a32a3",
+        bbox=dict(boxstyle="round,pad=0.35", fc="#fbefff", ec="#c297ff", lw=1.0)
     )
 
     ax2.set_title("B. Real Live Antigravity Runs: TokenBucket Task (transcript_full.jsonl)")

@@ -10,6 +10,14 @@
     "total_tokens": 30241,
     "final_context_size": 6300
   },
+  "caveman_monolithic": {
+    "id": "9a1b3ca8-9267-4169-a201-3f9f1434aed5",
+    "steps": 12,
+    "input_tokens": 13905,
+    "output_tokens": 2380,
+    "total_tokens": 16285,
+    "final_context_size": 3511
+  },
   "standard_teamwork": {
     "coordinator_tokens": 21300,
     "qa_tokens": 48155,
@@ -189,7 +197,9 @@
     "cost_usd": 0.00277
   },
   "verdict": {
-    "winner_on_small_task": "CaveAgents v4",
+    "lowest_absolute_tokens": "Caveman Monolithic (16.3k tokens)",
+    "cheapest_multi_agent": "CaveAgents v4 (26.8k tokens)",
+    "caveman_mono_cost_usd": 0.00176,
     "mono_cost_usd": 0.0033,
     "standard_teamwork_cost_usd": 0.01893,
     "teams_cost_usd": 0.01362,
@@ -197,10 +207,12 @@
     "caveagents_v2_cost_usd": 0.00813,
     "caveagents_v3_cost_usd": 0.00477,
     "caveagents_v4_cost_usd": 0.00277,
+    "caveman_mono_savings_vs_mono_percent": 46.1,
     "caveagents_v4_savings_vs_mono_percent": 11.4,
     "caveagents_v4_savings_vs_teams_percent": 82.7,
     "caveagents_v4_savings_vs_v3_percent": 46.9,
     "caveagents_v4_savings_vs_standard_percent": 87.2,
+    "caveagents_v4_overhead_vs_caveman_mono_factor": 1.64,
     "tokens_saved_vs_teams": 128214,
     "tokens_saved_vs_mono": 3457,
     "tokens_saved_vs_v3": 23611

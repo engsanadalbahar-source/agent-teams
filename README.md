@@ -177,22 +177,27 @@ We evaluated all three architectures on the exact same task (build a thread-safe
 
 ### 4. The CaveAgents Breakthrough: Inverting the Cost Frontier (v1 → v4)
 
-Can multi-agent quality gates be maintained without the 5x token tax on small tasks? Through four generations of relentless empirical optimization, **CaveAgents** inverted the cost frontier:
+Can multi-agent quality gates be maintained without the 5x token tax on small tasks? Across 8 empirically verified paradigms on the exact same `TokenBucket` task, here is the full landscape:
 
-| Generation | Architecture Key Innovations | Live Measured Tokens | Cost (Gemini 3.8) | Multi-Agent Overhead vs. Mono | Full Documentation |
+| Generation / Paradigm | Architecture Key Innovations | Live Measured Tokens | Cost (Gemini 3.8) | Ratio vs. Monolith | Full Documentation |
 | :--- | :--- | :---: | :---: | :---: | :--- |
-| **Monolithic** | Single-agent chat, self-authored tests & review | `30,241` | \$0.00330 | 1.00x | Baseline (16 steps) |
-| **AgentTeams** | Standard QA + Coder + Reviewer DAG | `154,998` | \$0.01362 | 5.13x | [Standard Protocol](#-empirical-benchmarks--costs) |
-| **CaveAgents v1** | Serial pipeline + ASD-STE100 Caveman terseness | `109,984` | \$0.00999 | 3.64x | [CAVEAGENTS_V1.md](docs/CAVEAGENTS_V1.md) |
-| **CaveAgents v2** | Role specialization, cloned coders, P2P comms | `91,432` | \$0.00813 | 3.02x | [CAVEAGENTS_V2.md](docs/CAVEAGENTS_V2.md) |
-| **CaveAgents v3** | Pre-flight command binding & output quieting | `50,395` | \$0.00477 | 1.67x | [CAVEAGENTS_V3.md](docs/CAVEAGENTS_V3.md) |
+| **Caveman Monolithic** | Single-agent chat, full Caveman ultra-terse mode | **`16,285`** | **\$0.00176** | **0.54x** | 12 steps, 28 tests |
 | **CaveAgents v4** | **Tool pruning, autonomous test inspection, compound run** | **`26,784`** | **\$0.00277** | **🏆 0.89x** | [**CAVEAGENTS_V4.md**](docs/CAVEAGENTS_V4.md) |
+| **Monolithic (Standard)**| Single-agent chat, verbose natural language | `30,241` | \$0.00330 | 1.00x | Baseline (16 steps) |
+| **CaveAgents v3** | Pre-flight command binding & output quieting | `50,395` | \$0.00477 | 1.67x | [CAVEAGENTS_V3.md](docs/CAVEAGENTS_V3.md) |
+| **CaveAgents v2** | Role specialization, cloned coders, P2P comms | `91,432` | \$0.00813 | 3.02x | [CAVEAGENTS_V2.md](docs/CAVEAGENTS_V2.md) |
+| **CaveAgents v1** | Serial pipeline + ASD-STE100 Caveman terseness | `109,984` | \$0.00999 | 3.64x | [CAVEAGENTS_V1.md](docs/CAVEAGENTS_V1.md) |
+| **AgentTeams** | Standard QA + Coder + Reviewer DAG | `154,998` | \$0.01362 | 5.13x | [Standard Protocol](#-empirical-benchmarks--costs) |
+| **Standard Teamwork** | Unstructured conversational multi-agent | `208,555` | \$0.01893 | 6.90x | Un-scoped conversational handoffs |
 
 <p align="center">
-  <img src="assets/chart_agent_teams_caveman.png" alt="CaveAgents Evolution: v1 to v4 Live Benchmark" width="850"/>
+  <img src="assets/chart_agent_teams_caveman.png" alt="CaveAgents Evolution: 8-Paradigm Live Benchmark" width="900"/>
 </p>
 
-*In CaveAgents v4, full multi-agent verification (QA + Coder + Reviewer) is **11.4% cheaper than a single monolithic agent** with zero spoon-fed contracts.*
+*Key Empirical Takeaways*:
+1. **Caveman Compression on a Single Agent**: Slashes single-agent tokens from 30.2k down to **16.3k (-46.1%)**.
+2. **CaveAgents v4 Multi-Agent Parity**: Slashes multi-agent tokens from 155.0k down to **26.8k (-82.7%)**, beating the standard monolithic baseline (-11.4%).
+3. **The Multi-Agent Isolation Overhead**: Against an ultra-compressed Caveman Monolith, running 3 independent agents with strict TDD isolation costs only **1.64x overhead** (just +10.5k tokens / +$0.001).
 
 ---
 

@@ -62,17 +62,18 @@ All token counts parsed directly from raw `transcript_full.jsonl` files on disk 
 
 ---
 
-## 🏆 The Grand Comparison: 7 Paradigms on the Exact Same Task
+## 🏆 The Grand Comparison: 8 Paradigms on the Exact Same Task
 
-| Architecture | Measured Tokens | Gemini 3.8 Flash Cost | Status | Multi-Agent Penalty vs. Mono |
+| Architecture | Measured Tokens | Gemini 3.8 Flash Cost | Status | Ratio vs. Monolith |
 | :--- | :---: | :---: | :---: | :---: |
-| **Standard Antigravity Teamwork** | `208,555` | \$0.01893 | Baseline Model | 6.90x |
-| **AgentTeams (Standard Live)** | `154,998` | \$0.01362 | **Real Live Run** | 5.13x |
-| **CaveAgents v1 (Serial Pipeline)** | `109,984` | \$0.00999 | **Real Live Run** | 3.64x |
-| **CaveAgents v2 (Clones + P2P)** | `91,432` | \$0.00813 | **Real Live Run** | 3.02x |
+| **Caveman Monolithic Single Agent** | **`16,285`** | **\$0.00176** | **Real Live Run** | 🥇 **0.54x (Absolute Lowest Tokens)** |
+| **CaveAgents v4 (Lean Schema + Autonomous)** | **`26,784`** | **\$0.00277** | **Real Live Run** | **🏆 0.89x (Cheapest Multi-Agent Team)** |
+| **Monolithic Single Agent (Standard)** | `30,241` | \$0.00330 | **Real Live Run** | 1.00x Baseline |
 | **CaveAgents v3 (Pre-Flight Bound)** | `50,395` | \$0.00477 | **Real Live Run** | 1.67x |
-| **Monolithic Single Agent** | `30,241` | \$0.00330 | **Real Live Run** | 1.00x |
-| **CaveAgents v4 (Lean Schema + Autonomous)** | **`26,784`** | **\$0.00277** | **Real Live Run** | **🏆 0.89x (Cheaper than Single Agent!)** |
+| **CaveAgents v2 (Clones + P2P)** | `91,432` | \$0.00813 | **Real Live Run** | 3.02x |
+| **CaveAgents v1 (Serial Pipeline)** | `109,984` | \$0.00999 | **Real Live Run** | 3.64x |
+| **AgentTeams (Standard Live)** | `154,998` | \$0.01362 | **Real Live Run** | 5.13x |
+| **Standard Antigravity Teamwork** | `208,555` | \$0.01893 | Baseline Model | 6.90x |
 
 *(Note: In a pure pre-compiled contract experiment where Step 1 file reads are skipped, v4 reaches 19,149 tokens / \$0.00214).*
 
@@ -84,5 +85,7 @@ In every AI engineering benchmark published to date, multi-agent workflows have 
 
 **CaveAgents v4 proves that this tax can be completely eliminated**:
 1. **Full Quality Gates at Lower Cost**: You retain separate TDD QA test authorship, dedicated implementation, and independent adversarial code review.
-2. **11.4% Token Reduction vs. Monolith**: Even with realistic test file inspection and zero spoon-fed contracts, the entire 3-agent team consumes **less context than a single monolithic agent** carrying a bloated 14-tool system prompt and history.
+2. **11.4% Token Reduction vs. Standard Monolith**: Even with realistic test file inspection and zero spoon-fed contracts, the entire 3-agent team consumes **less context than a single monolithic agent** carrying a bloated 14-tool system prompt and history.
 3. **82.7% Token Reduction vs. Standard AgentTeams**: Down from 154,998 tokens to 26,784 tokens.
+4. **Caveman Monolithic Micro-Benchmark**: Applying Caveman terseness to a single monolithic agent cuts its tokens from 30,241 down to **16,285 tokens** ($0.00176, 12 steps, 28 tests).
+5. **The Multi-Agent TDD Overhead**: CaveAgents v4 provides full 3-agent TDD separation with only **1.64x overhead** over Caveman Monolithic (+10.5k tokens / +$0.001).
