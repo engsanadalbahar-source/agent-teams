@@ -110,10 +110,10 @@ def main():
     c3_impl_data = parse_subagent_full_tokens(c3_impl_id)
     c3_rev_data = parse_subagent_full_tokens(c3_rev_id)
 
-    # 6. Real CaveAgents v4 (Lean Schema + Inlined Contract + Single-Shot Execution)
+    # 6. Real CaveAgents v4 (Lean Schema + Autonomous Test Inspection + Single-Shot Execution)
     c4_qa_id = "6a8c617e-0c1c-47aa-90b2-1b45f708a6ca"
-    c4_impl_id = "68deb637-b75f-46a9-b331-2bf7156a3258"
-    c4_rev_id = "35cc169d-a034-464c-a128-ea3317724913"
+    c4_impl_id = "611f72cc-7c5f-4a93-8995-1b4b445f7dcc"
+    c4_rev_id = "bc6206fb-8692-4c6b-84d4-e353e09fed88"
 
     c4_qa_data = parse_subagent_full_tokens(c4_qa_id)
     c4_impl_data = parse_subagent_full_tokens(c4_impl_id)
@@ -253,7 +253,7 @@ def main():
     print(f"   Total Billed Tokens:      {c3_total_billed:,}")
     print(f"   Actual Cost (Gemini 3.8): ${c3_cost:.5f}\n")
 
-    print(f"7. REAL CAVEAGENTS v4 RUN (Tool Pruned + Inlined Contract + Single-Shot Execution):")
+    print(f"7. REAL CAVEAGENTS v4 RUN (Tool Pruned + Autonomous Test Inspection + Single-Shot Execution):")
     print(f"   • cave-qa ({c4_qa_id[:8]}...):       {c4_qa_data['total_tokens']:,} tokens ({c4_qa_data['input_tokens']:,} in, {c4_qa_data['output_tokens']:,} out, {c4_qa_data['steps']} steps)")
     print(f"   • cave-coder ({c4_impl_id[:8]}...):    {c4_impl_data['total_tokens']:,} tokens ({c4_impl_data['input_tokens']:,} in, {c4_impl_data['output_tokens']:,} out, {c4_impl_data['steps']} steps)")
     print(f"   • cave-reviewer ({c4_rev_id[:8]}...): {c4_rev_data['total_tokens']:,} tokens ({c4_rev_data['input_tokens']:,} in, {c4_rev_data['output_tokens']:,} out, {c4_rev_data['steps']} steps)")
@@ -272,9 +272,9 @@ def main():
     print(f"==========================================================================")
     print(f"VERDICTS ON THIS SMALL TASK (TokenBucket Parity):")
     print(f"🏆 CAVEAGENTS v4 WINS OVERALL: {c4_total_billed:,} tokens vs Monolith's {mono_data['total_tokens']:,} tokens (-{c4_savings_vs_mono_pct}% cheaper)!")
-    print(f"⚡ CaveAgents v4 crushed AgentTeams by -{c4_savings_vs_teams_pct}% (19k vs 155k tokens)!")
-    print(f"🔥 CaveAgents v4 beat CaveAgents v3 by -{c4_savings_vs_v3_pct}% (19k vs 50k tokens)!")
-    print(f"🛡️  Full multi-agent verification (QA + Coder + Reviewer) is now CHEAPER than a single agent!")
+    print(f"⚡ CaveAgents v4 crushed AgentTeams by -{c4_savings_vs_teams_pct}% ({c4_total_billed/1000:.1f}k vs 155k tokens)!")
+    print(f"🔥 CaveAgents v4 beat CaveAgents v3 by -{c4_savings_vs_v3_pct}% ({c4_total_billed/1000:.1f}k vs 50k tokens)!")
+    print(f"🛡️  Full multi-agent verification (QA + Coder + Reviewer) is CHEAPER than a single agent WITHOUT ANY SPOON-FED CONTRACTS!")
     print(f"==========================================================================\n")
 
     out_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "real_comparison.json")

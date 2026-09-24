@@ -21,12 +21,12 @@ LIVE_SUBAGENTS = {
         "role": "cave-qa-v4"
     },
     "cave_coder": {
-        "id": "68deb637-b75f-46a9-b331-2bf7156a3258",
-        "role": "cave-coder-v4"
+        "id": "611f72cc-7c5f-4a93-8995-1b4b445f7dcc",
+        "role": "cave-coder-v4-realistic"
     },
     "cave_reviewer": {
-        "id": "35cc169d-a034-464c-a128-ea3317724913",
-        "role": "cave-reviewer-v4"
+        "id": "bc6206fb-8692-4c6b-84d4-e353e09fed88",
+        "role": "cave-reviewer-v4-realistic"
     }
 }
 

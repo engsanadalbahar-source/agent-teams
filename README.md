@@ -186,13 +186,13 @@ Can multi-agent quality gates be maintained without the 5x token tax on small ta
 | **CaveAgents v1** | Serial pipeline + ASD-STE100 Caveman terseness | `109,984` | \$0.00999 | 3.64x | [CAVEAGENTS_V1.md](docs/CAVEAGENTS_V1.md) |
 | **CaveAgents v2** | Role specialization, cloned coders, P2P comms | `91,432` | \$0.00813 | 3.02x | [CAVEAGENTS_V2.md](docs/CAVEAGENTS_V2.md) |
 | **CaveAgents v3** | Pre-flight command binding & output quieting | `50,395` | \$0.00477 | 1.67x | [CAVEAGENTS_V3.md](docs/CAVEAGENTS_V3.md) |
-| **CaveAgents v4** | **Tool pruning, contract inlining, compound run** | **`19,149`** | **\$0.00214** | **🏆 0.63x** | [**CAVEAGENTS_V4.md**](docs/CAVEAGENTS_V4.md) |
+| **CaveAgents v4** | **Tool pruning, autonomous test inspection, compound run** | **`26,784`** | **\$0.00277** | **🏆 0.89x** | [**CAVEAGENTS_V4.md**](docs/CAVEAGENTS_V4.md) |
 
 <p align="center">
   <img src="assets/chart_agent_teams_caveman.png" alt="CaveAgents Evolution: v1 to v4 Live Benchmark" width="850"/>
 </p>
 
-*In CaveAgents v4, full multi-agent verification (QA + Coder + Reviewer) is **36.7% cheaper than a single monolithic agent**.*
+*In CaveAgents v4, full multi-agent verification (QA + Coder + Reviewer) is **11.4% cheaper than a single monolithic agent** with zero spoon-fed contracts.*
 
 ---
 

@@ -164,29 +164,29 @@
       "final_context_size": 2180
     },
     "coder": {
-      "id": "68deb637-b75f-46a9-b331-2bf7156a3258",
-      "steps": 8,
-      "input_tokens": 4454,
-      "output_tokens": 1025,
-      "total_tokens": 5479,
-      "final_context_size": 1646
+      "id": "611f72cc-7c5f-4a93-8995-1b4b445f7dcc",
+      "steps": 12,
+      "input_tokens": 11490,
+      "output_tokens": 1211,
+      "total_tokens": 12701,
+      "final_context_size": 2941
     },
     "reviewer": {
-      "id": "35cc169d-a034-464c-a128-ea3317724913",
-      "steps": 7,
-      "input_tokens": 4120,
-      "output_tokens": 408,
-      "total_tokens": 4528,
-      "final_context_size": 1461
+      "id": "bc6206fb-8692-4c6b-84d4-e353e09fed88",
+      "steps": 8,
+      "input_tokens": 4455,
+      "output_tokens": 486,
+      "total_tokens": 4941,
+      "final_context_size": 1607
     },
     "captain_estimated": {
       "input_tokens": 1800,
       "output_tokens": 280
     },
-    "total_input_tokens": 16013,
-    "total_output_tokens": 3136,
-    "total_billed_tokens": 19149,
-    "cost_usd": 0.00214
+    "total_input_tokens": 23384,
+    "total_output_tokens": 3400,
+    "total_billed_tokens": 26784,
+    "cost_usd": 0.00277
   },
   "verdict": {
     "winner_on_small_task": "CaveAgents v4",
@@ -196,13 +196,13 @@
     "caveagents_v1_cost_usd": 0.00999,
     "caveagents_v2_cost_usd": 0.00813,
     "caveagents_v3_cost_usd": 0.00477,
-    "caveagents_v4_cost_usd": 0.00214,
-    "caveagents_v4_savings_vs_mono_percent": 36.7,
-    "caveagents_v4_savings_vs_teams_percent": 87.6,
-    "caveagents_v4_savings_vs_v3_percent": 62.0,
-    "caveagents_v4_savings_vs_standard_percent": 90.8,
-    "tokens_saved_vs_teams": 135849,
-    "tokens_saved_vs_mono": 11092,
-    "tokens_saved_vs_v3": 31246
+    "caveagents_v4_cost_usd": 0.00277,
+    "caveagents_v4_savings_vs_mono_percent": 11.4,
+    "caveagents_v4_savings_vs_teams_percent": 82.7,
+    "caveagents_v4_savings_vs_v3_percent": 46.9,
+    "caveagents_v4_savings_vs_standard_percent": 87.2,
+    "tokens_saved_vs_teams": 128214,
+    "tokens_saved_vs_mono": 3457,
+    "tokens_saved_vs_v3": 23611
   }
 }

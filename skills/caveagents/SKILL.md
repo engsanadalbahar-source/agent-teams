@@ -98,7 +98,7 @@ Empirical testing on **Gemini 3.8 Flash** ($0.075/1M input, $0.30/1M output):
 | **CaveAgents v2** (Clones + P2P) | **`91,432`** | **\$0.00813** | **-56.2%** | **-41.0%** | 3.02x |
 | **CaveAgents v3** (Pre-Flight Bound) | **`50,395`** | **\$0.00477** | **-75.8%** | **-67.5%** | **1.67x (Breakthrough!)** |
 | **Monolithic (Standard)** | `30,241` | \$0.00330 | Baseline Single Agent | — | 1.00x |
-| **CaveAgents v4** (Lean Schema + Inlined) | **`19,149`** | **\$0.00214** | **-90.8%** | **-87.6%** | **🏆 0.63x (Cheaper than Mono!)** |
+| **CaveAgents v4** (Lean Schema + Autonomous) | **`26,784`** | **\$0.00277** | **-87.2%** | **-82.7%** | **🏆 0.89x (Cheaper than Mono!)** |
 
 ### 2. Token Scaling Over Conversation Turns (3 to 50 Turns)
 

@@ -12,28 +12,28 @@
       "final_context_size": 2180
     },
     "cave_coder": {
-      "id": "68deb637-b75f-46a9-b331-2bf7156a3258",
-      "steps": 8,
-      "input_tokens": 4454,
-      "output_tokens": 1025,
-      "total_tokens": 5479,
-      "final_context_size": 1646
+      "id": "611f72cc-7c5f-4a93-8995-1b4b445f7dcc",
+      "steps": 12,
+      "input_tokens": 11490,
+      "output_tokens": 1211,
+      "total_tokens": 12701,
+      "final_context_size": 2941
     },
     "cave_reviewer": {
-      "id": "35cc169d-a034-464c-a128-ea3317724913",
-      "steps": 7,
-      "input_tokens": 4120,
-      "output_tokens": 408,
-      "total_tokens": 4528,
-      "final_context_size": 1461
+      "id": "bc6206fb-8692-4c6b-84d4-e353e09fed88",
+      "steps": 8,
+      "input_tokens": 4455,
+      "output_tokens": 486,
+      "total_tokens": 4941,
+      "final_context_size": 1607
     }
   },
   "captain_orchestration": {
     "input_tokens": 1800,
     "output_tokens": 280
   },
-  "total_input_tokens": 16013,
-  "total_output_tokens": 3136,
-  "total_billed_tokens": 19149,
-  "actual_cost_usd": 0.00214
+  "total_input_tokens": 23384,
+  "total_output_tokens": 3400,
+  "total_billed_tokens": 26784,
+  "actual_cost_usd": 0.00277
 }

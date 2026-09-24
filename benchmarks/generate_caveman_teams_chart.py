@@ -147,7 +147,7 @@ def generate_chart():
 
     # Callout highlighting REAL Live CaveAgents v4 measured breakthrough
     ax2.annotate(
-        f"HISTORIC: CAVEAGENTS v4 ({c4_tok:.1f}k tok):\n• -36.7% vs Monolithic Single Agent\n• -87.6% vs Standard AgentTeams\n• Full multi-agent verification is CHEAPER than 1 agent!",
+        f"HISTORIC: CAVEAGENTS v4 ({c4_tok:.1f}k tok):\n• -11.4% vs Monolithic Single Agent\n• -82.7% vs Standard AgentTeams\n• Zero shortcuts: Coder reads tests & passes 23/23!",
         xy=(6, c4_tok + 8),
         xytext=(1.8, 205),
         arrowprops=dict(facecolor="#2da44e", edgecolor="#2da44e", shrink=0.05, width=1.2, headwidth=6),
